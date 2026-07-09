@@ -16,3 +16,4 @@ config.test.jsonc
 .ai-ignored/
 .ai-tasks/
 .claude/
+.cursor/
