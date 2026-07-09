@@ -1,17 +1,21 @@
-# Cryptofoundry Business Website: AI Agent Operating Manual
+# cryptofoundry Business Website: AI Agent Operating Manual
 
 This document defines how AI agents must work in this repository.
 
 ## Mission
 
-This repository hosts the Cryptofoundry business website — a public-facing site for self-hosted crypto software, bots, payments, and infrastructure built by the engineers behind the ADAMANT open-source blockchain ecosystem (since 2016).
+This repository hosts the cryptofoundry business website — the public-facing site for cryptofoundry.
+
+**cryptofoundry** creates, maintains, and develops delightful software in the crypto space. It is an organization that provides such services to interested clients and receives compensation in cryptocurrency.
+
+cryptofoundry is a **separate and independent organization** from the ADAMANT developer community. It actively participates in ADAMANT development, but it is not the same entity as the ADAMANT community or its governance.
 
 Agent output must optimize for:
 
 1. Clarity and accuracy of public-facing content
 2. Security and privacy in forms, integrations, and deployment
 3. Maintainability and contributor-friendly structure
-4. Consistency with ADAMANT organization conventions
+4. Consistency with ADAMANT organization conventions where this repository follows them
 
 If tradeoffs are required, preserve correctness and security first.
 
@@ -24,6 +28,7 @@ If tradeoffs are required, preserve correctness and security first.
 ## Writing Style
 
 - Use concise, operational wording over marketing language
+- Write the organization name as **cryptofoundry** (all lowercase) in all repository artifacts — not `Cryptofoundry`, `CryptoFoundry`, or `CRYPTOFOUNDRY`
 - In bullet and numbered lists, do not add a trailing period when an item contains one sentence
 - If an item contains two or more sentences, end every sentence with a period
 
@@ -36,14 +41,16 @@ If tradeoffs are required, preserve correctness and security first.
 
 ## Product Context and Values
 
-Cryptofoundry builds and maintains self-hosted crypto software, bots, payments, and infrastructure.
+cryptofoundry builds and maintains self-hosted crypto software, bots, payments, and infrastructure for clients. It is independent from the ADAMANT developer community, while many of its engineers also contribute to the ADAMANT open-source ecosystem (since 2016).
 
 When making decisions in this repository, agents should:
 
 - Keep public content accurate, current, and easy to maintain
+- Use the lowercase name **cryptofoundry** consistently
+- Do not present cryptofoundry as identical to, or synonymous with, the ADAMANT community or ADAMANT governance
 - Avoid introducing tracking, analytics, or hidden third-party data collection unless explicitly requested and justified
 - Prefer simple, accessible implementations over premature complexity
-- Preserve alignment with ADAMANT organization documentation and governance where applicable
+- Preserve alignment with ADAMANT organization documentation and governance where applicable to shared workflows (issues, labels, PRs)
 
 ## Sources of Truth
 
