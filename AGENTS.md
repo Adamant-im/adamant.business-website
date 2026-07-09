@@ -109,8 +109,19 @@ Use one or two prefixes maximum:
 - In the issue body, link back to the PR URL
 - Keep PR and issue titles consistent with prefix taxonomy for searchability
 
+### Branch workflow (repository-specific)
+
+Unlike the usual ADAMANT workflow, **this repository does not use a `dev` branch**.
+
+- Default branch: `master`
+- Open pull requests directly against `master`
+- Do not create, push to, or target a `dev` branch unless maintainers explicitly request it
+
+Most ADAMANT code repositories use `dev` as the integration branch and merge to `master` for releases. Here the integration branch is `master`.
+
 ### PR conventions
 
+- Target `master` as the PR base branch
 - Use org PR template sections (`Description`, `Related issue`, `How to test`, `Checklist`, etc.)
 - Reference issues with closing keywords where appropriate (`Closes #<id>`)
 - Use this repository's PR title taxonomy: `Type: Short summary` (for example: `Docs: Add AGENTS.md`)
