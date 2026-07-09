@@ -1,0 +1,18 @@
+.idea
+dump.rdb
+node_modules
+npm-debug.log
+.DS_Store
+public/*
+public/.gitkeep
+po/*.pot
+Thumbs.db
+logs
+.vscode
+config.jsonc
+config.test.jsonc
+
+# ai
+.ai-ignored/
+.ai-tasks/
+.claude/
