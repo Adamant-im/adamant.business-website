@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="cryptofoundry">
+  <rect width="1200" height="630" fill="#0D1117"/>
+  <text x="80" y="220" fill="#F6F8FA" font-family="system-ui,sans-serif" font-size="72" font-weight="700">cryptofoundry</text>
+  <text x="80" y="310" fill="#8B949E" font-family="system-ui,sans-serif" font-size="34">Self-hosted crypto software maintained in production</text>
+  <text x="80" y="380" fill="#0969DA" font-family="system-ui,sans-serif" font-size="28">adamant.business</text>
+</svg>

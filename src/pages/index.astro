@@ -1,0 +1,136 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ContactModal from '../components/react/ContactModal';
+import RepoCarousel from '../components/react/RepoCarousel';
+import { siteConfig } from '../../config/site.ts';
+import reposData from '../data/repos.json';
+
+const { site, services, faq } = siteConfig;
+
+const faqJsonLd = {
+  '@type': 'FAQPage',
+  mainEntity: faq.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.answer,
+    },
+  })),
+};
+
+const homeDescription =
+  'cryptofoundry builds and maintains self-hosted crypto automation and infrastructure for teams that need control, security, and real engineering.';
+---
+
+<BaseLayout
+  title={site.name}
+  description={homeDescription}
+  jsonLd={faqJsonLd}
+>
+  <section class="section-light border-b border-border">
+    <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
+      <p class="text-sm font-medium text-accent">Since {site.foundedYear}</p>
+      <h1 class="mt-3 max-w-4xl text-4xl font-semibold tracking-tight text-text sm:text-5xl">
+        {site.name}
+      </h1>
+      <p class="mt-6 max-w-3xl text-lg leading-relaxed text-muted sm:text-xl">
+        {site.heroTagline}
+      </p>
+      <div class="mt-8">
+        <ContactModal client:load />
+      </div>
+    </div>
+  </section>
+
+  <section class="section-light border-b border-border">
+    <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+      <h2 class="text-2xl font-semibold text-text">What you get with us</h2>
+      <p class="mt-3 max-w-3xl text-lg font-medium text-text">{site.positioning}</p>
+      <p class="mt-4 max-w-3xl text-muted">
+        cryptofoundry builds self-hosted crypto automation and infrastructure for teams that need
+        control, security, and real engineering. We develop bots, payment systems, wallets, node
+        infrastructure, and encrypted communication tools. Our background is not theoretical: we are
+        the builders behind ADAMANT, a long-running blockchain and messenger ecosystem.
+      </p>
+
+      <div class="mt-10 grid gap-6 md:grid-cols-3">
+        <div class="card">
+          <h3 class="font-semibold text-text">Real crypto experience</h3>
+          <p class="mt-2 text-sm text-muted">
+            We run and maintain a real blockchain, messenger, wallet, and node ecosystem — not slide-deck Web3.
+          </p>
+        </div>
+        <div class="card">
+          <h3 class="font-semibold text-text">Self-hosted and secure</h3>
+          <p class="mt-2 text-sm text-muted">
+            Clients keep their keys, infrastructure, and control. No custody by default.
+          </p>
+        </div>
+        <div class="card">
+          <h3 class="font-semibold text-text">Automation-first</h3>
+          <p class="mt-2 text-sm text-muted">
+            Bots, payments, monitoring, and backend systems that reduce manual work in production.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-light border-b border-border">
+    <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+      <h2 class="text-2xl font-semibold text-text">What we build</h2>
+      <p class="mt-3 max-w-3xl text-muted">
+        We build, maintain, and operate production crypto infrastructure — from the perspective of
+        operators, not tourists.
+      </p>
+      <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          services.map((service) => (
+            <a href={`/${service.slug}`} class="card block no-underline transition hover:border-accent/40">
+              <h3 class="font-semibold text-text">{service.title}</h3>
+              <p class="mt-2 text-sm text-muted">{service.shortDescription}</p>
+              <span class="mt-4 inline-block text-sm font-medium text-accent">Learn more →</span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section-dark border-b border-white/10">
+    <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+      <h2 class="text-2xl font-semibold">Open-source work and production infrastructure</h2>
+      <p class="mt-3 max-w-3xl">
+        Ten years of continuous development. Open source since {site.foundedYear}. Production blockchain
+        infrastructure you can inspect on GitHub.
+      </p>
+      <div class="mt-10">
+        <RepoCarousel client:load repos={reposData} />
+      </div>
+    </div>
+  </section>
+
+  <section class="section-light border-b border-border">
+    <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+      <h2 class="text-2xl font-semibold text-text">Engineering notes</h2>
+      <p class="mt-3 max-w-2xl text-muted">
+        Technical articles, release notes, and engineering updates — coming in Phase 3.
+      </p>
+      <p class="mt-6 text-sm text-muted">Coming soon</p>
+    </div>
+  </section>
+
+  <section class="section-light">
+    <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+      <h2 class="text-2xl font-semibold text-text">Tell us what you want to automate</h2>
+      <p class="mt-3 max-w-2xl text-muted">
+        We do not sell hype, fake volume, or guaranteed profits. We build reliable crypto software that
+        your team controls.
+      </p>
+      <div class="mt-8">
+        <ContactModal client:load />
+      </div>
+    </div>
+  </section>
+</BaseLayout>

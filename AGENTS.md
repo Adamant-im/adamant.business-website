@@ -202,16 +202,40 @@ Common use cases:
 
 ## Project Technical Baseline
 
-The website implementation stack, build commands, architecture map, and validation policy are not documented here yet.
+### Stack
 
-When the project baseline is ready, extend this file with:
+- Astro 7, static output (`output: 'static'`)
+- Tailwind CSS 4 via `@tailwindcss/vite`
+- React islands: `@astrojs/react`
+- Content: Astro Content Collections (`src/content.config.ts`)
+- SEO: `@astrojs/sitemap`, JSON-LD, `public/llms.txt`
+- Hosting: GitHub Pages (`master` branch), custom domain `adamant.business`
 
-- stack and directory map
-- build, lint, and test commands
-- deployment and environment notes
-- repository-specific done criteria
+### Configuration
 
-Until then, avoid inventing technical details that are not present in the repository.
+- Committed public config: `config/site.ts` (repos, locales, contact, OpenRouter model list, sync settings)
+- Secrets: `OPENROUTER_API_KEY`, `GITHUB_TOKEN` in GitHub Actions secrets only
+- Generated data: `src/data/repos.json` via `npm run sync:stars`
+
+### Commands
+
+| Command | Purpose |
+| --- | --- |
+| `npm ci --ignore-scripts` | Install dependencies safely |
+| `npm run dev` | Local dev server |
+| `npm run build` | Production build to `dist/` |
+| `npm run lint` | `astro check` |
+| `npm run validate:config` | Validate `config/site.ts` |
+| `npm run sync:stars` | Refresh GitHub star counts |
+
+### Content policy
+
+Read fully before writing site copy: `.ai-tasks/2026-07-08 (Task) Create website.md`
+
+### Branch workflow
+
+- Default branch: `master`
+- PRs target `master` directly (no `dev` branch)
 
 ## Definition of Done
 

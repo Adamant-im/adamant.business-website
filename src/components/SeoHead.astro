@@ -1,0 +1,70 @@
+---
+const { title, description, canonicalPath = Astro.url.pathname, ogType = 'website', jsonLd, noindex = false } =
+  Astro.props;
+
+const { site, seo } = await import('../../config/site.ts').then((m) => m.siteConfig);
+const canonicalUrl = new URL(canonicalPath, site.url).href;
+const ogImage = new URL(seo.defaultOgImage, site.url).href;
+const fullTitle = title === site.name ? title : `${title} — ${site.name}`;
+
+const baseOrganization = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: site.legalName,
+  url: site.url,
+  foundingDate: String(site.foundedYear),
+  description: site.positioning,
+  knowsAbout: [
+    'self-hosted crypto software',
+    'blockchain infrastructure',
+    'trading bots',
+    'crypto payments',
+    'security audits',
+    'encrypted messaging',
+  ],
+  sameAs: seo.sameAs,
+};
+
+const baseWebsite = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: site.name,
+  url: site.url,
+  description: site.heroTagline,
+  inLanguage: 'en',
+  publisher: { '@type': 'Organization', name: site.legalName },
+};
+
+const jsonLdGraph = jsonLd
+  ? Array.isArray(jsonLd)
+    ? [baseOrganization, baseWebsite, ...jsonLd]
+    : [baseOrganization, baseWebsite, jsonLd]
+  : [baseOrganization, baseWebsite];
+---
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content={Astro.generator} />
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonicalUrl} />
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+
+<meta property="og:type" content={ogType} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:site_name" content={site.name} />
+<meta property="og:locale" content="en" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content={seo.twitterHandle} />
+<meta name="twitter:creator" content={seo.twitterHandle} />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+<script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLdGraph)} />

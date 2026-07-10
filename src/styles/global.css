@@ -1,0 +1,77 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-bg: #f6f8fa;
+  --color-text: #0d1117;
+  --color-muted: #57606a;
+  --color-card: #ffffff;
+  --color-border: #d0d7de;
+  --color-accent: #0969da;
+  --color-secondary: #3fb950;
+  --color-warning: #d29922;
+  --color-dark-bg: #0d1117;
+  --color-dark-muted: #8b949e;
+  --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-bg text-text font-sans antialiased;
+}
+
+a {
+  @apply text-accent underline-offset-2 hover:underline;
+}
+
+.prose-cf h2 {
+  @apply text-2xl font-semibold tracking-tight text-text mt-10 mb-4;
+}
+
+.prose-cf h3 {
+  @apply text-lg font-semibold text-text mt-6 mb-2;
+}
+
+.prose-cf p {
+  @apply text-muted leading-relaxed mb-4;
+}
+
+.prose-cf ul {
+  @apply list-disc pl-5 text-muted space-y-2 mb-4;
+}
+
+.prose-cf a {
+  @apply text-accent;
+}
+
+.section-light {
+  @apply bg-bg;
+}
+
+.section-dark {
+  @apply bg-dark-bg text-white;
+}
+
+.section-dark .text-muted,
+.section-dark p {
+  @apply text-dark-muted;
+}
+
+.section-dark h2,
+.section-dark h3 {
+  @apply text-white;
+}
+
+.btn-primary {
+  @apply inline-flex items-center justify-center rounded-md bg-accent px-5 py-2.5 text-sm font-medium text-white no-underline transition hover:bg-accent/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent;
+}
+
+.btn-secondary {
+  @apply inline-flex items-center justify-center rounded-md border border-border bg-card px-5 py-2.5 text-sm font-medium text-text no-underline transition hover:bg-bg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent;
+}
+
+.card {
+  @apply rounded-lg border border-border bg-card p-6 shadow-sm;
+}

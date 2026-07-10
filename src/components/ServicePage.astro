@@ -1,0 +1,139 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ContactModal from './react/ContactModal';
+import { siteConfig } from '../../config/site.ts';
+
+interface Props {
+  entry: CollectionEntry<'services'>;
+}
+
+const { entry } = Astro.props;
+const { title, description, cta, layoutStyle, proofLinks } = entry.data;
+const { Content } = await render(entry);
+const slug = entry.id.replace(/^en\//, '').replace(/\.md$/, '');
+
+const serviceJsonLd = {
+  '@type': 'Service',
+  name: title,
+  description,
+  url: new URL(`/${slug}`, siteConfig.site.url).href,
+  provider: { '@type': 'Organization', name: siteConfig.site.legalName },
+  areaServed: 'Worldwide',
+};
+---
+
+<BaseLayout title={title} description={description} jsonLd={serviceJsonLd}>
+  <article class="section-light">
+    <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
+      <header class="max-w-3xl">
+        <p class="text-sm font-medium text-accent">cryptofoundry services</p>
+        <h1 class="mt-2 text-3xl font-semibold tracking-tight text-text sm:text-4xl">{title}</h1>
+        <p class="mt-4 text-lg text-muted">{description}</p>
+      </header>
+
+      {
+        layoutStyle === 'split' && (
+          <div class="mt-10 grid gap-10 lg:grid-cols-2 lg:items-start">
+            <div class="prose-cf" data-layout="split">
+              <Content />
+            </div>
+            <aside class="card lg:sticky lg:top-24">
+              <h2 class="text-lg font-semibold text-text">Shipped in production</h2>
+              <ul class="mt-4 space-y-3 text-sm text-muted">
+                {proofLinks?.map((link) => (
+                  <li>
+                    <a href={link.url} class="font-medium">{link.label}</a>
+                  </li>
+                ))}
+              </ul>
+            </aside>
+          </div>
+        )
+      }
+
+      {
+        layoutStyle === 'cards' && (
+          <div class="mt-10">
+            <div class="prose-cf max-w-3xl" data-layout="cards">
+              <Content />
+            </div>
+            {proofLinks && proofLinks.length > 0 && (
+              <div class="mt-8 grid gap-4 sm:grid-cols-2">
+                {proofLinks.map((link) => (
+                  <a href={link.url} class="card block no-underline hover:border-accent/40">
+                    <div class="text-sm text-muted">Open-source reference</div>
+                    <div class="mt-1 font-medium text-text">{link.label}</div>
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
+        )
+      }
+
+      {
+        layoutStyle === 'timeline' && (
+          <div class="mt-10 max-w-3xl border-l-2 border-border pl-6 prose-cf" data-layout="timeline">
+            <Content />
+          </div>
+        )
+      }
+
+      {
+        layoutStyle === 'checklist' && (
+          <div class="mt-10 max-w-3xl prose-cf" data-layout="checklist">
+            <Content />
+          </div>
+        )
+      }
+
+      {
+        layoutStyle === 'narrative' && (
+          <div class="mt-10 max-w-3xl prose-cf" data-layout="narrative">
+            <Content />
+            {proofLinks && (
+              <p class="mt-6">
+                {proofLinks.map((link, index) => (
+                  <>
+                    {index > 0 && ' · '}
+                    <a href={link.url}>{link.label}</a>
+                  </>
+                ))}
+              </p>
+            )}
+          </div>
+        )
+      }
+
+      {
+        layoutStyle === 'accordion' && (
+          <div class="mt-10 max-w-3xl">
+            <details class="card mb-4" open>
+              <summary class="cursor-pointer font-medium text-text">Overview</summary>
+              <div class="prose-cf mt-4" data-layout="accordion">
+                <Content />
+              </div>
+            </details>
+            {proofLinks && proofLinks.length > 0 && (
+              <details class="card">
+                <summary class="cursor-pointer font-medium text-text">Open-source examples</summary>
+                <ul class="mt-4 space-y-2 text-sm">
+                  {proofLinks.map((link) => (
+                    <li>
+                      <a href={link.url}>{link.label}</a>
+                    </li>
+                  ))}
+                </ul>
+              </details>
+            )}
+          </div>
+        )
+      }
+
+      <div class="mt-12">
+        <ContactModal client:load label={cta} />
+      </div>
+    </div>
+  </article>
+</BaseLayout>

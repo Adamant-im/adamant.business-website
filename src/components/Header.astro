@@ -1,0 +1,33 @@
+---
+import { siteConfig } from '../../config/site.ts';
+import ContactModal from './react/ContactModal';
+
+const year = new Date().getFullYear();
+const { site } = siteConfig;
+---
+
+<header class="sticky top-0 z-50 border-b border-border/80 bg-bg/90 backdrop-blur-md">
+  <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
+    <div class="flex min-w-0 items-center gap-4">
+      <a href="/" class="truncate text-lg font-semibold text-text no-underline hover:no-underline">
+        {site.name}
+      </a>
+      <span class="hidden text-xs text-muted sm:inline">
+        {site.foundedYear}–{year}
+      </span>
+    </div>
+
+    <div class="flex items-center gap-2 sm:gap-3">
+      <button
+        type="button"
+        disabled
+        class="hidden cursor-not-allowed rounded-md border border-border px-3 py-1.5 text-xs text-muted opacity-60 sm:inline-block"
+        title="Multilingual site coming in Phase 2"
+        aria-label="Language selector (coming soon)"
+      >
+        EN
+      </button>
+      <ContactModal client:load variant="header" />
+    </div>
+  </div>
+</header>
