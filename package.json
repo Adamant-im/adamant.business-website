@@ -1,7 +1,33 @@
 {
   "name": "adamant.business-website",
+  "description": "cryptofoundry business website — We build crypto software and maintain it in production.",
   "type": "module",
   "version": "0.1.0",
+  "author": "cryptofoundry <business@adamant.im>",
+  "license": "Unlicense",
+  "keywords": [
+    "cryptofoundry",
+    "adamant.business",
+    "blockchain",
+    "crypto",
+    "cryptocurrency",
+    "self-hosted",
+    "payments",
+    "trading-bots",
+    "infrastructure",
+    "messenger",
+    "security",
+    "website",
+    "astro"
+  ],
+  "homepage": "https://adamant.business",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Adamant-im/adamant.business-website.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Adamant-im/adamant.business-website/issues"
+  },
   "engines": {
     "node": ">=22.12.0"
   },

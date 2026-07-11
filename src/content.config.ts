@@ -1,4 +1,5 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection } from 'astro:content';
+import { z } from 'astro/zod';
 import { glob } from 'astro/loaders';
 
 const services = defineCollection({
@@ -19,7 +20,7 @@ const services = defineCollection({
       .array(
         z.object({
           label: z.string(),
-          url: z.string().url(),
+          url: z.url(),
         }),
       )
       .optional(),
