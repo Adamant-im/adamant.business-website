@@ -1,7 +1,7 @@
 ---
 title: Trading Software
 description: CEX/DEX automation, treasury tools, and market data pipelines — self-hosted trading software without profit promises.
-cta: I need trading software
+cta: I want trading software
 layoutStyle: split
 proofLinks:
   - label: adamant-tradebot

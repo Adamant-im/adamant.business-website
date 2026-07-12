@@ -1,7 +1,7 @@
 ---
 title: Crypto Payments & Licensing
 description: Non-custodial crypto payments, subscriptions, license keys, and access automation for SaaS and software products.
-cta: I need crypto payments
+cta: Build my crypto payment solution
 layoutStyle: cards
 proofLinks:
   - label: adamant-payment

@@ -57,7 +57,7 @@ export const siteConfig = {
       title: 'Wallets, Nodes & Infrastructure',
       shortDescription:
         'Node deployment, explorers, APIs, monitoring, wallets, and long-term maintenance.',
-      cta: 'I need crypto infrastructure',
+      cta: 'I want crypto infrastructure',
     },
     {
       slug: 'security-audits',

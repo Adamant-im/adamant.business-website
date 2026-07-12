@@ -12,7 +12,7 @@ Most "enterprise blockchain" projects die between the slide deck and the first d
 
 ## What your organization actually gets
 
-A messenger your staff already knows how to use — chats, groups, transfers — running on nodes your IT department operates. Every message is end-to-end encrypted and stored on your chain, not on someone else's cloud. You decide retention, access, and recovery policy, and you can audit the entire stack: it is open source, top to bottom.
+A messenger your staff already knows how to use — accounts, chats, transfers — running on nodes your IT department operates. Every message is end-to-end encrypted and stored on your chain, not on someone else's cloud. You decide retention, access, and recovery policy, and you can audit the entire stack: it is open source, top to bottom.
 
 ## Scenarios we deploy
 

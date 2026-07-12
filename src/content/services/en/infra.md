@@ -1,7 +1,7 @@
 ---
 title: Wallets, Nodes & Infrastructure
 description: Node deployment, explorers, APIs, monitoring, wallets, and long-term maintenance for production crypto systems.
-cta: I need crypto infrastructure
+cta: I want crypto infrastructure
 layoutStyle: timeline
 proofLinks:
   - label: ipfs-node
