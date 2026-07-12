@@ -26,7 +26,7 @@ Sicherheitsarbeit, gegründet auf einem Jahrzehnt Betrieb von Krypto-Infrastrukt
 
 ## Warum dieses Team
 
-Wir haben und betreiben weiterhin sicherheitskritische ADAMANT-Infrastruktur — Wallets, Nodes, Bots und Zahlungsabläufe, die jahrelang in einer feindlichen Umgebung laufen. Befunde kommen aus Betriebserfahrung, nicht aus einer generischen AppSec-Vorlage.
+Wir haben sicherheitskritische ADAMANT-Infrastruktur geschaffen und betreiben sie bis heute — Wallets, Nodes, Bots und Zahlungsabläufe, die seit Jahren in einer feindlichen Umgebung laufen. Die Befunde stammen aus unserer Betriebserfahrung, nicht aus einer generischen AppSec-Vorlage.
 
 ## Was wir nicht verkaufen
 
