@@ -1,14 +1,16 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import { siteConfig } from '../../../config/site.ts';
+import type { UiStrings } from '../../i18n/types.ts';
 
 type Variant = 'header' | 'primary' | 'secondary';
 
 interface Props {
   variant?: Variant;
   label?: string;
+  strings: UiStrings['contact'];
 }
 
-export default function ContactModal({ variant = 'primary', label }: Props) {
+export default function ContactModal({ variant = 'primary', label, strings }: Props) {
   const [open, setOpen] = useState(false);
   const dialogRef = useRef<HTMLDialogElement>(null);
   const titleId = useId();
@@ -32,9 +34,7 @@ export default function ContactModal({ variant = 'primary', label }: Props) {
         ? 'btn-secondary'
         : 'btn-primary';
 
-  const buttonLabel =
-    label ??
-    (variant === 'header' ? 'Contact' : 'Tell us what you want to automate');
+  const buttonLabel = label ?? strings.primaryCta;
 
   return (
     <>
@@ -54,28 +54,26 @@ export default function ContactModal({ variant = 'primary', label }: Props) {
       >
         <div className="border-b border-border px-6 py-4">
           <h2 id={titleId} className="text-lg font-semibold">
-            Contact cryptofoundry
+            {strings.title}
           </h2>
-          <p className="mt-1 text-sm text-muted">
-            Tell us what you want to build or automate.
-          </p>
+          <p className="mt-1 text-sm text-muted">{strings.subtitle}</p>
         </div>
 
         <div className="space-y-4 px-6 py-5 text-sm">
           <div>
-            <div className="font-medium text-text">Email</div>
+            <div className="font-medium text-text">{strings.email}</div>
             <a className="text-accent" href={`mailto:${contact.email}`}>
               {contact.email}
             </a>
           </div>
           <div>
-            <div className="font-medium text-text">ADAMANT Messenger</div>
+            <div className="font-medium text-text">{strings.adamant}</div>
             <a className="text-accent break-all" href={contact.adamantMessenger}>
-              Open in ADAMANT
+              {strings.openAdamant}
             </a>
           </div>
           <div>
-            <div className="font-medium text-text">Telegram</div>
+            <div className="font-medium text-text">{strings.telegram}</div>
             <a className="text-accent" href={contact.telegramUrl}>
               {contact.telegram}
             </a>
@@ -84,7 +82,7 @@ export default function ContactModal({ variant = 'primary', label }: Props) {
 
         <div className="border-t border-border px-6 py-4">
           <button type="button" className="btn-secondary w-full" onClick={() => setOpen(false)}>
-            Close
+            {strings.close}
           </button>
         </div>
       </dialog>

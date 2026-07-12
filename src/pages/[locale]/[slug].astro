@@ -1,0 +1,23 @@
+---
+import { getEntry } from 'astro:content';
+import ServicePage from '../../components/ServicePage.astro';
+import { siteConfig } from '../../../config/site.ts';
+import { getLocaleFromPathParam, getNonDefaultLocales } from '../../i18n';
+
+export function getStaticPaths() {
+  const paths = [];
+  for (const locale of getNonDefaultLocales()) {
+    for (const service of siteConfig.services) {
+      paths.push({ params: { locale: locale.path, slug: service.slug } });
+    }
+  }
+  return paths;
+}
+
+const locale = getLocaleFromPathParam(Astro.params.locale!);
+const slug = Astro.params.slug!;
+const entry = await getEntry('services', `${locale}/${slug}`);
+if (!entry) throw new Error(`Service content not found: ${locale}/${slug}`);
+---
+
+<ServicePage entry={entry} locale={locale} />

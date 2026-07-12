@@ -3,34 +3,39 @@ import '../styles/global.css';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import SeoHead from '../components/SeoHead.astro';
+import { getLocaleConfig, type LocaleId } from '../i18n';
 
 interface Props {
   title: string;
   description: string;
+  locale: LocaleId;
   canonicalPath?: string;
   ogType?: string;
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
 }
 
-const { title, description, canonicalPath, ogType, jsonLd } = Astro.props;
+const { title, description, locale, canonicalPath, ogType, jsonLd } = Astro.props;
+const localeConfig = getLocaleConfig(locale);
+const htmlLang = localeConfig.codes[0];
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={htmlLang} dir={localeConfig.dir}>
   <head>
     <SeoHead
       title={title}
       description={description}
+      locale={locale}
       canonicalPath={canonicalPath}
       ogType={ogType}
       jsonLd={jsonLd}
     />
   </head>
   <body class="min-h-screen">
-    <Header />
+    <Header locale={locale} />
     <main>
       <slot />
     </main>
-    <Footer />
+    <Footer locale={locale} />
   </body>
 </html>

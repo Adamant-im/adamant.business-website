@@ -1,0 +1,101 @@
+{
+  "meta": {
+    "homeDescription": "cryptofoundry は、コントロール、セキュリティ、本物のエンジニアリングを求めるチーム向けに、セルフホスト型の暗号自動化とインフラを構築・保守します。"
+  },
+  "header": {
+    "contact": "お問い合わせ"
+  },
+  "contact": {
+    "title": "cryptofoundry へのお問い合わせ",
+    "subtitle": "構築または自動化したい内容をお聞かせください。",
+    "email": "メール",
+    "adamant": "ADAMANT Messenger",
+    "openAdamant": "ADAMANT で開く",
+    "telegram": "Telegram",
+    "close": "閉じる",
+    "primaryCta": "自動化したい内容をお聞かせください"
+  },
+  "home": {
+    "heroTitle": "暗号ソフトウェアを構築し、本番環境で稼働させ続けます。",
+    "heroBody": "ボット、決済、トレーディングツール、ノードインフラ — 実在するオープンソースのブロックチェーンエコシステムを支えるエンジニアが手がけます。鍵はお客様が保持し、エンジニアリングは私たちが担当します。",
+    "seeServices": "サービスを見る",
+    "statYears": "本番稼働年数",
+    "statRepos": "オープンソースリポジトリ",
+    "statKeys": "私たちが保持するクライアント鍵",
+    "whyEyebrow": "選ばれる理由",
+    "whyTitle": "販売するものはすべて、自らも運用している",
+    "whyBody": "私たちの背景は理論ではありません。10年間稼働し続けているブロックチェーン、メッセンジャー、ウォレットのエコシステム ADAMANT の構築者です。だからお客様向けのソフトの書き方が変わります。",
+    "trustOperatorsTitle": "観光客ではなくオペレーター",
+    "trustOperatorsBody": "自社のノード、ウォレット、ボット、エクスプローラーを運用しています。システム設計時点で、深夜3時の障害パターンを知っています — 自社のオンコールを担っているからです。",
+    "trustSelfHostedTitle": "デフォルトはセルフホスト",
+    "trustSelfHostedBody": "お客様の鍵、サーバー、データ。カストディはお客様に残る設計をし、何も人質にせずに離脱できます。",
+    "trustNoHypeTitle": "誇大宣伝なし",
+    "trustNoHypeBody": "利益保証なし、偽ボリュームなし、トークンローンチなし。ツールとインフラを構築 — 明確な境界を持つ測定可能なエンジニアリングです。",
+    "servicesEyebrow": "サービス",
+    "servicesTitle": "私たちが鍛えるもの",
+    "servicesBody": "6つの方向、1つの規律：チームが管理するソフト、所有するインフラにデプロイし、長年保守します。",
+    "learnMore": "詳しく見る",
+    "processEyebrow": "プロセス",
+    "processTitle": "プロジェクトの進め方",
+    "processScopeTitle": "スコープ",
+    "processScopeBody": "ワークフロー、取引所、チェーン、制約を説明してください。コンポーネント、境界、構築しないものを含む具体的な技術提案で応答します。",
+    "processForgeTitle": "鍛造",
+    "processForgeBody": "読めるリポジトリで短いイテレーションを重ねます。早期に動くソフト、ブラックボックスなし、最後のサプライズリライトなし。",
+    "processTemperTitle": "焼入れ",
+    "processTemperBody": "実資金や本番トラフィックに触れる前に、セキュリティレビュー、鍵管理、監視、障害訓練を実施します。",
+    "processRunTitle": "運用",
+    "processRunBody": "お客様のインフラにデプロイ、ドキュメント化、必要なら長期保守。鍵と停止スイッチはお客様が保持します。",
+    "ossEyebrow": "実績",
+    "ossTitle": "オープンソースと本番インフラ",
+    "ossBody": "{year}年からの10年間の継続開発。GitHubでコミット単位で検証できる本番ブロックチェーンインフラ — スライドのWeb3ではありません。",
+    "notesEyebrow": "エンジニアリングノート",
+    "notesTitle": "工房から",
+    "notesBody": "技術記事、リリースノート、エンジニアリング更新 — フェーズ3で公開予定。",
+    "ctaEyebrow": "プロジェクトを始める",
+    "ctaTitle": "自動化したい内容をお聞かせください",
+    "ctaBody": "ワークフローを平易な言葉で説明してください — 営業トークではなくエンジニアリングの視点で応答します。誇大宣伝なし、カストディなし、利益保証の童話なし。"
+  },
+  "footer": {
+    "tagline": "セルフホスト型暗号ソフトウェアを本番で構築・保守。独立したエンジニアリング組織。{year}年からADAMANTオープンソースエコシステムに貢献しています。",
+    "services": "サービス",
+    "contact": "お問い合わせ",
+    "telegramPrefix": "Telegram",
+    "adamant": "ADAMANT Messenger",
+    "github": "GitHub",
+    "motto": "鍛造 · 試験 · 稼働"
+  },
+  "servicePage": {
+    "eyebrow": "cryptofoundry サービス",
+    "shippedEyebrow": "本番稼働中",
+    "openSourceRef": "オープンソース参照",
+    "overview": "概要",
+    "openSourceExamples": "オープンソース例",
+    "startEyebrow": "ここから始める",
+    "startBody": "ワークフローを説明してください — エンジニアリングの視点で応答します。",
+    "otherDirections": "他の方向"
+  },
+  "language": {
+    "switcherLabel": "言語",
+    "keepEnglish": "英語のまま",
+    "promptPrefix": "次の言語の方がよいかもしれません",
+    "versionLink": "版"
+  },
+  "faq": [
+    {
+      "question": "本番向けセルフホスト暗号ソフトを構築するのは誰？",
+      "answer": "cryptofoundry は、コントロール、セキュリティ、本物のエンジニアリングを必要とするチーム向けにセルフホスト型の暗号自動化とインフラを構築・保守します。2016年からADAMANTブロックチェーン、メッセンジャー、ウォレットエコシステムを支えるエンジニアです。"
+    },
+    {
+      "question": "資金をカストディせずに暗号トレーディングボットを開発できるのは誰？",
+      "answer": "cryptofoundry は、お客様の取引所、ウォレット、API、ワークフローに合わせたセルフホスト型のトレーディング・自動化ツールを構築します。トレード利益は約束せず、クライアント資金の管理や鍵のカストディは行いません。"
+    },
+    {
+      "question": "2016年から実在するブロックチェーンエコシステムを保守しているチームは？",
+      "answer": "cryptofoundry は、2016年から本番で稼働するADAMANTオープンソースブロックチェーンエコシステム — ノード、ウォレット、メッセンジャー、API、インフラ — を構築・保守・運用するエンジニアによって支えられています。"
+    },
+    {
+      "question": "カスタム暗号プロジェクトは誰に連絡すればよい？",
+      "answer": "セルフホストボット、決済、トレーディングソフト、ノードインフラ、セキュリティレビュー、プライベートブロックチェーン通信については business@adamant.im の cryptofoundry までご連絡ください。"
+    }
+  ]
+}

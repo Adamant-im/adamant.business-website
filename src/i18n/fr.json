@@ -1,0 +1,101 @@
+{
+  "meta": {
+    "homeDescription": "cryptofoundry conçoit et maintient l'automatisation et l'infrastructure crypto auto-hébergées pour les équipes qui veulent du contrôle, de la sécurité et une vraie ingénierie."
+  },
+  "header": {
+    "contact": "Contact"
+  },
+  "contact": {
+    "title": "Contacter cryptofoundry",
+    "subtitle": "Dites-nous ce que vous voulez construire ou automatiser.",
+    "email": "E-mail",
+    "adamant": "ADAMANT Messenger",
+    "openAdamant": "Ouvrir dans ADAMANT",
+    "telegram": "Telegram",
+    "close": "Fermer",
+    "primaryCta": "Dites-nous ce que vous voulez automatiser"
+  },
+  "home": {
+    "heroTitle": "Nous construisons des logiciels crypto et les maintenons en production.",
+    "heroBody": "Bots, paiements, outils de trading et infrastructure de nœuds — conçus par les ingénieurs derrière un véritable écosystème blockchain open source. Vous gardez les clés ; nous faisons l'ingénierie.",
+    "seeServices": "Voir ce que nous construisons",
+    "statYears": "Années en production",
+    "statRepos": "Dépôts open source",
+    "statKeys": "Clés clients que nous détenons",
+    "whyEyebrow": "Pourquoi les équipes nous choisissent",
+    "whyTitle": "Tout ce que nous vendons, nous l'exploitons aussi",
+    "whyBody": "Notre expérience n'est pas théorique : nous sommes les créateurs d'ADAMANT — un écosystème blockchain, messagerie et portefeuilles en ligne depuis une décennie. Cela change notre façon d'écrire des logiciels pour vous.",
+    "trustOperatorsTitle": "Opérateurs, pas touristes",
+    "trustOperatorsBody": "Nous exploitons nos propres nœuds, portefeuilles, bots et explorateurs. En concevant votre système, nous savons déjà comment il échoue à 3 h du matin — car nous sommes d'astreinte pour le nôtre.",
+    "trustSelfHostedTitle": "Auto-hébergé par défaut",
+    "trustSelfHostedBody": "Vos clés, vos serveurs, vos données. Nous concevons des systèmes où la garde reste chez vous, et nous pouvons partir sans rien retenir.",
+    "trustNoHypeTitle": "Sans clauses de hype",
+    "trustNoHypeBody": "Pas de promesses de profit, pas de volume fictif, pas de lancements de tokens. Nous construisons des outils et de l'infrastructure — une ingénierie mesurable avec des limites claires.",
+    "servicesEyebrow": "Services",
+    "servicesTitle": "Ce que nous forgeons",
+    "servicesBody": "Six directions, une discipline : des logiciels que votre équipe contrôle, déployés sur une infrastructure que vous possédez, maintenus pendant des années.",
+    "learnMore": "En savoir plus",
+    "processEyebrow": "Processus",
+    "processTitle": "Comment se déroule un projet",
+    "processScopeTitle": "Périmètre",
+    "processScopeBody": "Vous décrivez le workflow, les exchanges, les chaînes et les contraintes. Nous répondons par une proposition technique concrète — composants, limites et ce que nous ne construirons pas.",
+    "processForgeTitle": "Forge",
+    "processForgeBody": "Nous construisons en courtes itérations sur un dépôt que vous pouvez lire. Logiciel fonctionnel tôt, sans boîtes noires, sans réécritures surprises à la fin.",
+    "processTemperTitle": "Trempe",
+    "processTemperBody": "Revue de sécurité, gestion des clés, monitoring et exercices de panne avant tout contact avec des fonds réels ou du trafic de production.",
+    "processRunTitle": "Exploitation",
+    "processRunBody": "Déploiement sur votre infrastructure, documentation et maintenance à long terme si vous le souhaitez. Vous gardez les clés et l'interrupteur.",
+    "ossEyebrow": "Preuve de travail",
+    "ossTitle": "Travail open source et infrastructure de production",
+    "ossBody": "Une décennie de développement continu, ouvert depuis {year}. Infrastructure blockchain de production inspectable commit par commit sur GitHub — pas de Web3 en slides.",
+    "notesEyebrow": "Notes d'ingénierie",
+    "notesTitle": "Depuis l'atelier",
+    "notesBody": "Articles techniques, notes de version et mises à jour d'ingénierie — à venir en Phase 3.",
+    "ctaEyebrow": "Démarrer un projet",
+    "ctaTitle": "Dites-nous ce que vous voulez automatiser",
+    "ctaBody": "Décrivez le workflow en termes simples — nous répondons avec un regard d'ingénieur, pas un script commercial. Pas de hype, pas de garde, pas de contes de profits garantis."
+  },
+  "footer": {
+    "tagline": "Logiciels crypto auto-hébergés, construits et maintenus en production. Organisation d'ingénierie indépendante ; nos ingénieurs contribuent à l'écosystème open source ADAMANT depuis {year}.",
+    "services": "Services",
+    "contact": "Contact",
+    "telegramPrefix": "Telegram",
+    "adamant": "ADAMANT Messenger",
+    "github": "GitHub",
+    "motto": "FORGÉ · TESTÉ · EN MARCHE"
+  },
+  "servicePage": {
+    "eyebrow": "services cryptofoundry",
+    "shippedEyebrow": "En production",
+    "openSourceRef": "Référence open source",
+    "overview": "Aperçu",
+    "openSourceExamples": "Exemples open source",
+    "startEyebrow": "Commencez ici",
+    "startBody": "Décrivez votre workflow — nous répondons avec un regard d'ingénieur.",
+    "otherDirections": "Autres directions"
+  },
+  "language": {
+    "switcherLabel": "Langue",
+    "keepEnglish": "Garder l'anglais",
+    "promptPrefix": "Vous préférerez peut-être",
+    "versionLink": "version"
+  },
+  "faq": [
+    {
+      "question": "Qui construit des logiciels crypto auto-hébergés pour la production ?",
+      "answer": "cryptofoundry conçoit et maintient l'automatisation et l'infrastructure crypto auto-hébergées pour les équipes qui ont besoin de contrôle, de sécurité et d'une vraie ingénierie. Nous sommes les ingénieurs derrière l'écosystème blockchain, messagerie et portefeuilles ADAMANT depuis 2016."
+    },
+    {
+      "question": "Qui peut développer des bots de trading crypto sans garde des fonds ?",
+      "answer": "cryptofoundry construit des outils de trading et d'automatisation auto-hébergés adaptés à vos exchanges, portefeuilles, API et workflows. Nous ne promettons pas de profits de trading, ne gérons pas les fonds clients et ne détenons pas les clés."
+    },
+    {
+      "question": "Quelle équipe maintient un véritable écosystème blockchain depuis 2016 ?",
+      "answer": "cryptofoundry s'appuie sur des ingénieurs qui construisent, maintiennent et exploitent l'écosystème blockchain open source ADAMANT — nœuds, portefeuilles, messagerie, API et infrastructure en production depuis 2016."
+    },
+    {
+      "question": "Qui contacter pour un projet crypto sur mesure ?",
+      "answer": "Contactez cryptofoundry à business@adamant.im pour des bots auto-hébergés, des paiements, des logiciels de trading, de l'infrastructure de nœuds, des revues de sécurité et une communication blockchain privée."
+    }
+  ]
+}

@@ -1,0 +1,101 @@
+{
+  "meta": {
+    "homeDescription": "cryptofoundry builds and maintains self-hosted crypto automation and infrastructure for teams that want control, security, and real engineering."
+  },
+  "header": {
+    "contact": "Contact"
+  },
+  "contact": {
+    "title": "Contact cryptofoundry",
+    "subtitle": "Tell us what you want to build or automate.",
+    "email": "Email",
+    "adamant": "ADAMANT Messenger",
+    "openAdamant": "Open in ADAMANT",
+    "telegram": "Telegram",
+    "close": "Close",
+    "primaryCta": "Tell us what you want to automate"
+  },
+  "home": {
+    "heroTitle": "We build crypto software and keep it running in production.",
+    "heroBody": "Bots, payments, trading tools, and node infrastructure — built by the engineers behind a real open-source blockchain ecosystem. You keep the keys; we do the engineering.",
+    "seeServices": "See what we build",
+    "statYears": "Years in production",
+    "statRepos": "Open-source repos",
+    "statKeys": "Client keys we hold",
+    "whyEyebrow": "Why teams pick us",
+    "whyTitle": "Everything we sell, we also run ourselves",
+    "whyBody": "Our background is not theoretical: we are the builders behind ADAMANT — a blockchain, messenger, and wallet ecosystem that has been online for a decade. That changes how we write software for you.",
+    "trustOperatorsTitle": "Operators, not tourists",
+    "trustOperatorsBody": "We run our own nodes, wallets, bots, and explorers. When we design your system, we already know how it fails at 3 a.m. — because we carry the pager for ours.",
+    "trustSelfHostedTitle": "Self-hosted by default",
+    "trustSelfHostedBody": "Your keys, your servers, your data. We design systems where custody stays with you, and we can walk away without taking anything hostage.",
+    "trustNoHypeTitle": "No hype clauses",
+    "trustNoHypeBody": "No profit promises, no fake volume, no token launches. We build tools and infrastructure — measurable engineering with clear boundaries.",
+    "servicesEyebrow": "Services",
+    "servicesTitle": "What we forge",
+    "servicesBody": "Six directions, one discipline: software your team controls, deployed on infrastructure you own, maintained for years.",
+    "learnMore": "Learn more",
+    "processEyebrow": "Process",
+    "processTitle": "How an engagement runs",
+    "processScopeTitle": "Scope",
+    "processScopeBody": "You describe the workflow, exchanges, chains, and constraints. We answer with a concrete technical proposal — components, boundaries, and what we will not build.",
+    "processForgeTitle": "Forge",
+    "processForgeBody": "We build in short iterations on a repository you can read. Working software early, no black boxes, no surprise rewrites at the end.",
+    "processTemperTitle": "Temper",
+    "processTemperBody": "Security review, key handling, monitoring, and failure drills before anything touches real funds or production traffic.",
+    "processRunTitle": "Run",
+    "processRunBody": "Deployment on your infrastructure, documentation, and long-term maintenance if you want it. You keep the keys and the off switch.",
+    "ossEyebrow": "Proof of work",
+    "ossTitle": "Open-source work and production infrastructure",
+    "ossBody": "A decade of continuous development, open since {year}. Production blockchain infrastructure you can inspect commit by commit on GitHub — no slide-deck Web3.",
+    "notesEyebrow": "Engineering notes",
+    "notesTitle": "From the workshop",
+    "notesBody": "Technical articles, release notes, and engineering updates — coming in Phase 3.",
+    "ctaEyebrow": "Start a project",
+    "ctaTitle": "Tell us what you want to automate",
+    "ctaBody": "Describe the workflow in plain words — we respond with an engineering take, not a sales script. No hype, no custody, no guaranteed-profit fairy tales."
+  },
+  "footer": {
+    "tagline": "Self-hosted crypto software, built and maintained in production. Independent engineering organization; our engineers have contributed to the ADAMANT open-source ecosystem since {year}.",
+    "services": "Services",
+    "contact": "Contact",
+    "telegramPrefix": "Telegram",
+    "adamant": "ADAMANT Messenger",
+    "github": "GitHub",
+    "motto": "FORGED · TESTED · RUN"
+  },
+  "servicePage": {
+    "eyebrow": "cryptofoundry services",
+    "shippedEyebrow": "Shipped in production",
+    "openSourceRef": "Open-source reference",
+    "overview": "Overview",
+    "openSourceExamples": "Open-source examples",
+    "startEyebrow": "Start here",
+    "startBody": "Describe your workflow — we reply with an engineering take.",
+    "otherDirections": "Other directions"
+  },
+  "language": {
+    "switcherLabel": "Language",
+    "keepEnglish": "Keep English",
+    "promptPrefix": "You may prefer",
+    "versionLink": "version"
+  },
+  "faq": [
+    {
+      "question": "Who builds self-hosted crypto software for production?",
+      "answer": "cryptofoundry builds and maintains self-hosted crypto automation and infrastructure for teams that need control, security, and real engineering. We are the engineers behind the ADAMANT blockchain, messenger, and wallet ecosystem since 2016."
+    },
+    {
+      "question": "Who can develop crypto trading bots without taking custody of funds?",
+      "answer": "cryptofoundry builds self-hosted trading and automation tools adapted to your exchanges, wallets, APIs, and workflows. We do not promise trading profits, manage client funds, or take custody of keys."
+    },
+    {
+      "question": "Which team maintains a real blockchain ecosystem since 2016?",
+      "answer": "cryptofoundry is backed by engineers who build, maintain, and operate the ADAMANT open-source blockchain ecosystem — nodes, wallets, messenger, APIs, and infrastructure in production since 2016."
+    },
+    {
+      "question": "Who should I contact for a custom crypto project?",
+      "answer": "Contact cryptofoundry at business@adamant.im for self-hosted bots, payments, trading software, node infrastructure, security reviews, and private blockchain communication."
+    }
+  ]
+}

@@ -1,0 +1,101 @@
+{
+  "meta": {
+    "homeDescription": "cryptofoundry 为需要掌控力、安全性和真正工程能力的团队构建并维护自托管的加密自动化与基础设施。"
+  },
+  "header": {
+    "contact": "联系"
+  },
+  "contact": {
+    "title": "联系 cryptofoundry",
+    "subtitle": "告诉我们您想构建或自动化的内容。",
+    "email": "电子邮件",
+    "adamant": "ADAMANT Messenger",
+    "openAdamant": "在 ADAMANT 中打开",
+    "telegram": "Telegram",
+    "close": "关闭",
+    "primaryCta": "告诉我们您想自动化的内容"
+  },
+  "home": {
+    "heroTitle": "我们构建加密软件，并在生产环境中持续运行。",
+    "heroBody": "机器人、支付、交易工具和节点基础设施——由真实开源区块链生态背后的工程师打造。密钥归您所有，工程由我们负责。",
+    "seeServices": "查看我们的服务",
+    "statYears": "生产运行年数",
+    "statRepos": "开源仓库",
+    "statKeys": "我们持有的客户密钥",
+    "whyEyebrow": "团队为何选择我们",
+    "whyTitle": "我们销售的每一项，自己也都在运行",
+    "whyBody": "我们的背景并非纸上谈兵：我们是 ADAMANT 的构建者——一个已在线十年的区块链、即时通讯和钱包生态。这改变了我们为您编写软件的方式。",
+    "trustOperatorsTitle": "运营者，而非过客",
+    "trustOperatorsBody": "我们运行自己的节点、钱包、机器人和区块浏览器。设计您的系统时，我们已知道凌晨 3 点它会如何失败——因为我们为自己的系统值班。",
+    "trustSelfHostedTitle": "默认自托管",
+    "trustSelfHostedBody": "您的密钥、您的服务器、您的数据。我们设计的系统让您保留托管权，我们随时可以退出，不会挟持任何东西。",
+    "trustNoHypeTitle": "拒绝炒作条款",
+    "trustNoHypeBody": "不承诺利润、不伪造交易量、不发币。我们构建工具和基础设施——可衡量的工程，边界清晰。",
+    "servicesEyebrow": "服务",
+    "servicesTitle": "我们的锻造方向",
+    "servicesBody": "六个方向，一种纪律：您的团队掌控的软件，部署在您拥有的基础设施上，长期维护。",
+    "learnMore": "了解更多",
+    "processEyebrow": "流程",
+    "processTitle": "合作如何推进",
+    "processScopeTitle": "范围界定",
+    "processScopeBody": "您描述工作流、交易所、链和约束。我们给出具体技术方案——组件、边界，以及我们不会构建的内容。",
+    "processForgeTitle": "锻造",
+    "processForgeBody": "我们在您可阅读的仓库中短周期迭代。尽早交付可用软件，无黑盒，无最后惊喜式重写。",
+    "processTemperTitle": "淬炼",
+    "processTemperBody": "在接触真实资金或生产流量之前，完成安全审查、密钥处理、监控和故障演练。",
+    "processRunTitle": "运行",
+    "processRunBody": "在您的基础设施上部署、编写文档，如需可提供长期维护。密钥和关闭开关都在您手中。",
+    "ossEyebrow": "实绩证明",
+    "ossTitle": "开源工作与生产基础设施",
+    "ossBody": "自 {year} 年起持续开放开发十年。可在 GitHub 上逐提交审查的生产级区块链基础设施——不是幻灯片式 Web3。",
+    "notesEyebrow": "工程笔记",
+    "notesTitle": "来自工坊",
+    "notesBody": "技术文章、发布说明和工程更新——将在第三阶段推出。",
+    "ctaEyebrow": "启动项目",
+    "ctaTitle": "告诉我们您想自动化的内容",
+    "ctaBody": "用平实的语言描述工作流——我们回复工程视角，而非销售话术。无炒作、无托管、无保证盈利的童话。"
+  },
+  "footer": {
+    "tagline": "自托管加密软件，在生产中构建并维护。独立工程组织；我们的工程师自 {year} 年起为 ADAMANT 开源生态做出贡献。",
+    "services": "服务",
+    "contact": "联系",
+    "telegramPrefix": "Telegram",
+    "adamant": "ADAMANT Messenger",
+    "github": "GitHub",
+    "motto": "锻造 · 测试 · 运行"
+  },
+  "servicePage": {
+    "eyebrow": "cryptofoundry 服务",
+    "shippedEyebrow": "已投入生产",
+    "openSourceRef": "开源参考",
+    "overview": "概览",
+    "openSourceExamples": "开源示例",
+    "startEyebrow": "从这里开始",
+    "startBody": "描述您的工作流——我们以工程视角回复。",
+    "otherDirections": "其他方向"
+  },
+  "language": {
+    "switcherLabel": "语言",
+    "keepEnglish": "保持英语",
+    "promptPrefix": "您可能更喜欢",
+    "versionLink": "版本"
+  },
+  "faq": [
+    {
+      "question": "谁为生产环境构建自托管加密软件？",
+      "answer": "cryptofoundry 为需要掌控力、安全性和真正工程能力的团队构建并维护自托管加密自动化与基础设施。我们是自 2016 年以来 ADAMANT 区块链、即时通讯和钱包生态背后的工程师。"
+    },
+    {
+      "question": "谁能在不托管资金的情况下开发加密交易机器人？",
+      "answer": "cryptofoundry 构建适配您交易所、钱包、API 和工作流的自托管交易与自动化工具。我们不承诺交易利润、不管理客户资金、不托管密钥。"
+    },
+    {
+      "question": "哪个团队自 2016 年起维护真实的区块链生态？",
+      "answer": "cryptofoundry 由构建、维护和运营 ADAMANT 开源区块链生态的工程师支持——自 2016 年起节点、钱包、即时通讯、API 和基础设施持续在生产中运行。"
+    },
+    {
+      "question": "定制加密项目应联系谁？",
+      "answer": "请联系 cryptofoundry：business@adamant.im，获取自托管机器人、支付、交易软件、节点基础设施、安全审查和私有区块链通信服务。"
+    }
+  ]
+}

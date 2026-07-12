@@ -1,9 +1,24 @@
 ---
+import { getEntry } from 'astro:content';
 import { siteConfig } from '../../config/site.ts';
 import Logo from './Logo.astro';
+import { formatTemplate, getUiStrings, localePath, type LocaleId } from '../i18n';
 
-const { site, services, contact, seo } = siteConfig;
+interface Props {
+  locale: LocaleId;
+}
+
+const { locale } = Astro.props;
+const ui = getUiStrings(locale);
+const { site, contact, seo } = siteConfig;
 const githubUrl = seo.sameAs.find((url) => url.includes('github.com'));
+
+const serviceEntries = await Promise.all(
+  siteConfig.services.map(async (service) => {
+    const entry = await getEntry('services', `${locale}/${service.slug}`);
+    return entry ?? (await getEntry('services', `en/${service.slug}`));
+  }),
+);
 ---
 
 <footer class="section-dark border-t border-dark-border">
@@ -15,31 +30,37 @@ const githubUrl = seo.sameAs.find((url) => url.includes('github.com'));
           <span class="text-lg font-semibold tracking-tight text-white">{site.name}</span>
         </div>
         <p class="mt-4 max-w-sm text-sm leading-relaxed">
-          Self-hosted crypto software, built and maintained in production. Independent engineering
-          organization; our engineers have contributed to the ADAMANT open-source ecosystem since {site.foundedYear}.
+          {formatTemplate(ui.footer.tagline, { year: site.foundedYear })}
         </p>
         <p class="mt-4 font-mono text-xs tracking-widest text-dark-muted">
           {site.domain}
         </p>
       </div>
 
-      <nav aria-label="Services">
-        <h2 class="eyebrow">Services</h2>
+      <nav aria-label={ui.footer.services}>
+        <h2 class="eyebrow">{ui.footer.services}</h2>
         <ul class="mt-4 space-y-2.5 text-sm">
           {
-            services.map((service) => (
-              <li>
-                <a href={`/${service.slug}`} class="text-dark-muted no-underline hover:text-white hover:no-underline">
-                  {service.title}
-                </a>
-              </li>
-            ))
+            serviceEntries.map((entry) => {
+              if (!entry) return null;
+              const slug = entry.id.replace(/^[^/]+\//, '').replace(/\.md$/, '');
+              return (
+                <li>
+                  <a
+                    href={localePath(locale, `/${slug}`)}
+                    class="text-dark-muted no-underline hover:text-white hover:no-underline"
+                  >
+                    {entry.data.title}
+                  </a>
+                </li>
+              );
+            })
           }
         </ul>
       </nav>
 
       <div>
-        <h2 class="eyebrow">Contact</h2>
+        <h2 class="eyebrow">{ui.footer.contact}</h2>
         <ul class="mt-4 space-y-2.5 text-sm">
           <li>
             <a href={`mailto:${contact.email}`} class="text-dark-muted no-underline hover:text-white hover:no-underline">
@@ -48,19 +69,19 @@ const githubUrl = seo.sameAs.find((url) => url.includes('github.com'));
           </li>
           <li>
             <a href={contact.telegramUrl} class="text-dark-muted no-underline hover:text-white hover:no-underline">
-              Telegram {contact.telegram}
+              {ui.footer.telegramPrefix} {contact.telegram}
             </a>
           </li>
           <li>
             <a href={contact.adamantMessenger} class="text-dark-muted no-underline hover:text-white hover:no-underline">
-              ADAMANT Messenger
+              {ui.footer.adamant}
             </a>
           </li>
           {
             githubUrl && (
               <li>
                 <a href={githubUrl} class="text-dark-muted no-underline hover:text-white hover:no-underline">
-                  GitHub
+                  {ui.footer.github}
                 </a>
               </li>
             )
@@ -70,7 +91,7 @@ const githubUrl = seo.sameAs.find((url) => url.includes('github.com'));
     </div>
 
     <div class="mt-12 border-t border-dark-border pt-6">
-      <p class="font-mono text-[0.68rem] tracking-widest text-dark-muted">FORGED · TESTED · RUN</p>
+      <p class="font-mono text-[0.68rem] tracking-widest text-dark-muted">{ui.footer.motto}</p>
     </div>
   </div>
 </footer>

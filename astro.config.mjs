@@ -10,9 +10,8 @@ export default defineConfig({
   site: siteConfig.site.url,
   output: 'static',
   i18n: {
-    // Locale paths and codes are defined in config/site.ts (Phase 2 pages)
-    locales: ['en', 'zh', 'es', 'ru', 'ar', 'fr', 'ja', 'de'],
-    defaultLocale: 'en',
+    locales: siteConfig.locales.map((locale) => locale.id),
+    defaultLocale: siteConfig.defaultLocale,
     routing: {
       prefixDefaultLocale: false,
     },

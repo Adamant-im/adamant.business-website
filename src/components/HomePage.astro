@@ -1,0 +1,217 @@
+---
+import { getEntry } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ContactModal from './react/ContactModal';
+import RepoCarousel from './react/RepoCarousel';
+import ForgeGraphic from './ForgeGraphic.astro';
+import ServiceIcon from './ServiceIcon.astro';
+import { siteConfig } from '../../config/site.ts';
+import githubData from '../data/repos.json';
+import { formatTemplate, getUiStrings, localePath, type LocaleId } from '../i18n';
+
+interface Props {
+  locale: LocaleId;
+}
+
+const { locale } = Astro.props;
+const ui = getUiStrings(locale);
+const { site } = siteConfig;
+const reposData = githubData.repos;
+const orgRepoCount = githubData.orgRepoCount;
+
+const foundedDate = new Date(site.foundedYear, 0, 1);
+const now = new Date();
+let yearsRunning = now.getFullYear() - foundedDate.getFullYear();
+const anniversary = new Date(now.getFullYear(), foundedDate.getMonth(), foundedDate.getDate());
+if (now < anniversary) yearsRunning--;
+
+const serviceEntries = await Promise.all(
+  siteConfig.services.map(async (service) => {
+    const entry = await getEntry('services', `${locale}/${service.slug}`);
+    return { slug: service.slug, entry: entry ?? (await getEntry('services', `en/${service.slug}`)) };
+  }),
+);
+
+const process = [
+  { step: '01', title: ui.home.processScopeTitle, text: ui.home.processScopeBody },
+  { step: '02', title: ui.home.processForgeTitle, text: ui.home.processForgeBody },
+  { step: '03', title: ui.home.processTemperTitle, text: ui.home.processTemperBody },
+  { step: '04', title: ui.home.processRunTitle, text: ui.home.processRunBody },
+];
+
+const faqJsonLd = {
+  '@type': 'FAQPage',
+  mainEntity: ui.faq.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.answer,
+    },
+  })),
+};
+
+const canonicalPath = localePath(locale, '/');
+---
+
+<BaseLayout
+  title={site.name}
+  description={ui.meta.homeDescription}
+  locale={locale}
+  canonicalPath={canonicalPath}
+  jsonLd={faqJsonLd}
+>
+  <section class="section-light grid-texture border-b border-border">
+    <div class="mx-auto max-w-6xl px-4 pt-16 pb-10 sm:px-6 sm:pt-20">
+      <div class="grid items-center gap-12 lg:grid-cols-[1.15fr_0.85fr]">
+        <div>
+          <h1 class="max-w-2xl text-4xl font-semibold tracking-tight text-text sm:text-[3.4rem] sm:leading-[1.05]">
+            {ui.home.heroTitle}
+          </h1>
+          <p class="mt-6 max-w-xl text-lg leading-relaxed text-muted">
+            {ui.home.heroBody}
+          </p>
+          <div class="mt-8 flex flex-wrap items-center gap-3">
+            <ContactModal client:load strings={ui.contact} />
+            <a href="#services" class="btn-secondary">{ui.home.seeServices}</a>
+          </div>
+        </div>
+        <div class="hidden justify-center lg:flex">
+          <ForgeGraphic />
+        </div>
+      </div>
+
+      <dl class="mt-14 grid grid-cols-3 gap-4 border-t border-border pt-8 sm:gap-8">
+        <div>
+          <dt class="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-muted">{ui.home.statYears}</dt>
+          <dd class="mt-1 text-3xl font-semibold tracking-tight text-text">{yearsRunning}</dd>
+        </div>
+        <div>
+          <dt class="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-muted">{ui.home.statRepos}</dt>
+          <dd class="mt-1 text-3xl font-semibold tracking-tight text-text">{orgRepoCount}</dd>
+        </div>
+        <div>
+          <dt class="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-muted">{ui.home.statKeys}</dt>
+          <dd class="mt-1 text-3xl font-semibold tracking-tight text-accent">0</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="section-light border-b border-border">
+    <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+      <p class="eyebrow">{ui.home.whyEyebrow}</p>
+      <h2 class="mt-3 text-2xl font-semibold tracking-tight text-text sm:text-3xl">
+        {ui.home.whyTitle}
+      </h2>
+      <p class="mt-4 max-w-3xl text-muted">{ui.home.whyBody}</p>
+
+      <div class="mt-10 grid gap-6 md:grid-cols-3">
+        <div class="card card-marked">
+          <p class="font-mono text-xs text-accent">01</p>
+          <h3 class="mt-3 font-semibold text-text">{ui.home.trustOperatorsTitle}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-muted">{ui.home.trustOperatorsBody}</p>
+        </div>
+        <div class="card card-marked">
+          <p class="font-mono text-xs text-accent">02</p>
+          <h3 class="mt-3 font-semibold text-text">{ui.home.trustSelfHostedTitle}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-muted">{ui.home.trustSelfHostedBody}</p>
+        </div>
+        <div class="card card-marked">
+          <p class="font-mono text-xs text-accent">03</p>
+          <h3 class="mt-3 font-semibold text-text">{ui.home.trustNoHypeTitle}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-muted">{ui.home.trustNoHypeBody}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="services" class="section-light border-b border-border">
+    <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+      <p class="eyebrow">{ui.home.servicesEyebrow}</p>
+      <h2 class="mt-3 text-2xl font-semibold tracking-tight text-text sm:text-3xl">{ui.home.servicesTitle}</h2>
+      <p class="mt-4 max-w-3xl text-muted">{ui.home.servicesBody}</p>
+      <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          serviceEntries.map(({ slug, entry }) => {
+            if (!entry) return null;
+            return (
+              <a href={localePath(locale, `/${slug}`)} class="card card-link group block no-underline">
+                <div class="flex h-11 w-11 items-center justify-center rounded-lg border border-border bg-bg text-accent transition group-hover:border-ember/50">
+                  <ServiceIcon slug={slug} size={24} />
+                </div>
+                <h3 class="mt-4 font-semibold text-text">{entry.data.title}</h3>
+                <p class="mt-2 text-sm leading-relaxed text-muted">{entry.data.description}</p>
+                <span class="mt-4 inline-flex items-center gap-1.5 font-mono text-xs font-medium uppercase tracking-widest text-accent">
+                  {ui.home.learnMore}
+                  <span aria-hidden="true" class="transition group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5">
+                    →
+                  </span>
+                </span>
+              </a>
+            );
+          })
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section-light border-b border-border">
+    <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+      <p class="eyebrow">{ui.home.processEyebrow}</p>
+      <h2 class="mt-3 text-2xl font-semibold tracking-tight text-text sm:text-3xl">{ui.home.processTitle}</h2>
+      <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          process.map((item, index) => (
+            <div class="relative">
+              <div class="flex items-center gap-3">
+                <span class="font-mono text-2xl font-semibold text-accent">{item.step}</span>
+                {index < process.length - 1 && (
+                  <span class="hidden h-px flex-1 bg-border lg:block" aria-hidden="true" />
+                )}
+              </div>
+              <h3 class="mt-3 font-semibold text-text">{item.title}</h3>
+              <p class="mt-2 text-sm leading-relaxed text-muted">{item.text}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section-dark border-b border-dark-border">
+    <div class="grid-texture-dark">
+      <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+        <p class="eyebrow">{ui.home.ossEyebrow}</p>
+        <h2 class="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">{ui.home.ossTitle}</h2>
+        <p class="mt-4 max-w-3xl">
+          {formatTemplate(ui.home.ossBody, { year: site.foundedYear })}
+        </p>
+        <div class="mt-10">
+          <RepoCarousel client:load repos={reposData} />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-light border-b border-border">
+    <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+      <p class="eyebrow">{ui.home.notesEyebrow}</p>
+      <h2 class="mt-3 text-2xl font-semibold tracking-tight text-text">{ui.home.notesTitle}</h2>
+      <p class="mt-3 max-w-2xl text-muted">{ui.home.notesBody}</p>
+    </div>
+  </section>
+
+  <section class="section-light">
+    <div class="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+      <div class="card card-marked mx-auto max-w-3xl p-8 text-center sm:p-12">
+        <p class="eyebrow">{ui.home.ctaEyebrow}</p>
+        <h2 class="mt-3 text-2xl font-semibold tracking-tight text-text sm:text-3xl">{ui.home.ctaTitle}</h2>
+        <p class="mx-auto mt-4 max-w-xl text-muted">{ui.home.ctaBody}</p>
+        <div class="mt-8 flex justify-center">
+          <ContactModal client:load strings={ui.contact} />
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
