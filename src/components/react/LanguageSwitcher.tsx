@@ -27,7 +27,6 @@ export default function LanguageSwitcher({ locale, label, currentPath }: Props) 
         type="button"
         className="rounded-md border border-border px-3 py-1.5 font-mono text-xs text-text transition hover:border-ember/50"
         aria-expanded={open}
-        aria-haspopup="listbox"
         aria-label={label}
         onClick={() => setOpen((value) => !value)}
       >
