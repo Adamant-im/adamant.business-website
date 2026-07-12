@@ -25,11 +25,13 @@ export default function RepoCarousel({ repos }: Props) {
           <a
             key={repo.name}
             href={repo.url}
-            className="group block rounded-lg border border-white/10 bg-white/5 p-5 no-underline transition hover:border-accent/50 hover:bg-white/10"
+            className="group block rounded-xl border border-dark-border bg-dark-card p-5 no-underline transition hover:border-ember/60 hover:bg-white/5"
           >
             <div className="flex items-start justify-between gap-3">
-              <h3 className="font-medium text-white group-hover:text-accent">{repo.name}</h3>
-              <span className="shrink-0 rounded-full bg-white/10 px-2 py-0.5 text-xs text-dark-muted">
+              <h3 className="font-mono text-sm font-medium text-white group-hover:text-ember-bright">
+                {repo.name}
+              </h3>
+              <span className="shrink-0 rounded-full border border-dark-border bg-white/5 px-2 py-0.5 font-mono text-xs text-dark-muted">
                 ★ {repo.stars.toLocaleString()}
               </span>
             </div>
@@ -42,7 +44,7 @@ export default function RepoCarousel({ repos }: Props) {
         <div className="mt-6 flex items-center justify-center gap-3">
           <button
             type="button"
-            className="btn-secondary !border-white/20 !bg-transparent !text-white disabled:opacity-40"
+            className="btn-secondary !border-dark-border !bg-transparent !text-white hover:!border-ember/60 disabled:opacity-40"
             disabled={index === 0}
             onClick={() => setIndex((value) => Math.max(0, value - 1))}
             aria-label="Previous repositories"
@@ -54,7 +56,7 @@ export default function RepoCarousel({ repos }: Props) {
           </span>
           <button
             type="button"
-            className="btn-secondary !border-white/20 !bg-transparent !text-white disabled:opacity-40"
+            className="btn-secondary !border-dark-border !bg-transparent !text-white hover:!border-ember/60 disabled:opacity-40"
             disabled={index >= maxIndex}
             onClick={() => setIndex((value) => Math.min(maxIndex, value + 1))}
             aria-label="Next repositories"

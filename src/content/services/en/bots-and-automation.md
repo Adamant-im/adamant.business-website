@@ -10,24 +10,34 @@ proofLinks:
     url: https://github.com/Adamant-im/adamant-exchangebot
 ---
 
-We build self-hosted bots and automation tools. You keep the keys, strategy, and responsibility — we ship the software, not market outcomes.
+A bot is a small program with access to money. That framing drives every decision we make: minimal key permissions, boring reliability, and full source code in your hands. We ship the software — you keep the keys, strategy, and responsibility.
 
 ## What we automate
 
-- Telegram, ADAMANT, and internal notification bots
-- Monitoring and alerting for nodes, APIs, and trading systems
-- Execution helpers and operational dashboards
-- AI-assisted tooling with senior engineering review
-- Social integrations and access workflows where needed
+- **Notification and alerting bots** — Telegram and ADAMANT bots that watch balances, node health, exchange order state, or on-chain transfers and page a human before a problem becomes a loss
+- **Execution helpers** — semi-automated workflows where the bot prepares a transaction or order and a person approves it; useful for treasury operations and OTC settlement
+- **Operational dashboards** — a single view over the wallets, nodes, and bots your team already runs, instead of eight browser tabs and a spreadsheet
+- **In-chat services** — bots living inside encrypted ADAMANT chat: exchange flows, payouts, support queues, and access control
+- **AI-assisted tooling** — LLM-backed summarizers and triage helpers, always behind senior engineering review and never with direct key access
 
-## Blockchain-verified 2FA
+## How we keep bots from becoming incidents
 
-Our [adamant-2fa](https://github.com/Adamant-im/adamant-2fa) service uses the ADAMANT messenger for verified delivery and cryptographic access control — useful when SMS or email is not enough.
+Most bot horror stories come from the same three mistakes: API keys with withdrawal rights, retry loops that double-spend, and silence when something breaks. Our standard practice:
 
-## In-chat exchange automation
+- Exchange keys scoped to the minimum permission set the workflow needs — trade-only or read-only wherever possible
+- Idempotent operations and explicit state, so a restart never repeats a transfer
+- Rate-limit budgets and circuit breakers around every external API
+- Alerting on the bot itself — a bot that stops silently is worse than no bot
+- Deployment on your servers, with logs and metrics your team can read
 
-The [adamant-exchangebot](https://github.com/Adamant-im/adamant-exchangebot) shows how exchange workflows can live inside encrypted chat — a pattern we can adapt to your stack.
+## Case: blockchain-verified 2FA
 
-## How we work
+[adamant-2fa](https://github.com/Adamant-im/adamant-2fa) delivers one-time codes through the ADAMANT messenger instead of SMS. Delivery is verified on-chain and cannot be SIM-swapped. We build similar verification flows for products where email and SMS are not acceptable attack surfaces.
 
-We do not promise trading profits or run strategies on your behalf. We build tools your team controls, deploys, and audits — on your infrastructure when required.
+## Case: exchange inside an encrypted chat
+
+[adamant-exchangebot](https://github.com/Adamant-im/adamant-exchangebot) runs a full exchange workflow — quotes, deposits, payouts — inside end-to-end encrypted chat. The same pattern adapts to payouts, faucets, bounty payments, and internal token distribution in your own stack.
+
+## Where the line is
+
+We do not run strategies on your behalf, do not hold your keys, and do not promise trading profits. If a request boils down to "make a bot that prints money," we will say no and explain why — and then propose the automation that actually saves your team engineering hours.

@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import SeoHead from '../components/SeoHead.astro';
 
@@ -30,5 +31,6 @@ const { title, description, canonicalPath, ogType, jsonLd } = Astro.props;
     <main>
       <slot />
     </main>
+    <Footer />
   </body>
 </html>

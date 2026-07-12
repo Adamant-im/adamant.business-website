@@ -10,24 +10,28 @@ proofLinks:
     url: https://github.com/Adamant-im/currencyinfo
 ---
 
-Production blockchain infrastructure — deployed, monitored, and maintained by engineers who operate their own network.
+Crypto infrastructure fails differently from ordinary web infrastructure: a stalled node means missed deposits, a bad upgrade can fork you off the network, and "we'll restore from backup" has consequences when money is involved. We run this class of systems for our own ecosystem — here is how an infrastructure engagement typically unfolds.
 
-## Infrastructure services
+## Phase 0 — Assessment
 
-- Blockchain node deployment and upgrades
-- Explorers, APIs, and indexing layers
-- Wallet backends and integrations
-- Monitoring, alerting, and incident response
-- DevOps for self-hosted crypto stacks
+We start by reading what you have: chains, wallets, node versions, hosting, backup story, and the failure that worries you most. You get a short written assessment with concrete risks and a proposed target architecture — useful even if the engagement stops there.
 
-## Distributed storage
+## Phase 1 — Deployment
 
-[ipfs-node](https://github.com/Adamant-im/ipfs-node) is our decentralized storage node — an example of distributed infrastructure we design without forcing every problem onto a blockchain.
+Nodes, explorers, indexers, wallet backends, and APIs deployed on your servers or dedicated hosts you control. Everything is reproducible: configuration in a repository, documented bootstrap, no snowflake servers that only one contractor understands.
 
-## Reliable rate data
+## Phase 2 — Observability
 
-[currencyinfo](https://github.com/Adamant-im/currencyinfo) is a self-hosted integrator for crypto and fiat exchange rates — the kind of boring, critical service production systems depend on.
+Before we call anything "done," it reports on itself: block height lag, peer count, disk headroom, API latency, wallet balance thresholds. Alerts go to your team's channels — Telegram, ADAMANT, email — with runbooks for the common cases.
 
-## Operators, not tourists
+## Phase 3 — Operations
 
-We maintain what we build. That matters when your nodes, APIs, and wallets must stay online for years — not just demo well in a pitch deck.
+Chain upgrades and hard forks applied on schedule, dependencies patched, capacity reviewed. We offer ongoing maintenance contracts, or we hand over cleanly to your team with documentation and training — self-hosted means you are never locked in.
+
+## Built from parts we run ourselves
+
+[ipfs-node](https://github.com/Adamant-im/ipfs-node) is our distributed-storage node, used where files do not belong on a blockchain. [currencyinfo](https://github.com/Adamant-im/currencyinfo) is a self-hosted crypto and fiat rates service — the kind of boring, critical dependency production systems quietly rely on. Both are open source, both run in our own infrastructure today.
+
+## The standard we hold
+
+We maintain what we build. That matters when your nodes, wallets, and APIs must stay online for years — not just demo well in a pitch deck.

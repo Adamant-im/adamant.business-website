@@ -142,7 +142,7 @@ export const siteConfig = {
   },
 
   seo: {
-    defaultOgImage: '/og-image.svg',
+    defaultOgImage: '/og-image.png',
     twitterHandle: '@adamant_im',
     sameAs: [
       'https://github.com/Adamant-im',

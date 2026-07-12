@@ -1,6 +1,7 @@
 ---
 import { siteConfig } from '../../config/site.ts';
 import ContactModal from './react/ContactModal';
+import Logo from './Logo.astro';
 
 const year = new Date().getFullYear();
 const { site } = siteConfig;
@@ -9,10 +10,14 @@ const { site } = siteConfig;
 <header class="sticky top-0 z-50 border-b border-border/80 bg-bg/90 backdrop-blur-md">
   <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
     <div class="flex min-w-0 items-center gap-4">
-      <a href="/" class="truncate text-lg font-semibold text-text no-underline hover:no-underline">
-        {site.name}
+      <a
+        href="/"
+        class="flex items-center gap-2.5 text-lg font-semibold tracking-tight text-text no-underline hover:no-underline"
+      >
+        <Logo size={30} class="shrink-0" />
+        <span class="truncate">{site.name}</span>
       </a>
-      <span class="hidden text-xs text-muted sm:inline">
+      <span class="hidden font-mono text-[0.68rem] tracking-widest text-muted md:inline">
         {site.foundedYear}–{year}
       </span>
     </div>
@@ -21,7 +26,7 @@ const { site } = siteConfig;
       <button
         type="button"
         disabled
-        class="hidden cursor-not-allowed rounded-md border border-border px-3 py-1.5 text-xs text-muted opacity-60 sm:inline-block"
+        class="hidden cursor-not-allowed rounded-md border border-border px-3 py-1.5 font-mono text-xs text-muted opacity-60 sm:inline-block"
         title="Multilingual site coming in Phase 2"
         aria-label="Language selector (coming soon)"
       >
@@ -30,4 +35,5 @@ const { site } = siteConfig;
       <ContactModal client:load variant="header" />
     </div>
   </div>
+  <div class="heat-line"></div>
 </header>
