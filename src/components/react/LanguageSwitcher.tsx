@@ -35,7 +35,6 @@ export default function LanguageSwitcher({ locale, label, currentPath }: Props) 
 
       {open && (
         <ul
-          role="listbox"
           aria-label={label}
           className="absolute end-0 z-50 mt-1 min-w-[10rem] rounded-md border border-border bg-card py-1 shadow-lg"
         >
