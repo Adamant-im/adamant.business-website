@@ -5,11 +5,17 @@ import RepoCarousel from '../components/react/RepoCarousel';
 import ForgeGraphic from '../components/ForgeGraphic.astro';
 import ServiceIcon from '../components/ServiceIcon.astro';
 import { siteConfig } from '../../config/site.ts';
-import reposData from '../data/repos.json';
+import githubData from '../data/repos.json';
 
 const { site, services, faq } = siteConfig;
-const yearsRunning = new Date().getFullYear() - site.foundedYear;
-const repoCount = reposData.length;
+const reposData = githubData.repos;
+const orgRepoCount = githubData.orgRepoCount;
+
+const foundedDate = new Date(site.foundedYear, 0, 1);
+const now = new Date();
+let yearsRunning = now.getFullYear() - foundedDate.getFullYear();
+const anniversary = new Date(now.getFullYear(), foundedDate.getMonth(), foundedDate.getDate());
+if (now < anniversary) yearsRunning--;
 
 const faqJsonLd = {
   '@type': 'FAQPage',
@@ -59,8 +65,7 @@ const process = [
     <div class="mx-auto max-w-6xl px-4 pt-16 pb-10 sm:px-6 sm:pt-20">
       <div class="grid items-center gap-12 lg:grid-cols-[1.15fr_0.85fr]">
         <div>
-          <p class="eyebrow">Self-hosted crypto engineering · since {site.foundedYear}</p>
-          <h1 class="mt-4 max-w-2xl text-4xl font-semibold tracking-tight text-text sm:text-[3.4rem] sm:leading-[1.05]">
+          <h1 class="max-w-2xl text-4xl font-semibold tracking-tight text-text sm:text-[3.4rem] sm:leading-[1.05]">
             We build crypto software and keep it running in production.
           </h1>
           <p class="mt-6 max-w-xl text-lg leading-relaxed text-muted">
@@ -80,11 +85,11 @@ const process = [
       <dl class="mt-14 grid grid-cols-3 gap-4 border-t border-border pt-8 sm:gap-8">
         <div>
           <dt class="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-muted">Years in production</dt>
-          <dd class="mt-1 text-3xl font-semibold tracking-tight text-text">{yearsRunning}+</dd>
+          <dd class="mt-1 text-3xl font-semibold tracking-tight text-text">{yearsRunning}</dd>
         </div>
         <div>
           <dt class="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-muted">Open-source repos</dt>
-          <dd class="mt-1 text-3xl font-semibold tracking-tight text-text">{repoCount}+</dd>
+          <dd class="mt-1 text-3xl font-semibold tracking-tight text-text">{orgRepoCount}</dd>
         </div>
         <div>
           <dt class="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-muted">Client keys we hold</dt>

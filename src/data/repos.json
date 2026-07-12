@@ -1,122 +1,125 @@
-[
-  {
-    "name": "adamant",
-    "description": "ADAMANT blockchain node",
-    "stars": 0,
-    "url": "https://github.com/Adamant-im/adamant"
-  },
-  {
-    "name": "adamant-api-jsclient",
-    "description": "JavaScript API client",
-    "stars": 0,
-    "url": "https://github.com/Adamant-im/adamant-api-jsclient"
-  },
-  {
-    "name": "adamant-console",
-    "description": "ADAMANT CLI tool",
-    "stars": 0,
-    "url": "https://github.com/Adamant-im/adamant-console"
-  },
-  {
-    "name": "adamant-im",
-    "description": "ADAMANT Messenger PWA",
-    "stars": 0,
-    "url": "https://github.com/Adamant-im/adamant-im"
-  },
-  {
-    "name": "adamant-iOS",
-    "description": "ADAMANT Messenger for iOS",
-    "stars": 0,
-    "url": "https://github.com/Adamant-im/adamant-iOS"
-  },
-  {
-    "name": "adamant-explorer",
-    "description": "Blockchain explorer",
-    "stars": 0,
-    "url": "https://github.com/Adamant-im/adamant-explorer"
-  },
-  {
-    "name": "pool",
-    "description": "ADAMANT forging pool",
-    "stars": 0,
-    "url": "https://github.com/Adamant-im/pool"
-  },
-  {
-    "name": "adamant-airdrop",
-    "description": "Airdrop distribution tool",
-    "stars": 0,
-    "url": "https://github.com/Adamant-im/adamant-airdrop"
-  },
-  {
-    "name": "currencyinfo",
-    "description": "Self-hosted currency rates service",
-    "stars": 0,
-    "url": "https://github.com/Adamant-im/currencyinfo"
-  },
-  {
-    "name": "ipfs-node",
-    "description": "Distributed storage node",
-    "stars": 0,
-    "url": "https://github.com/Adamant-im/ipfs-node"
-  },
-  {
-    "name": "ETH-transactions-storage",
-    "description": "Ethereum transaction storage",
-    "stars": 0,
-    "url": "https://github.com/Adamant-im/ETH-transactions-storage"
-  },
-  {
-    "name": "adamant-ns",
-    "description": "ADAMANT naming service",
-    "stars": 0,
-    "url": "https://github.com/Adamant-im/adamant-ns"
-  },
-  {
-    "name": "adamant-exchangebot",
-    "description": "In-chat exchange bot",
-    "stars": 0,
-    "url": "https://github.com/Adamant-im/adamant-exchangebot"
-  },
-  {
-    "name": "adamant-chatgpt",
-    "description": "AI chatbot integration",
-    "stars": 0,
-    "url": "https://github.com/Adamant-im/adamant-chatgpt"
-  },
-  {
-    "name": "adamant-tradebot",
-    "description": "Trading and market-making bot",
-    "stars": 0,
-    "url": "https://github.com/Adamant-im/adamant-tradebot"
-  },
-  {
-    "name": "adamant-2fa",
-    "description": "Blockchain-based 2FA service",
-    "stars": 0,
-    "url": "https://github.com/Adamant-im/adamant-2fa"
-  },
-  {
-    "name": "docs",
-    "description": "ADAMANT documentation",
-    "stars": 0,
-    "url": "https://github.com/Adamant-im/docs"
-  },
-  {
-    "name": "adamant-schema",
-    "description": "Transaction schema definitions",
-    "stars": 0,
-    "url": "https://github.com/Adamant-im/adamant-schema"
-  },
-  {
-    "name": "AIPs",
-    "description": "ADAMANT Improvement Proposals",
-    "stars": 0,
-    "url": "https://github.com/Adamant-im/AIPs"
-  },
-  {
-    "name": "adamant-wallets",
-    "description": "Wallet integrations and tools",
-    "stars": 0,
-    "url": "https://github.com/Adamant-im/adamant-wallets"
-  }
-]
+{
+  "orgRepoCount": 43,
+  "repos": [
+    {
+      "name": "adamant",
+      "description": "ADAMANT Blockchain Node",
+      "stars": 923,
+      "url": "https://github.com/Adamant-im/adamant"
+    },
+    {
+      "name": "adamant-api-jsclient",
+      "description": "Modular TypeScript SDK for the ADAMANT blockchain and deterministic wallet helpers",
+      "stars": 476,
+      "url": "https://github.com/Adamant-im/adamant-api-jsclient"
+    },
+    {
+      "name": "adamant-console",
+      "description": "Command-line and JSON-RPC tool for interacting with the ADAMANT blockchain",
+      "stars": 504,
+      "url": "https://github.com/Adamant-im/adamant-console"
+    },
+    {
+      "name": "adamant-im",
+      "description": "ADAMANT Decentralized Messenger and Crypto Wallet. Progressive Web Application (PWA) for Web, Tor, Android, macOS, Windows, and Linux.",
+      "stars": 780,
+      "url": "https://github.com/Adamant-im/adamant-im"
+    },
+    {
+      "name": "adamant-iOS",
+      "description": "iOS native client for ADAMANT Decentralized Messenger",
+      "stars": 474,
+      "url": "https://github.com/Adamant-im/adamant-iOS"
+    },
+    {
+      "name": "adamant-explorer",
+      "description": "ADAMANT Blockchain Explorer",
+      "stars": 472,
+      "url": "https://github.com/Adamant-im/adamant-explorer"
+    },
+    {
+      "name": "pool",
+      "description": "ADAMANT Forging pool with Web interface",
+      "stars": 492,
+      "url": "https://github.com/Adamant-im/pool"
+    },
+    {
+      "name": "adamant-airdrop",
+      "description": "Airdrop software for sending $ADM rewards to ADAMANT users. Use it to instantly send ADM tokens to many users",
+      "stars": 0,
+      "url": "https://github.com/Adamant-im/adamant-airdrop"
+    },
+    {
+      "name": "currencyinfo",
+      "description": "Self-hosted crypto and fiat currency rates service provider. Combines MOEX, Currency-Api, ExchangeRate.host, Coinmarketcap, CryptoCompare, and Coingecko.",
+      "stars": 289,
+      "url": "https://github.com/Adamant-im/currencyinfo"
+    },
+    {
+      "name": "ipfs-node",
+      "description": "IPFS decentralized file storage and transfers",
+      "stars": 296,
+      "url": "https://github.com/Adamant-im/ipfs-node"
+    },
+    {
+      "name": "ETH-transactions-storage",
+      "description": "Indexer for Ethereum to get transaction list by ETH address",
+      "stars": 575,
+      "url": "https://github.com/Adamant-im/ETH-transactions-storage"
+    },
+    {
+      "name": "adamant-ns",
+      "description": "ADAMANT Universal Push Notification Service",
+      "stars": 0,
+      "url": "https://github.com/Adamant-im/adamant-ns"
+    },
+    {
+      "name": "adamant-exchangebot",
+      "description": "Crypto exchange bot for ADAMANT",
+      "stars": 466,
+      "url": "https://github.com/Adamant-im/adamant-exchangebot"
+    },
+    {
+      "name": "adamant-chatgpt",
+      "description": "AI chatbot integration",
+      "stars": 0,
+      "url": "https://github.com/Adamant-im/adamant-chatgpt"
+    },
+    {
+      "name": "adamant-tradebot",
+      "description": "Free self-hosted liquidity bot for token issuers who want to improve CEX market quality without sending tokens, funds, or API keys to a third-party market maker.",
+      "stars": 827,
+      "url": "https://github.com/Adamant-im/adamant-tradebot"
+    },
+    {
+      "name": "adamant-2fa",
+      "description": "ADAMANT's Blockchain 2FA demo",
+      "stars": 256,
+      "url": "https://github.com/Adamant-im/adamant-2fa"
+    },
+    {
+      "name": "docs",
+      "description": " 📄 Documentation for ADAMANT Node",
+      "stars": 123,
+      "url": "https://github.com/Adamant-im/docs"
+    },
+    {
+      "name": "adamant-schema",
+      "description": "Swagger schema for ADAMANT node",
+      "stars": 354,
+      "url": "https://github.com/Adamant-im/adamant-schema"
+    },
+    {
+      "name": "AIPs",
+      "description": "ADAMANT Improvement Proposal repository",
+      "stars": 386,
+      "url": "https://github.com/Adamant-im/AIPs"
+    },
+    {
+      "name": "adamant-wallets",
+      "description": "Canonical wallet metadata and specifications for ADAMANT apps",
+      "stars": 374,
+      "url": "https://github.com/Adamant-im/adamant-wallets"
+    }
+  ]
+}

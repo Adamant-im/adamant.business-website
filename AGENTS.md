@@ -214,7 +214,7 @@ Common use cases:
 ### Configuration
 
 - Committed public config: `config/site.ts` (repos, locales, contact, OpenRouter model list, sync settings)
-- Secrets: `OPENROUTER_API_KEY`, `GITHUB_TOKEN` in GitHub Actions secrets only
+- Secrets: `OPENROUTER_API_KEY`, `PAT_GITHUB_TOKEN` in GitHub Actions secrets only
 - Generated data: `src/data/repos.json` via `npm run sync:stars`
 
 ### Commands

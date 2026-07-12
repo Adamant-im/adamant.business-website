@@ -36,7 +36,7 @@ jobs:
       - name: Sync GitHub stars
         run: npm run sync:stars
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PAT_GITHUB_TOKEN: ${{ secrets.PAT_GITHUB_TOKEN }}
 
       - name: Build
         run: npm run build

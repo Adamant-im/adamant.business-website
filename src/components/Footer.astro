@@ -2,7 +2,6 @@
 import { siteConfig } from '../../config/site.ts';
 import Logo from './Logo.astro';
 
-const year = new Date().getFullYear();
 const { site, services, contact, seo } = siteConfig;
 const githubUrl = seo.sameAs.find((url) => url.includes('github.com'));
 ---
@@ -71,8 +70,7 @@ const githubUrl = seo.sameAs.find((url) => url.includes('github.com'));
       </div>
     </div>
 
-    <div class="mt-12 flex flex-col gap-2 border-t border-dark-border pt-6 sm:flex-row sm:items-center sm:justify-between">
-      <p class="text-xs text-dark-muted">© {year} {site.name}. No custody, no hype — just software.</p>
+    <div class="mt-12 border-t border-dark-border pt-6">
       <p class="font-mono text-[0.68rem] tracking-widest text-dark-muted">FORGED · TESTED · RUN</p>
     </div>
   </div>
