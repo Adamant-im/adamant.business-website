@@ -63,7 +63,8 @@ export default function LanguagePrompt({ locale, keepEnglish, promptPrefix }: Pr
 
   return (
     <div
-      role="status"
+      aria-live="polite"
+      aria-label="Language suggestion"
       className="absolute end-0 top-full z-40 mt-2 w-[min(18rem,calc(100vw-2rem))] rounded-md border border-border bg-card p-3 text-sm shadow-lg"
     >
       <p className="text-muted">
