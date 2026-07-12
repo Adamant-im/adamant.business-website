@@ -42,7 +42,7 @@
     "processForgeTitle": "Schmieden",
     "processForgeBody": "Wir bauen in kurzen Iterationen in einem Repository, das Sie lesen können. Früh funktionierende Software, keine Blackboxes, keine Überraschungs-Rewrites am Ende.",
     "processTemperTitle": "Härten",
-    "processTemperBody": "Security Review, Schlüsselhandling, Monitoring und Ausfallübungen, bevor echtes Geld oder Produktionsverkehr berührt wird.",
+    "processTemperBody": "Security Review, Schlüsselverwaltung, Monitoring und Ausfallübungen, bevor echtes Geld oder Produktionsverkehr berührt wird.",
     "processRunTitle": "Betrieb",
     "processRunBody": "Deployment auf Ihrer Infrastruktur, Dokumentation und langfristige Wartung auf Wunsch. Sie behalten die Schlüssel und den Aus-Schalter.",
     "ossEyebrow": "Arbeitsnachweis",
