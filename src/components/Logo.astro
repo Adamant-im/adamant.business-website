@@ -1,0 +1,44 @@
+---
+interface Props {
+  size?: number;
+  class?: string;
+}
+
+const { size = 28, class: className } = Astro.props;
+const uid = Math.random().toString(36).slice(2, 8);
+---
+
+<svg
+  width={size}
+  height={size}
+  viewBox="0 0 64 64"
+  aria-hidden="true"
+  class={className}
+>
+  <defs>
+    <linearGradient id={`ember-${uid}`} x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0" stop-color="#ffb45c"></stop>
+      <stop offset="0.55" stop-color="#f07316"></stop>
+      <stop offset="1" stop-color="#d1540e"></stop>
+    </linearGradient>
+  </defs>
+  <path
+    d="M61 32 46.5 57.1 17.5 57.1 3 32 17.5 6.9 46.5 6.9Z"
+    fill="#181310"
+    stroke="#181310"
+    stroke-width="5"
+    stroke-linejoin="round"></path>
+  <path
+    d="M58.4 32 45.2 54.9 18.8 54.9 5.6 32 18.8 9.1 45.2 9.1Z"
+    fill="none"
+    stroke="#4a3b2a"
+    stroke-width="2"
+    stroke-linejoin="round"></path>
+  <path
+    d="M42.4 41.3 A14 14 0 1 1 42.4 22.7"
+    fill="none"
+    stroke={`url(#ember-${uid})`}
+    stroke-width="9.5"
+    stroke-linecap="butt"></path>
+  <path d="M48.6 28.5 52.1 32 48.6 35.5 45.1 32Z" fill="#ffc061"></path>
+</svg>

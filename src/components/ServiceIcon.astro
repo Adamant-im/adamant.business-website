@@ -1,0 +1,79 @@
+---
+interface Props {
+  slug: string;
+  size?: number;
+  class?: string;
+}
+
+const { slug, size = 28, class: className } = Astro.props;
+---
+
+<svg
+  width={size}
+  height={size}
+  viewBox="0 0 32 32"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.8"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+  class={className}
+>
+  {
+    slug === 'bots-and-automation' && (
+      <>
+        <rect x="7" y="10" width="18" height="14" rx="3" />
+        <path d="M16 10V6M16 6h4" />
+        <circle cx="20" cy="4.5" r="1.6" fill="currentColor" stroke="none" />
+        <circle cx="12.5" cy="16" r="1.6" fill="currentColor" stroke="none" />
+        <circle cx="19.5" cy="16" r="1.6" fill="currentColor" stroke="none" />
+        <path d="M12 20.5h8M4 15v4M28 15v4" />
+      </>
+    )
+  }
+  {
+    slug === 'crypto-payments' && (
+      <>
+        <circle cx="13" cy="13" r="8.5" />
+        <circle cx="13" cy="13" r="3.2" />
+        <path d="M15.6 15.6 27 27M27 27v-4.5M27 27h-4.5M22.5 22.5l2.6-2.6" />
+      </>
+    )
+  }
+  {
+    slug === 'trading-software' && (
+      <>
+        <path d="M9 12v10M9 8v2M6.4 12h5.2v7H6.4zM16 6v4M16 22v4M13.4 10h5.2v12h-5.2zM23 14v3M23 26v1M20.4 17h5.2v9h-5.2z" />
+      </>
+    )
+  }
+  {
+    slug === 'infra' && (
+      <>
+        <rect x="5" y="5" width="22" height="8" rx="2" />
+        <rect x="5" y="19" width="22" height="8" rx="2" />
+        <circle cx="10" cy="9" r="1.4" fill="currentColor" stroke="none" />
+        <circle cx="10" cy="23" r="1.4" fill="currentColor" stroke="none" />
+        <path d="M22 9h2M22 23h2M16 13v6" />
+      </>
+    )
+  }
+  {
+    slug === 'security-audits' && (
+      <>
+        <path d="M16 4l10 4v8c0 6-4.2 10-10 12-5.8-2-10-6-10-12V8z" />
+        <path d="M11.5 16l3 3 6-6" />
+      </>
+    )
+  }
+  {
+    slug === 'blockchain' && (
+      <>
+        <path d="M27 14a11 8.5 0 0 1-16.6 7.3L5 23l1.8-4.6A8.5 8.5 0 0 1 5 14a11 8.5 0 0 1 22 0z" />
+        <rect x="12.5" y="12" width="7" height="5.5" rx="1.2" />
+        <path d="M14 12v-1.5a2 2 0 0 1 4 0V12" />
+      </>
+    )
+  }
+</svg>

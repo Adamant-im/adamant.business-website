@@ -1,0 +1,76 @@
+---
+import { siteConfig } from '../../config/site.ts';
+import Logo from './Logo.astro';
+
+const { site, services, contact, seo } = siteConfig;
+const githubUrl = seo.sameAs.find((url) => url.includes('github.com'));
+---
+
+<footer class="section-dark border-t border-dark-border">
+  <div class="mx-auto max-w-6xl px-4 py-14 sm:px-6">
+    <div class="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
+      <div>
+        <div class="flex items-center gap-2.5">
+          <Logo size={32} />
+          <span class="text-lg font-semibold tracking-tight text-white">{site.name}</span>
+        </div>
+        <p class="mt-4 max-w-sm text-sm leading-relaxed">
+          Self-hosted crypto software, built and maintained in production. Independent engineering
+          organization; our engineers have contributed to the ADAMANT open-source ecosystem since {site.foundedYear}.
+        </p>
+        <p class="mt-4 font-mono text-xs tracking-widest text-dark-muted">
+          {site.domain}
+        </p>
+      </div>
+
+      <nav aria-label="Services">
+        <h2 class="eyebrow">Services</h2>
+        <ul class="mt-4 space-y-2.5 text-sm">
+          {
+            services.map((service) => (
+              <li>
+                <a href={`/${service.slug}`} class="text-dark-muted no-underline hover:text-white hover:no-underline">
+                  {service.title}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <div>
+        <h2 class="eyebrow">Contact</h2>
+        <ul class="mt-4 space-y-2.5 text-sm">
+          <li>
+            <a href={`mailto:${contact.email}`} class="text-dark-muted no-underline hover:text-white hover:no-underline">
+              {contact.email}
+            </a>
+          </li>
+          <li>
+            <a href={contact.telegramUrl} class="text-dark-muted no-underline hover:text-white hover:no-underline">
+              Telegram {contact.telegram}
+            </a>
+          </li>
+          <li>
+            <a href={contact.adamantMessenger} class="text-dark-muted no-underline hover:text-white hover:no-underline">
+              ADAMANT Messenger
+            </a>
+          </li>
+          {
+            githubUrl && (
+              <li>
+                <a href={githubUrl} class="text-dark-muted no-underline hover:text-white hover:no-underline">
+                  GitHub
+                </a>
+              </li>
+            )
+          }
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-12 border-t border-dark-border pt-6">
+      <p class="font-mono text-[0.68rem] tracking-widest text-dark-muted">FORGED · TESTED · RUN</p>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,202 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-bg: #f7f4ee;
+  --color-text: #1d1712;
+  --color-muted: #6b6156;
+  --color-card: #fffdf8;
+  --color-border: #e5ddcf;
+  --color-accent: #b8430c;
+  --color-ember: #f07316;
+  --color-ember-bright: #ffb45c;
+  --color-secondary: #3f6f5f;
+  --color-warning: #b8860b;
+  --color-dark-bg: #16120d;
+  --color-dark-card: #211b14;
+  --color-dark-border: #3a2f22;
+  --color-dark-muted: #a89c8c;
+  --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-bg text-text font-sans antialiased;
+  }
+
+  a {
+    @apply text-accent underline-offset-2 hover:underline;
+  }
+
+  ::selection {
+    background: rgba(240, 115, 22, 0.25);
+  }
+}
+
+/* Engineering-grid texture for hero surfaces */
+.grid-texture {
+  background-image:
+    linear-gradient(to right, rgba(29, 23, 18, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(29, 23, 18, 0.045) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+.section-dark .grid-texture,
+.grid-texture-dark {
+  background-image:
+    linear-gradient(to right, rgba(242, 232, 216, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(242, 232, 216, 0.05) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+/* Molten seam divider */
+.heat-line {
+  height: 3px;
+  border: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(240, 115, 22, 0) 0%,
+    #f07316 18%,
+    #ffb45c 50%,
+    rgba(240, 115, 22, 0.35) 82%,
+    rgba(240, 115, 22, 0) 100%
+  );
+}
+
+/* Mono technical label */
+.eyebrow {
+  @apply font-mono text-[0.72rem] font-medium uppercase tracking-[0.22em] text-accent;
+}
+
+.section-dark .eyebrow {
+  color: var(--color-ember);
+}
+
+.prose-cf h2 {
+  @apply text-2xl font-semibold tracking-tight text-text mt-12 mb-4;
+}
+
+.prose-cf h2::before {
+  content: '';
+  @apply mb-3 block h-[3px] w-10 rounded-full;
+  background: linear-gradient(90deg, #f07316, #ffb45c);
+}
+
+.prose-cf h3 {
+  @apply text-lg font-semibold text-text mt-8 mb-2;
+}
+
+.prose-cf p {
+  @apply text-muted leading-relaxed mb-4;
+}
+
+.prose-cf ul {
+  @apply list-none pl-0 text-muted space-y-2.5 mb-5;
+}
+
+.prose-cf ul li {
+  @apply relative pl-6;
+}
+
+.prose-cf ul li::before {
+  content: '';
+  @apply absolute left-0 top-[0.5em] h-2 w-2 rotate-45 bg-ember;
+}
+
+.prose-cf ol {
+  @apply list-decimal pl-5 text-muted space-y-2.5 mb-5;
+}
+
+.prose-cf a {
+  @apply text-accent font-medium;
+}
+
+.prose-cf strong {
+  @apply text-text font-semibold;
+}
+
+.prose-cf blockquote {
+  @apply border-l-2 border-ember pl-4 italic text-muted mb-4;
+}
+
+.section-light {
+  @apply bg-bg;
+}
+
+.section-dark {
+  @apply bg-dark-bg text-white;
+}
+
+.section-dark .text-muted,
+.section-dark p {
+  @apply text-dark-muted;
+}
+
+.section-dark h2,
+.section-dark h3 {
+  @apply text-white;
+}
+
+.btn-primary {
+  @apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-md px-5 py-2.5 text-sm font-semibold text-white no-underline transition hover:no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent;
+  background: linear-gradient(180deg, #d8560f 0%, #b8430c 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 180, 92, 0.4),
+    0 1px 2px rgba(29, 23, 18, 0.2);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(180deg, #e2610f 0%, #c74a0d 100%);
+}
+
+.btn-secondary {
+  @apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-md border border-border bg-card px-5 py-2.5 text-sm font-medium text-text no-underline shadow-sm transition hover:border-accent/50 hover:no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent;
+}
+
+.card {
+  @apply rounded-xl border border-border bg-card p-6;
+  box-shadow: 0 1px 2px rgba(29, 23, 18, 0.05);
+}
+
+.card-link {
+  @apply transition duration-150;
+}
+
+.card-link:hover {
+  @apply border-ember/50;
+  box-shadow:
+    0 4px 16px rgba(29, 23, 18, 0.08),
+    0 0 0 1px rgba(240, 115, 22, 0.12);
+  transform: translateY(-2px);
+}
+
+/* Corner tick marks — blueprint registration marks on featured cards */
+.card-marked {
+  position: relative;
+}
+
+.card-marked::before,
+.card-marked::after {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-color: rgba(184, 67, 12, 0.45);
+  border-style: solid;
+}
+
+.card-marked::before {
+  top: 8px;
+  left: 8px;
+  border-width: 2px 0 0 2px;
+}
+
+.card-marked::after {
+  bottom: 8px;
+  right: 8px;
+  border-width: 0 2px 2px 0;
+}

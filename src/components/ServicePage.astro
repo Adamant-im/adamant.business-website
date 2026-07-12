@@ -1,0 +1,177 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ContactModal from './react/ContactModal';
+import ServiceIcon from './ServiceIcon.astro';
+import { siteConfig } from '../../config/site.ts';
+
+interface Props {
+  entry: CollectionEntry<'services'>;
+}
+
+const { entry } = Astro.props;
+const { title, description, cta, layoutStyle, proofLinks } = entry.data;
+const { Content } = await render(entry);
+const slug = entry.id.replace(/^en\//, '').replace(/\.md$/, '');
+
+const otherServices = siteConfig.services.filter((service) => service.slug !== slug);
+
+const serviceJsonLd = {
+  '@type': 'Service',
+  name: title,
+  description,
+  url: new URL(`/${slug}`, siteConfig.site.url).href,
+  provider: { '@type': 'Organization', name: siteConfig.site.legalName },
+  areaServed: 'Worldwide',
+};
+---
+
+<BaseLayout title={title} description={description} jsonLd={serviceJsonLd}>
+  <article>
+    <div class="section-light grid-texture border-b border-border">
+      <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
+        <header class="max-w-3xl">
+          <div class="flex items-center gap-4">
+            <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border border-border bg-card text-accent shadow-sm">
+              <ServiceIcon slug={slug} size={30} />
+            </div>
+            <p class="eyebrow">cryptofoundry services</p>
+          </div>
+          <h1 class="mt-5 text-3xl font-semibold tracking-tight text-text sm:text-4xl">{title}</h1>
+          <p class="mt-4 text-lg leading-relaxed text-muted">{description}</p>
+        </header>
+      </div>
+    </div>
+
+    <div class="section-light">
+      <div class="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
+        {
+          layoutStyle === 'split' && (
+            <div class="grid gap-10 lg:grid-cols-2 lg:items-start">
+              <div class="prose-cf" data-layout="split">
+                <Content />
+              </div>
+              <aside class="card card-marked lg:sticky lg:top-24">
+                <p class="eyebrow">Shipped in production</p>
+                <ul class="mt-4 space-y-3 text-sm text-muted">
+                  {proofLinks?.map((link) => (
+                    <li class="flex items-center gap-2.5">
+                      <span class="h-2 w-2 rotate-45 bg-ember" aria-hidden="true" />
+                      <a href={link.url} class="font-medium">{link.label}</a>
+                    </li>
+                  ))}
+                </ul>
+              </aside>
+            </div>
+          )
+        }
+
+        {
+          layoutStyle === 'cards' && (
+            <div>
+              <div class="prose-cf max-w-3xl" data-layout="cards">
+                <Content />
+              </div>
+              {proofLinks && proofLinks.length > 0 && (
+                <div class="mt-8 grid gap-4 sm:grid-cols-2">
+                  {proofLinks.map((link) => (
+                    <a href={link.url} class="card card-link block no-underline">
+                      <div class="font-mono text-xs uppercase tracking-widest text-muted">Open-source reference</div>
+                      <div class="mt-1 font-medium text-text">{link.label}</div>
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+          )
+        }
+
+        {
+          layoutStyle === 'timeline' && (
+            <div class="prose-cf max-w-3xl border-l-2 border-ember/40 pl-6" data-layout="timeline">
+              <Content />
+            </div>
+          )
+        }
+
+        {
+          layoutStyle === 'checklist' && (
+            <div class="prose-cf max-w-3xl" data-layout="checklist">
+              <Content />
+            </div>
+          )
+        }
+
+        {
+          layoutStyle === 'narrative' && (
+            <div class="prose-cf max-w-3xl" data-layout="narrative">
+              <Content />
+              {proofLinks && (
+                <p class="mt-6">
+                  {proofLinks.map((link, index) => (
+                    <>
+                      {index > 0 && ' · '}
+                      <a href={link.url}>{link.label}</a>
+                    </>
+                  ))}
+                </p>
+              )}
+            </div>
+          )
+        }
+
+        {
+          layoutStyle === 'accordion' && (
+            <div class="max-w-3xl">
+              <details class="card mb-4" open>
+                <summary class="cursor-pointer font-medium text-text">Overview</summary>
+                <div class="prose-cf mt-4" data-layout="accordion">
+                  <Content />
+                </div>
+              </details>
+              {proofLinks && proofLinks.length > 0 && (
+                <details class="card">
+                  <summary class="cursor-pointer font-medium text-text">Open-source examples</summary>
+                  <ul class="mt-4 space-y-2 text-sm">
+                    {proofLinks.map((link) => (
+                      <li>
+                        <a href={link.url}>{link.label}</a>
+                      </li>
+                    ))}
+                  </ul>
+                </details>
+              )}
+            </div>
+          )
+        }
+
+        <div class="card card-marked mt-14 flex max-w-3xl flex-col items-start gap-4 p-8 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p class="eyebrow">Start here</p>
+            <p class="mt-2 font-medium text-text">Describe your workflow — we reply with an engineering take.</p>
+          </div>
+          <ContactModal client:load label={cta} />
+        </div>
+
+        <nav class="mt-16 border-t border-border pt-8" aria-label="Other services">
+          <p class="eyebrow">Other directions</p>
+          <div class="mt-4 flex flex-wrap gap-2.5">
+            {
+              otherServices.map((service) => (
+                <a
+                  href={`/${service.slug}`}
+                  class="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm text-text no-underline transition hover:border-ember/50 hover:no-underline"
+                >
+                  <span class="text-accent">
+                    <ServiceIcon slug={service.slug} size={16} />
+                  </span>
+                  {service.title}
+                </a>
+              ))
+            }
+          </div>
+        </nav>
+      </div>
+    </div>
+  </article>
+</BaseLayout>

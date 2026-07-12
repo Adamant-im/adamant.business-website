@@ -1,0 +1,9 @@
+---
+import { getEntry } from 'astro:content';
+import ServicePage from '../components/ServicePage.astro';
+
+const entry = await getEntry('services', 'en/infra');
+if (!entry) throw new Error('Service content not found');
+---
+
+<ServicePage entry={entry} />

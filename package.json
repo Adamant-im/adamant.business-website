@@ -1,0 +1,58 @@
+{
+  "name": "adamant.business-website",
+  "description": "cryptofoundry business website — We build crypto software and maintain it in production.",
+  "type": "module",
+  "version": "0.1.0",
+  "author": "cryptofoundry <business@adamant.im>",
+  "license": "Unlicense",
+  "keywords": [
+    "cryptofoundry",
+    "adamant.business",
+    "blockchain",
+    "crypto",
+    "cryptocurrency",
+    "self-hosted",
+    "payments",
+    "trading-bots",
+    "infrastructure",
+    "messenger",
+    "security",
+    "website",
+    "astro"
+  ],
+  "homepage": "https://adamant.business",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Adamant-im/adamant.business-website.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Adamant-im/adamant.business-website/issues"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "lint": "astro check",
+    "validate:config": "node --experimental-strip-types scripts/validate-config.mjs",
+    "sync:stars": "node --experimental-strip-types scripts/sync-github-repo-stars.mjs"
+  },
+  "dependencies": {
+    "@astrojs/react": "^6.0.1",
+    "@astrojs/sitemap": "^3.7.3",
+    "@tailwindcss/vite": "^4.3.2",
+    "astro": "^7.0.7",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "tailwindcss": "^4.3.2"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.6",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "typescript": "^5.9.3"
+  }
+}

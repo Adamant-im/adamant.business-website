@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="cryptofoundry — self-hosted crypto software, built and run in production">
+  <defs>
+    <linearGradient id="ember" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0" stop-color="#ffb45c"/>
+      <stop offset="0.55" stop-color="#f07316"/>
+      <stop offset="1" stop-color="#d1540e"/>
+    </linearGradient>
+    <linearGradient id="seam" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#f07316" stop-opacity="0"/>
+      <stop offset="0.18" stop-color="#f07316"/>
+      <stop offset="0.55" stop-color="#ffb45c"/>
+      <stop offset="0.85" stop-color="#f07316" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#f07316" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.22" cy="1" r="0.9">
+      <stop offset="0" stop-color="#f07316" stop-opacity="0.22"/>
+      <stop offset="0.5" stop-color="#f07316" stop-opacity="0.05"/>
+      <stop offset="1" stop-color="#f07316" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="44" height="44" patternUnits="userSpaceOnUse">
+      <path d="M44 0H0V44" fill="none" stroke="#f2e8d8" stroke-opacity="0.05" stroke-width="1"/>
+    </pattern>
+    <g id="hexcell">
+      <path d="M30 0 15 26 -15 26 -30 0 -15 -26 15 -26Z" fill="none" stroke="#a89c8c" stroke-opacity="0.35" stroke-width="1.5"/>
+    </g>
+  </defs>
+
+  <rect width="1200" height="630" fill="#16120d"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+
+  <!-- hex lattice, right side -->
+  <g>
+    <use href="#hexcell" x="1015" y="118"/>
+    <use href="#hexcell" x="1060" y="196"/>
+    <use href="#hexcell" x="970" y="196"/>
+    <use href="#hexcell" x="1015" y="274"/>
+    <use href="#hexcell" x="1105" y="118"/>
+    <use href="#hexcell" x="1105" y="274"/>
+    <path d="M1015 118 1060 196 1015 274M1015 118 970 196 1015 274" fill="none" stroke="#f07316" stroke-opacity="0.55" stroke-width="1.5"/>
+    <circle cx="1015" cy="118" r="5" fill="#ffb45c"/>
+    <circle cx="1060" cy="196" r="5" fill="#f07316"/>
+    <circle cx="970" cy="196" r="5" fill="#f07316"/>
+    <circle cx="1015" cy="274" r="5" fill="#ffb45c"/>
+  </g>
+
+  <!-- hallmark -->
+  <g transform="translate(80 96) scale(2.1)">
+    <path d="M58 29 44.5 52.4 17.5 52.4 4 29 17.5 5.6 44.5 5.6Z"
+          fill="#1d1712" stroke="#1d1712" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M55.6 29 43.3 50.3 18.7 50.3 6.4 29 18.7 7.7 43.3 7.7Z"
+          fill="none" stroke="#4a3b2a" stroke-width="1.8" stroke-linejoin="round"/>
+    <path d="M38.8 37.6 A12.9 12.9 0 1 1 38.8 20.4"
+          fill="none" stroke="url(#ember)" stroke-width="8.8" stroke-linecap="butt"/>
+    <path d="M45 25.8 48.2 29 45 32.2 41.8 29Z" fill="#ffc061"/>
+  </g>
+
+  <!-- mono kicker -->
+  <text x="80" y="292" font-family="Menlo,Consolas,monospace" font-size="21" letter-spacing="6" fill="#f07316">SELF-HOSTED CRYPTO ENGINEERING · EST. 2016</text>
+
+  <!-- wordmark -->
+  <text x="76" y="382" font-family="'Helvetica Neue',Arial,sans-serif" font-size="92" font-weight="700" letter-spacing="-2" fill="#f6efe4">cryptofoundry</text>
+
+  <!-- tagline -->
+  <text x="80" y="444" font-family="'Helvetica Neue',Arial,sans-serif" font-size="30" fill="#a89c8c">Bots, payments, trading software and node infrastructure —</text>
+  <text x="80" y="486" font-family="'Helvetica Neue',Arial,sans-serif" font-size="30" fill="#a89c8c">built and run in production by real blockchain engineers.</text>
+
+  <!-- domain plate -->
+  <g transform="translate(80 528)">
+    <rect width="286" height="52" rx="8" fill="#211b14" stroke="#4a3b2a"/>
+    <circle cx="26" cy="26" r="5" fill="#ffb45c"/>
+    <text x="46" y="34" font-family="Menlo,Consolas,monospace" font-size="22" fill="#f6efe4">adamant.business</text>
+  </g>
+
+  <!-- molten seam -->
+  <rect x="0" y="624" width="1200" height="6" fill="url(#seam)"/>
+</svg>
