@@ -43,7 +43,7 @@ export default function LanguageSwitcher({ locale, label, currentPath }: Props) 
             .map((item) => {
             const href = localePath(item.id, currentPath);
             return (
-              <li key={item.id} role="option">
+              <li key={item.id}>
                 <a
                   href={href}
                   className="block px-3 py-2 text-sm text-text no-underline hover:bg-bg hover:no-underline"
