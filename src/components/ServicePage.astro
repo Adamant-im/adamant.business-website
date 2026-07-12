@@ -1,32 +1,51 @@
 ---
+import { getEntry } from 'astro:content';
 import { render, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ContactModal from './react/ContactModal';
 import ServiceIcon from './ServiceIcon.astro';
 import { siteConfig } from '../../config/site.ts';
+import { getUiStrings, localePath, type LocaleId } from '../i18n';
 
 interface Props {
   entry: CollectionEntry<'services'>;
+  locale: LocaleId;
 }
 
-const { entry } = Astro.props;
+const { entry, locale } = Astro.props;
+const ui = getUiStrings(locale);
 const { title, description, cta, layoutStyle, proofLinks } = entry.data;
 const { Content } = await render(entry);
-const slug = entry.id.replace(/^en\//, '').replace(/\.md$/, '');
+const slug = entry.id.replace(/^[^/]+\//, '').replace(/\.md$/, '');
 
-const otherServices = siteConfig.services.filter((service) => service.slug !== slug);
+const otherServiceEntries = await Promise.all(
+  siteConfig.services
+    .filter((service) => service.slug !== slug)
+    .map(async (service) => {
+      const localized = await getEntry('services', `${locale}/${service.slug}`);
+      return localized ?? (await getEntry('services', `en/${service.slug}`));
+    }),
+);
+
+const canonicalPath = localePath(locale, `/${slug}`);
 
 const serviceJsonLd = {
   '@type': 'Service',
   name: title,
   description,
-  url: new URL(`/${slug}`, siteConfig.site.url).href,
+  url: new URL(canonicalPath, siteConfig.site.url).href,
   provider: { '@type': 'Organization', name: siteConfig.site.legalName },
   areaServed: 'Worldwide',
 };
 ---
 
-<BaseLayout title={title} description={description} jsonLd={serviceJsonLd}>
+<BaseLayout
+  title={title}
+  description={description}
+  locale={locale}
+  canonicalPath={canonicalPath}
+  jsonLd={serviceJsonLd}
+>
   <article>
     <div class="section-light grid-texture border-b border-border">
       <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
@@ -35,7 +54,7 @@ const serviceJsonLd = {
             <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border border-border bg-card text-accent shadow-sm">
               <ServiceIcon slug={slug} size={30} />
             </div>
-            <p class="eyebrow">cryptofoundry services</p>
+            <p class="eyebrow">{ui.servicePage.eyebrow}</p>
           </div>
           <h1 class="mt-5 text-3xl font-semibold tracking-tight text-text sm:text-4xl">{title}</h1>
           <p class="mt-4 text-lg leading-relaxed text-muted">{description}</p>
@@ -52,7 +71,7 @@ const serviceJsonLd = {
                 <Content />
               </div>
               <aside class="card card-marked lg:sticky lg:top-24">
-                <p class="eyebrow">Shipped in production</p>
+                <p class="eyebrow">{ui.servicePage.shippedEyebrow}</p>
                 <ul class="mt-4 space-y-3 text-sm text-muted">
                   {proofLinks?.map((link) => (
                     <li class="flex items-center gap-2.5">
@@ -76,7 +95,9 @@ const serviceJsonLd = {
                 <div class="mt-8 grid gap-4 sm:grid-cols-2">
                   {proofLinks.map((link) => (
                     <a href={link.url} class="card card-link block no-underline">
-                      <div class="font-mono text-xs uppercase tracking-widest text-muted">Open-source reference</div>
+                      <div class="font-mono text-xs uppercase tracking-widest text-muted">
+                        {ui.servicePage.openSourceRef}
+                      </div>
                       <div class="mt-1 font-medium text-text">{link.label}</div>
                     </a>
                   ))}
@@ -88,7 +109,7 @@ const serviceJsonLd = {
 
         {
           layoutStyle === 'timeline' && (
-            <div class="prose-cf max-w-3xl border-l-2 border-ember/40 pl-6" data-layout="timeline">
+            <div class="prose-cf max-w-3xl border-s-2 border-ember/40 ps-6" data-layout="timeline">
               <Content />
             </div>
           )
@@ -124,14 +145,14 @@ const serviceJsonLd = {
           layoutStyle === 'accordion' && (
             <div class="max-w-3xl">
               <details class="card mb-4" open>
-                <summary class="cursor-pointer font-medium text-text">Overview</summary>
+                <summary class="cursor-pointer font-medium text-text">{ui.servicePage.overview}</summary>
                 <div class="prose-cf mt-4" data-layout="accordion">
                   <Content />
                 </div>
               </details>
               {proofLinks && proofLinks.length > 0 && (
                 <details class="card">
-                  <summary class="cursor-pointer font-medium text-text">Open-source examples</summary>
+                  <summary class="cursor-pointer font-medium text-text">{ui.servicePage.openSourceExamples}</summary>
                   <ul class="mt-4 space-y-2 text-sm">
                     {proofLinks.map((link) => (
                       <li>
@@ -147,27 +168,31 @@ const serviceJsonLd = {
 
         <div class="card card-marked mt-14 flex max-w-3xl flex-col items-start gap-4 p-8 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <p class="eyebrow">Start here</p>
-            <p class="mt-2 font-medium text-text">Describe your workflow — we reply with an engineering take.</p>
+            <p class="eyebrow">{ui.servicePage.startEyebrow}</p>
+            <p class="mt-2 font-medium text-text">{ui.servicePage.startBody}</p>
           </div>
-          <ContactModal client:load label={cta} />
+          <ContactModal client:load label={cta} strings={ui.contact} />
         </div>
 
-        <nav class="mt-16 border-t border-border pt-8" aria-label="Other services">
-          <p class="eyebrow">Other directions</p>
+        <nav class="mt-16 border-t border-border pt-8" aria-label={ui.servicePage.otherDirections}>
+          <p class="eyebrow">{ui.servicePage.otherDirections}</p>
           <div class="mt-4 flex flex-wrap gap-2.5">
             {
-              otherServices.map((service) => (
-                <a
-                  href={`/${service.slug}`}
-                  class="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm text-text no-underline transition hover:border-ember/50 hover:no-underline"
-                >
-                  <span class="text-accent">
-                    <ServiceIcon slug={service.slug} size={16} />
-                  </span>
-                  {service.title}
-                </a>
-              ))
+              otherServiceEntries.map((otherEntry) => {
+                if (!otherEntry) return null;
+                const otherSlug = otherEntry.id.replace(/^[^/]+\//, '').replace(/\.md$/, '');
+                return (
+                  <a
+                    href={localePath(locale, `/${otherSlug}`)}
+                    class="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm text-text no-underline transition hover:border-ember/50 hover:no-underline"
+                  >
+                    <span class="text-accent">
+                      <ServiceIcon slug={otherSlug} size={16} />
+                    </span>
+                    {otherEntry.data.title}
+                  </a>
+                );
+              })
             }
           </div>
         </nav>

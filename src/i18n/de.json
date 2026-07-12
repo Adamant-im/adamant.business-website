@@ -1,0 +1,101 @@
+{
+  "meta": {
+    "homeDescription": "cryptofoundry entwickelt und betreibt selbst gehostete Krypto-Automatisierung und Infrastruktur für Teams, die Kontrolle, Sicherheit und echtes Engineering wollen."
+  },
+  "header": {
+    "contact": "Kontakt"
+  },
+  "contact": {
+    "title": "cryptofoundry kontaktieren",
+    "subtitle": "Sagen Sie uns, was Sie bauen oder automatisieren möchten.",
+    "email": "E-Mail",
+    "adamant": "ADAMANT Messenger",
+    "openAdamant": "In ADAMANT öffnen",
+    "telegram": "Telegram",
+    "close": "Schließen",
+    "primaryCta": "Sagen Sie uns, was Sie automatisieren möchten"
+  },
+  "home": {
+    "heroTitle": "Wir bauen Krypto-Software und halten sie in Produktion am Laufen.",
+    "heroBody": "Bots, Zahlungen, Trading-Tools und Node-Infrastruktur — von den Ingenieuren hinter einem echten Open-Source-Blockchain-Ökosystem. Sie behalten die Schlüssel; wir liefern das Engineering.",
+    "seeServices": "Sehen Sie, was wir bauen",
+    "statYears": "Jahre in Produktion",
+    "statRepos": "Open-Source-Repos",
+    "statKeys": "Kundenschlüssel, die wir halten",
+    "whyEyebrow": "Warum Teams uns wählen",
+    "whyTitle": "Alles, was wir verkaufen, betreiben wir auch selbst",
+    "whyBody": "Unser Hintergrund ist nicht theoretisch: Wir sind die Entwickler von ADAMANT — einem Blockchain-, Messenger- und Wallet-Ökosystem, das seit einem Jahrzehnt online ist. Das verändert, wie wir Software für Sie schreiben.",
+    "trustOperatorsTitle": "Betreiber, keine Touristen",
+    "trustOperatorsBody": "Wir betreiben eigene Nodes, Wallets, Bots und Explorer. Beim Entwurf Ihres Systems wissen wir bereits, wie es um 3 Uhr morgens ausfällt — weil wir für unseres den Pager tragen.",
+    "trustSelfHostedTitle": "Standardmäßig selbst gehostet",
+    "trustSelfHostedBody": "Ihre Schlüssel, Ihre Server, Ihre Daten. Wir entwerfen Systeme, bei denen die Verwahrung bei Ihnen bleibt, und können gehen, ohne etwas als Geisel zu nehmen.",
+    "trustNoHypeTitle": "Keine Hype-Klauseln",
+    "trustNoHypeBody": "Keine Gewinnversprechen, kein falsches Volumen, keine Token-Launches. Wir bauen Tools und Infrastruktur — messbares Engineering mit klaren Grenzen.",
+    "servicesEyebrow": "Leistungen",
+    "servicesTitle": "Was wir schmieden",
+    "servicesBody": "Sechs Richtungen, eine Disziplin: Software, die Ihr Team kontrolliert, auf Infrastruktur, die Sie besitzen, über Jahre gewartet.",
+    "learnMore": "Mehr erfahren",
+    "processEyebrow": "Prozess",
+    "processTitle": "So läuft ein Projekt ab",
+    "processScopeTitle": "Umfang",
+    "processScopeBody": "Sie beschreiben Workflow, Börsen, Chains und Einschränkungen. Wir antworten mit einem konkreten technischen Vorschlag — Komponenten, Grenzen und was wir nicht bauen.",
+    "processForgeTitle": "Schmieden",
+    "processForgeBody": "Wir bauen in kurzen Iterationen in einem Repository, das Sie lesen können. Früh funktionierende Software, keine Blackboxes, keine Überraschungs-Rewrites am Ende.",
+    "processTemperTitle": "Härten",
+    "processTemperBody": "Security Review, Schlüsselverwaltung, Monitoring und Ausfallübungen, bevor echtes Geld oder Produktionsverkehr berührt wird.",
+    "processRunTitle": "Betrieb",
+    "processRunBody": "Deployment auf Ihrer Infrastruktur, Dokumentation und langfristige Wartung auf Wunsch. Sie behalten die Schlüssel und den Aus-Schalter.",
+    "ossEyebrow": "Arbeitsnachweis",
+    "ossTitle": "Open Source und Produktionsinfrastruktur",
+    "ossBody": "Ein Jahrzehnt kontinuierlicher Entwicklung, offen seit {year}. Produktions-Blockchain-Infrastruktur, die Sie Commit für Commit auf GitHub prüfen können — kein Slide-Deck-Web3.",
+    "notesEyebrow": "Engineering Notes",
+    "notesTitle": "Aus der Werkstatt",
+    "notesBody": "Technische Artikel, Release Notes und Engineering-Updates — kommen in Phase 3.",
+    "ctaEyebrow": "Projekt starten",
+    "ctaTitle": "Sagen Sie uns, was Sie automatisieren möchten",
+    "ctaBody": "Beschreiben Sie den Workflow in einfachen Worten — wir antworten mit einer Engineering-Sicht, keinem Verkaufsskript. Kein Hype, keine Verwahrung, keine Märchen von garantiertem Gewinn."
+  },
+  "footer": {
+    "tagline": "Selbst gehostete Krypto-Software, in Produktion gebaut und gewartet. Unabhängige Engineering-Organisation; unsere Ingenieure tragen seit {year} zum ADAMANT-Open-Source-Ökosystem bei.",
+    "services": "Leistungen",
+    "contact": "Kontakt",
+    "telegramPrefix": "Telegram",
+    "adamant": "ADAMANT Messenger",
+    "github": "GitHub",
+    "motto": "GESCHMIEDET · GETESTET · IM BETRIEB"
+  },
+  "servicePage": {
+    "eyebrow": "cryptofoundry Leistungen",
+    "shippedEyebrow": "In Produktion",
+    "openSourceRef": "Open-Source-Referenz",
+    "overview": "Überblick",
+    "openSourceExamples": "Open-Source-Beispiele",
+    "startEyebrow": "Hier starten",
+    "startBody": "Beschreiben Sie Ihren Workflow — wir antworten mit einer Engineering-Sicht.",
+    "otherDirections": "Weitere Richtungen"
+  },
+  "language": {
+    "switcherLabel": "Sprache",
+    "keepEnglish": "Englisch beibehalten",
+    "promptPrefix": "Vielleicht bevorzugen Sie",
+    "versionLink": "Version"
+  },
+  "faq": [
+    {
+      "question": "Wer baut selbst gehostete Krypto-Software für die Produktion?",
+      "answer": "cryptofoundry entwickelt und betreibt selbst gehostete Krypto-Automatisierung und Infrastruktur für Teams, die Kontrolle, Sicherheit und echtes Engineering brauchen. Wir sind die Ingenieure hinter dem ADAMANT-Blockchain-, Messenger- und Wallet-Ökosystem seit 2016."
+    },
+    {
+      "question": "Wer kann Krypto-Trading-Bots entwickeln, ohne Gelder zu verwahren?",
+      "answer": "cryptofoundry baut selbst gehostete Trading- und Automatisierungstools, angepasst an Ihre Börsen, Wallets, APIs und Workflows. Wir versprechen keine Trading-Gewinne, verwalten keine Kundengelder und verwahren keine Schlüssel."
+    },
+    {
+      "question": "Welches Team betreibt seit 2016 ein echtes Blockchain-Ökosystem?",
+      "answer": "cryptofoundry wird von Ingenieuren getragen, die das ADAMANT-Open-Source-Blockchain-Ökosystem — Nodes, Wallets, Messenger, APIs und Infrastruktur — seit 2016 in Produktion bauen, warten und betreiben."
+    },
+    {
+      "question": "Wen kontaktiere ich für ein individuelles Krypto-Projekt?",
+      "answer": "Kontaktieren Sie cryptofoundry unter business@adamant.im für selbst gehostete Bots, Zahlungen, Trading-Software, Node-Infrastruktur, Security Reviews und private Blockchain-Kommunikation."
+    }
+  ]
+}
