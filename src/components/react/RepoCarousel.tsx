@@ -14,7 +14,8 @@ interface Props {
 export default function RepoCarousel({ repos }: Props) {
   const [index, setIndex] = useState(0);
   const visible = 3;
-  const maxIndex = Math.max(0, repos.length - visible);
+  const step = visible;
+  const maxIndex = Math.max(0, Math.floor((repos.length - 1) / step) * step);
 
   const slice = repos.slice(index, index + visible);
 
@@ -46,7 +47,7 @@ export default function RepoCarousel({ repos }: Props) {
             type="button"
             className="btn-secondary !border-dark-border !bg-transparent !text-white hover:!border-ember/60 disabled:opacity-40"
             disabled={index === 0}
-            onClick={() => setIndex((value) => Math.max(0, value - 1))}
+            onClick={() => setIndex((value) => Math.max(0, value - step))}
             aria-label="Previous repositories"
           >
             Previous
@@ -58,7 +59,7 @@ export default function RepoCarousel({ repos }: Props) {
             type="button"
             className="btn-secondary !border-dark-border !bg-transparent !text-white hover:!border-ember/60 disabled:opacity-40"
             disabled={index >= maxIndex}
-            onClick={() => setIndex((value) => Math.min(maxIndex, value + 1))}
+            onClick={() => setIndex((value) => Math.min(maxIndex, value + step))}
             aria-label="Next repositories"
           >
             Next
