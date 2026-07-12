@@ -47,7 +47,10 @@ export default function LanguageSwitcher({ locale, label, currentPath }: Props) 
                 <a
                   href={href}
                   className="block px-3 py-2 text-sm text-text no-underline hover:bg-bg hover:no-underline"
-                  onClick={() => setOpen(false)}
+                  onClick={() => {
+                    localStorage.setItem('preferredLanguage', item.id);
+                    setOpen(false);
+                  }}
                 >
                   {item.label}
                 </a>
