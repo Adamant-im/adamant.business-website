@@ -38,6 +38,12 @@ jobs:
         env:
           PAT_GITHUB_TOKEN: ${{ secrets.PAT_GITHUB_TOKEN }}
 
+      - name: Validate config
+        run: npm run validate:config
+
+      - name: Lint
+        run: npm run lint
+
       - name: Build
         run: npm run build
 
