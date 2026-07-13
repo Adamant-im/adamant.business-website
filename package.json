@@ -38,16 +38,26 @@
     "astro": "astro",
     "lint": "astro check",
     "validate:config": "node --experimental-strip-types scripts/validate-config.mjs",
-    "sync:stars": "node --experimental-strip-types scripts/sync-github-repo-stars.mjs"
+    "validate:notes": "node --experimental-strip-types scripts/validate-engineering-notes.mjs",
+    "sync:stars": "node --experimental-strip-types scripts/sync-github-repo-stars.mjs",
+    "import:medium": "node --experimental-strip-types scripts/import-medium-export.mjs",
+    "import:releases": "node --experimental-strip-types scripts/sync-github-releases.mjs --all",
+    "import:discussions": "node --experimental-strip-types scripts/sync-github-discussions.mjs --all",
+    "import:historical": "node --experimental-strip-types scripts/import-historical-content.mjs"
   },
   "dependencies": {
+    "@astrojs/markdown-remark": "^7.2.1",
     "@astrojs/react": "^6.0.1",
     "@astrojs/sitemap": "^3.7.3",
     "@tailwindcss/vite": "^4.3.2",
     "astro": "^7.0.7",
+    "cheerio": "^1.2.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
-    "tailwindcss": "^4.3.2"
+    "rehype-sanitize": "^6.0.0",
+    "sharp": "^0.35.3",
+    "tailwindcss": "^4.3.2",
+    "turndown": "^7.2.4"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.6",

@@ -13,8 +13,11 @@ interface Props {
   locale: LocaleId;
   canonicalPath?: string;
   ogType?: string;
+  ogImage?: string;
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
   noindex?: boolean;
+  prevPath?: string;
+  nextPath?: string;
 }
 
 const {
@@ -23,14 +26,17 @@ const {
   locale,
   canonicalPath = Astro.url.pathname,
   ogType = 'website',
+  ogImage,
   jsonLd,
   noindex = false,
+  prevPath,
+  nextPath,
 } = Astro.props;
 
 const { site, seo } = await import('../../config/site.ts').then((m) => m.siteConfig);
 const localeConfig = getLocaleConfig(locale);
 const canonicalUrl = new URL(canonicalPath, site.url).href;
-const ogImage = new URL(seo.defaultOgImage, site.url).href;
+const ogImageUrl = new URL(ogImage || seo.defaultOgImage, site.url).href;
 const fullTitle = title === site.name ? title : `${title} — ${site.name}`;
 const { path: pathWithoutLocale } = stripLocalePrefix(canonicalPath);
 const hreflangAlternates = getHreflangAlternates(pathWithoutLocale);
@@ -81,6 +87,8 @@ const jsonLdGraph = jsonLd
 <title>{fullTitle}</title>
 <meta name="description" content={description} />
 <link rel="canonical" href={canonicalUrl} />
+{prevPath && <link rel="prev" href={new URL(prevPath, site.url).href} />}
+{nextPath && <link rel="next" href={new URL(nextPath, site.url).href} />}
 {noindex && <meta name="robots" content="noindex, nofollow" />}
 {
   hreflangAlternates.map((alternate) => (
@@ -92,7 +100,7 @@ const jsonLdGraph = jsonLd
 <meta property="og:title" content={fullTitle} />
 <meta property="og:description" content={description} />
 <meta property="og:url" content={canonicalUrl} />
-<meta property="og:image" content={ogImage} />
+<meta property="og:image" content={ogImageUrl} />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta property="og:site_name" content={site.name} />
@@ -104,7 +112,7 @@ const jsonLdGraph = jsonLd
 <meta name="twitter:creator" content={seo.twitterHandle} />
 <meta name="twitter:title" content={fullTitle} />
 <meta name="twitter:description" content={description} />
-<meta name="twitter:image" content={ogImage} />
+<meta name="twitter:image" content={ogImageUrl} />
 
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="icon" type="image/x-icon" sizes="48x48" href="/favicon.ico" />

@@ -1,0 +1,22 @@
+---
+import EngineeringNoteDetail from '../../../components/EngineeringNoteDetail.astro';
+import { getNonDefaultLocales } from '../../../i18n';
+import { getNotesForLocale } from '../../../lib/notes';
+
+export async function getStaticPaths() {
+  const paths = [];
+  for (const locale of getNonDefaultLocales()) {
+    for (const entry of await getNotesForLocale(locale.id)) {
+      paths.push({
+        params: { locale: locale.path, slug: entry.data.slug },
+        props: { entry, localeId: locale.id },
+      });
+    }
+  }
+  return paths;
+}
+
+const { entry, localeId } = Astro.props;
+---
+
+<EngineeringNoteDetail locale={localeId} entry={entry} />

@@ -12,10 +12,10 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-
 # environment variables
 .env
 .env.production
+.playwright-cli/
 
 # macOS-specific files
 .DS_Store
@@ -30,3 +30,6 @@ pnpm-debug.log*
 .ai-tasks/
 .claude/
 .cursor/
+
+# Imported publication source material
+content/original/

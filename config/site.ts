@@ -125,6 +125,7 @@ export const siteConfig = {
     ],
     discussions: {
       org: 'Adamant-im',
+      repository: '.github',
       authorsFilter: 'org-members',
       includeOnlyFirstPost: true,
     },

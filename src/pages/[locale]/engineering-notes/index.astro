@@ -1,0 +1,12 @@
+---
+import EngineeringNotesPage from '../../../components/EngineeringNotesPage.astro';
+import { getLocaleFromPathParam, getNonDefaultLocales } from '../../../i18n';
+
+export function getStaticPaths() {
+  return getNonDefaultLocales().map((locale) => ({ params: { locale: locale.path } }));
+}
+
+const locale = getLocaleFromPathParam(Astro.params.locale!);
+---
+
+<EngineeringNotesPage locale={locale} page={1} />

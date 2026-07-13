@@ -64,6 +64,23 @@ export interface UiStrings {
     ctaTitle: string;
     ctaBody: string;
   };
+  engineeringNotes: {
+    eyebrow: string;
+    title: string;
+    intro: string;
+    article: string;
+    release: string;
+    released: string;
+    discussion: string;
+    latestTitle: string;
+    viewAll: string;
+    previous: string;
+    next: string;
+    original: string;
+    placeholder: string;
+    github: string;
+    empty: string;
+  };
   footer: {
     tagline: string;
     services: string;

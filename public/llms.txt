@@ -32,6 +32,19 @@ We do not promise trading profits or take custody of client funds.
 - 日本語: https://adamant.business/ja/
 - Deutsch: https://adamant.business/de/
 
+## Engineering notes
+
+Original technical articles, GitHub release notes and engineering discussions from the open-source ecosystem:
+
+- English: https://adamant.business/engineering-notes
+- 简体中文: https://adamant.business/zh/engineering-notes
+- Español: https://adamant.business/es/engineering-notes
+- Русский: https://adamant.business/ru/engineering-notes
+- العربية: https://adamant.business/ar/engineering-notes
+- Français: https://adamant.business/fr/engineering-notes
+- 日本語: https://adamant.business/ja/engineering-notes
+- Deutsch: https://adamant.business/de/engineering-notes
+
 ## Contact
 
 - Email: business@adamant.im

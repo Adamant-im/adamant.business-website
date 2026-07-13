@@ -1,0 +1,110 @@
+---
+import { render } from 'astro:content';
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getLocaleConfig, getUiStrings, type LocaleId } from '../i18n';
+import { noteDetailPath, type NoteEntry } from '../lib/notes';
+
+interface Props {
+  locale: LocaleId;
+  entry: NoteEntry;
+}
+
+const { locale, entry } = Astro.props;
+const ui = getUiStrings(locale);
+const localeConfig = getLocaleConfig(locale);
+const { Content } = await render(entry);
+const canonicalPath = noteDetailPath(locale, entry.data.slug);
+const canonicalUrl = new URL(canonicalPath, Astro.site).href;
+const coverUrl = entry.data.coverImage ? new URL(entry.data.coverImage, Astro.site).href : undefined;
+const category =
+  entry.data.category === 'release'
+    ? entry.data.repo || ui.engineeringNotes.release
+    : entry.data.category === 'discussion'
+      ? entry.data.discussionCategory || ui.engineeringNotes.discussion
+      : ui.engineeringNotes.article;
+const articleJsonLd = {
+  '@type': entry.data.category === 'article' ? 'BlogPosting' : 'Article',
+  headline: entry.data.title,
+  description: entry.data.description,
+  datePublished: entry.data.publishedAt.toISOString(),
+  author: {
+    '@type': 'Person',
+    name: entry.data.author,
+    ...(entry.data.authorUrl ? { url: entry.data.authorUrl } : {}),
+  },
+  ...(coverUrl ? { image: coverUrl } : {}),
+  url: canonicalUrl,
+  mainEntityOfPage: canonicalUrl,
+  inLanguage: localeConfig.codes[0],
+  isBasedOn: entry.data.sourceUrl,
+  publisher: { '@type': 'Organization', name: 'cryptofoundry' },
+};
+const publishedDate = new Intl.DateTimeFormat(localeConfig.codes[0], {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+  timeZone: 'UTC',
+}).format(entry.data.publishedAt);
+---
+
+<BaseLayout
+  title={entry.data.title}
+  description={entry.data.description}
+  locale={locale}
+  canonicalPath={canonicalPath}
+  ogType="article"
+  ogImage={entry.data.coverImage}
+  jsonLd={articleJsonLd}
+  noindex={entry.data.placeholder}
+>
+  <article>
+    <header class="section-light grid-texture border-b border-border">
+      <div class="mx-auto max-w-5xl px-4 py-12 sm:px-6 sm:py-16">
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-xs uppercase tracking-[0.14em] text-accent">
+          <span>{category}</span>
+          <span aria-hidden="true">/</span>
+          <time datetime={entry.data.publishedAt.toISOString()}>{publishedDate}</time>
+        </div>
+        <h1 class="mt-5 max-w-4xl text-3xl font-semibold tracking-tight text-text sm:text-5xl sm:leading-tight">
+          {entry.data.title}
+        </h1>
+        <div class="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted">
+          <span>{entry.data.author}</span>
+          <a href={entry.data.sourceUrl} rel="noopener noreferrer" target="_blank">
+            {ui.engineeringNotes.original} ↗
+          </a>
+        </div>
+      </div>
+    </header>
+
+    {entry.data.coverImage && (
+      <figure class="mx-auto max-w-7xl px-4 pt-8 sm:px-6 sm:pt-12">
+        <img
+          src={entry.data.coverImage}
+          alt=""
+          class="max-h-[76vh] w-full rounded-xl border border-border bg-card object-contain"
+          width="1600"
+          height="900"
+          decoding="async"
+        />
+      </figure>
+    )}
+
+    <div class="mx-auto max-w-3xl px-4 py-10 sm:px-6 sm:py-14">
+      {entry.data.placeholder && (
+        <p class="mb-8 rounded-lg border border-warning/40 bg-warning/10 p-4 text-sm text-muted">
+          {ui.engineeringNotes.placeholder}
+        </p>
+      )}
+      <div class="note-prose">
+        <Content />
+      </div>
+      <div class="mt-12 border-t border-border pt-6">
+        <a href={entry.data.sourceUrl} rel="noopener noreferrer" target="_blank" class="btn-secondary">
+          {ui.engineeringNotes.original} ↗
+        </a>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
