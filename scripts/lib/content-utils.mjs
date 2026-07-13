@@ -104,7 +104,12 @@ export async function writeOriginalAndLocaleNotes(record, body) {
       : record.category === 'release'
         ? 'releases'
         : 'discussions';
-  const originalName = `${record.originalFileName ?? record.slug}.md`;
+  const publishedDate = new Date(record.publishedAt);
+  if (Number.isNaN(publishedDate.getTime())) {
+    throw new Error(`Invalid publication date for ${record.originalId}: ${record.publishedAt}`);
+  }
+  const datePrefix = publishedDate.toISOString().slice(0, 10);
+  const originalName = `${datePrefix}_${record.originalFileName ?? record.slug}.md`;
   const originalFrontmatter = { ...record };
   delete originalFrontmatter.originalFileName;
 
@@ -123,7 +128,7 @@ export async function writeOriginalAndLocaleNotes(record, body) {
       locale: locale.id,
       placeholder: !isEnglish,
     };
-    const notePath = path.join(notesDir, locale.id, `${record.slug}.md`);
+    const notePath = path.join(notesDir, locale.id, `${datePrefix}_${record.slug}.md`);
     changed += Number(
       await writeIfChanged(
         notePath,
