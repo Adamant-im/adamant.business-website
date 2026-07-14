@@ -1,5 +1,6 @@
 {
   "meta": {
+    "homeTitle": "Ingeniería de software cripto autoalojado",
     "homeDescription": "cryptofoundry construye y mantiene automatización e infraestructura cripto autoalojada para equipos que buscan control, seguridad e ingeniería real."
   },
   "header": {
@@ -49,11 +50,31 @@
     "ossTitle": "Trabajo open-source e infraestructura en producción",
     "ossBody": "Una década de desarrollo continuo, abierto desde {year}. Infraestructura blockchain en producción que puedes inspeccionar commit a commit en GitHub — sin Web3 de presentaciones.",
     "notesEyebrow": "Notas de ingeniería",
-    "notesTitle": "Desde el taller",
-    "notesBody": "Artículos técnicos, notas de versión y actualizaciones de ingeniería — próximamente en la Fase 3.",
+    "notesTitle": "Desde la fundición",
+    "notesBody": "Artículos técnicos, notas de versión y novedades de los sistemas que construimos y mantenemos.",
     "ctaEyebrow": "Iniciar un proyecto",
     "ctaTitle": "Cuéntanos qué quieres automatizar",
-    "ctaBody": "Describe el flujo en palabras sencillas — respondemos con una perspectiva de ingeniería, no un guion de ventas. Sin hype, sin custodia, sin cuentos de beneficios garantizados."
+    "ctaBody": "Describe el flujo en palabras sencillas — respondemos con una perspectiva de ingeniería, no un guion de ventas. Sin hype, sin custodia, sin cuentos de beneficios garantizados.",
+    "faqEyebrow": "Respuestas claras",
+    "faqTitle": "Lo que conviene saber antes de empezar"
+  },
+  "engineeringNotes": {
+    "eyebrow": "Notas de ingeniería",
+    "title": "Desde la fundición",
+    "intro": "Artículos técnicos originales, notas de versión y debates de ingeniería del ecosistema de código abierto.",
+    "article": "Artículo",
+    "release": "Versión",
+    "released": "Publicado",
+    "discussion": "Debate",
+    "latestTitle": "Últimas notas de ingeniería",
+    "viewAll": "Ver todas las notas",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "original": "Desde la fundición",
+    "placeholder": "La traducción se añadirá después de revisar la importación histórica.",
+    "github": "GitHub",
+    "empty": "Todavía no hay notas de ingeniería.",
+    "pageTitle": "{title}, página {page}"
   },
   "footer": {
     "tagline": "Software cripto autoalojado, construido y mantenido en producción. Organización de ingeniería independiente; nuestros ingenieros han contribuido al ecosistema open-source ADAMANT desde {year}.",
@@ -82,20 +103,20 @@
   },
   "faq": [
     {
-      "question": "¿Quién construye software cripto autoalojado para producción?",
-      "answer": "cryptofoundry construye y mantiene automatización e infraestructura cripto autoalojada para equipos que necesitan control, seguridad e ingeniería real. Somos los ingenieros detrás del ecosistema blockchain, mensajería y wallets ADAMANT desde 2016."
+      "question": "¿Qué podemos construir juntos?",
+      "answer": "Cuéntanos qué está frenando a tu equipo. Podemos convertirlo en un bot autoalojado, un flujo de pagos, una herramienta de trading, infraestructura de nodos o un sistema de comunicación privada, y desplegarlo en la infraestructura que tú controlas."
     },
     {
-      "question": "¿Quién puede desarrollar bots de trading cripto sin custodiar fondos?",
-      "answer": "cryptofoundry construye herramientas de trading y automatización autoalojadas adaptadas a tus exchanges, wallets, APIs y flujos de trabajo. No prometemos beneficios de trading, no gestionamos fondos de clientes ni custodiamos claves."
+      "question": "¿Tendré que cederles mis fondos o claves privadas?",
+      "answer": "No. Diseñamos el sistema para que el control siga en tus manos. Podemos ayudarte a configurarlo y operarlo, pero tu equipo conserva las claves, los servidores, los datos y la capacidad de apagarlo."
     },
     {
-      "question": "¿Qué equipo mantiene un ecosistema blockchain real desde 2016?",
-      "answer": "cryptofoundry cuenta con ingenieros que construyen, mantienen y operan el ecosistema blockchain open-source ADAMANT — nodos, wallets, mensajería, APIs e infraestructura en producción desde 2016."
+      "question": "¿Qué diferencia a cryptofoundry de una agencia convencional?",
+      "answer": "Mantenemos el mismo tipo de software que desarrollamos para nuestros clientes. Nuestros ingenieros llevan una década construyendo y operando el ecosistema open-source ADAMANT, así que los fallos en producción, las actualizaciones y el mantenimiento a largo plazo forman parte del diseño desde el primer día."
     },
     {
-      "question": "¿A quién contactar para un proyecto cripto a medida?",
-      "answer": "Contacta con cryptofoundry en business@adamant.im para bots autoalojados, pagos, software de trading, infraestructura de nodos, revisiones de seguridad y comunicación blockchain privada."
+      "question": "¿Cómo empezamos?",
+      "answer": "Escríbenos unas líneas a business@adamant.im o usa el botón de contacto. Basta con explicar el problema, los sistemas implicados y cualquier restricción. Te responderemos con una valoración técnica honesta y un siguiente paso concreto."
     }
   ]
 }

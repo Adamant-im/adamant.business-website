@@ -1,5 +1,6 @@
 {
   "meta": {
+    "homeTitle": "Self-hosted crypto software engineering",
     "homeDescription": "cryptofoundry builds and maintains self-hosted crypto automation and infrastructure for teams that want control, security, and real engineering."
   },
   "header": {
@@ -49,14 +50,34 @@
     "ossTitle": "Open-source work and production infrastructure",
     "ossBody": "A decade of continuous development, open since {year}. Production blockchain infrastructure you can inspect commit by commit on GitHub — no slide-deck Web3.",
     "notesEyebrow": "Engineering notes",
-    "notesTitle": "From the workshop",
-    "notesBody": "Technical articles, release notes, and engineering updates — coming in Phase 3.",
+    "notesTitle": "From the foundry",
+    "notesBody": "Technical articles, release notes, and engineering updates from the systems we build and maintain.",
     "ctaEyebrow": "Start a project",
     "ctaTitle": "Tell us what you want to automate",
-    "ctaBody": "Describe the workflow in plain words — we respond with an engineering take, not a sales script. No hype, no custody, no guaranteed-profit fairy tales."
+    "ctaBody": "Describe the workflow in plain words — we respond with an engineering take, not a sales script. No hype, no custody, no guaranteed-profit fairy tales.",
+    "faqEyebrow": "Good questions",
+    "faqTitle": "A few things you may want to know"
+  },
+  "engineeringNotes": {
+    "eyebrow": "Engineering notes",
+    "title": "From the foundry",
+    "intro": "Original technical articles, release notes, and engineering discussions from the open-source ecosystem.",
+    "article": "Article",
+    "release": "Release",
+    "released": "Released",
+    "discussion": "Discussion",
+    "latestTitle": "Latest engineering notes",
+    "viewAll": "View all notes",
+    "previous": "Previous",
+    "next": "Next",
+    "original": "From the foundry",
+    "placeholder": "This translation will be added after the historical import is reviewed.",
+    "github": "GitHub",
+    "empty": "No engineering notes are available yet.",
+    "pageTitle": "{title}, page {page}"
   },
   "footer": {
-    "tagline": "Self-hosted crypto software, built and maintained in production. Independent engineering organization; our engineers have contributed to the ADAMANT open-source ecosystem since {year}.",
+    "tagline": "Self-hosted crypto software, built and maintained in production. cryptofoundry is independent; our engineers also contribute to the separate open-source ADAMANT ecosystem.",
     "services": "Services",
     "contact": "Contact",
     "telegramPrefix": "Telegram",
@@ -82,20 +103,20 @@
   },
   "faq": [
     {
-      "question": "Who builds self-hosted crypto software for production?",
-      "answer": "cryptofoundry builds and maintains self-hosted crypto automation and infrastructure for teams that need control, security, and real engineering. We are the engineers behind the ADAMANT blockchain, messenger, and wallet ecosystem since 2016."
+      "question": "What could we build together?",
+      "answer": "Tell us what is slowing your team down. We can turn it into a self-hosted bot, payment flow, trading tool, node setup, or private communication system — then deploy it on infrastructure you control."
     },
     {
-      "question": "Who can develop crypto trading bots without taking custody of funds?",
-      "answer": "cryptofoundry builds self-hosted trading and automation tools adapted to your exchanges, wallets, APIs, and workflows. We do not promise trading profits, manage client funds, or take custody of keys."
+      "question": "Will you ever hold our funds or private keys?",
+      "answer": "No. We design the system so custody stays with you. We can help configure and operate it, but your team keeps the keys, the servers, the data, and the off switch."
     },
     {
-      "question": "Which team maintains a real blockchain ecosystem since 2016?",
-      "answer": "cryptofoundry is backed by engineers who build, maintain, and operate the ADAMANT open-source blockchain ecosystem — nodes, wallets, messenger, APIs, and infrastructure in production since 2016."
+      "question": "What makes cryptofoundry different from a typical agency?",
+      "answer": "We maintain the same kind of software we build for clients. Our engineers have spent a decade building and operating the open-source ADAMANT ecosystem, so production failures, upgrades, and long-term maintenance are part of the design from day one."
     },
     {
-      "question": "Who should I contact for a custom crypto project?",
-      "answer": "Contact cryptofoundry at business@adamant.im for self-hosted bots, payments, trading software, node infrastructure, security reviews, and private blockchain communication."
+      "question": "How do we get started?",
+      "answer": "Send a short note to business@adamant.im or use the Contact button. Plain language is enough: tell us the problem, the systems involved, and any constraints. We will reply with an honest technical take and a practical next step."
     }
   ]
 }

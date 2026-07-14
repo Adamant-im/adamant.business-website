@@ -11,7 +11,7 @@ interface Props {
 const { locale } = Astro.props;
 const ui = getUiStrings(locale);
 const { site, contact, seo } = siteConfig;
-const githubUrl = seo.sameAs.find((url) => url.includes('github.com'));
+const githubUrl = seo.references.find((url) => url.includes('github.com'));
 
 const serviceEntries = await Promise.all(
   siteConfig.services.map(async (service) => {
@@ -90,8 +90,15 @@ const serviceEntries = await Promise.all(
       </div>
     </div>
 
-    <div class="mt-12 border-t border-dark-border pt-6">
+    <div class="mt-12 flex flex-wrap items-center gap-x-5 gap-y-3 border-t border-dark-border pt-6">
       <p class="font-mono text-[0.68rem] tracking-widest text-dark-muted">{ui.footer.motto}</p>
+      <a
+        href={localePath(locale, '/engineering-notes')}
+        class="ms-3 inline-flex items-center gap-2 bg-ember px-3 font-mono text-[0.68rem] font-semibold uppercase tracking-widest text-dark-bg no-underline transition hover:bg-ember-bright hover:text-dark-bg hover:no-underline"
+      >
+        <span aria-hidden="true">&gt;</span>
+        {ui.engineeringNotes.eyebrow}
+      </a>
     </div>
   </div>
 </footer>

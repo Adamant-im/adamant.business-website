@@ -3,11 +3,19 @@ import { getEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ContactModal from './react/ContactModal';
 import RepoCarousel from './react/RepoCarousel';
+import NotesGrid from './react/NotesGrid';
 import ForgeGraphic from './ForgeGraphic.astro';
 import ServiceIcon from './ServiceIcon.astro';
 import { siteConfig } from '../../config/site.ts';
 import githubData from '../data/repos.json';
-import { formatTemplate, getUiStrings, localePath, type LocaleId } from '../i18n';
+import { formatTemplate, getLocaleConfig, getUiStrings, localePath, type LocaleId } from '../i18n';
+import {
+  getNotesForLocale,
+  getNotesPage,
+  HOME_NOTES_GRID_CELLS,
+  noteIndexPath,
+  toNoteCard,
+} from '../lib/notes';
 
 interface Props {
   locale: LocaleId;
@@ -15,9 +23,20 @@ interface Props {
 
 const { locale } = Astro.props;
 const ui = getUiStrings(locale);
+const localeConfig = getLocaleConfig(locale);
 const { site } = siteConfig;
 const reposData = githubData.repos;
 const orgRepoCount = githubData.orgRepoCount;
+const latestNotes = getNotesPage(await getNotesForLocale(locale), 1, HOME_NOTES_GRID_CELLS).map((entry) =>
+  toNoteCard(entry, locale),
+);
+const noteLabels = {
+  article: ui.engineeringNotes.article,
+  release: ui.engineeringNotes.release,
+  released: ui.engineeringNotes.released,
+  discussion: ui.engineeringNotes.discussion,
+  github: ui.engineeringNotes.github,
+};
 
 const foundedDate = new Date(site.foundedYear, 0, 1);
 const now = new Date();
@@ -55,7 +74,7 @@ const canonicalPath = localePath(locale, '/');
 ---
 
 <BaseLayout
-  title={site.name}
+  title={ui.meta.homeTitle}
   description={ui.meta.homeDescription}
   locale={locale}
   canonicalPath={canonicalPath}
@@ -197,8 +216,35 @@ const canonicalPath = localePath(locale, '/');
   <section class="section-light border-b border-border">
     <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
       <p class="eyebrow">{ui.home.notesEyebrow}</p>
-      <h2 class="mt-3 text-2xl font-semibold tracking-tight text-text">{ui.home.notesTitle}</h2>
-      <p class="mt-3 max-w-2xl text-muted">{ui.home.notesBody}</p>
+      <div class="mt-3 flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <h2 class="text-2xl font-semibold tracking-tight text-text">{ui.home.notesTitle}</h2>
+          <p class="mt-3 max-w-2xl text-muted">{ui.home.notesBody}</p>
+        </div>
+        <a href={noteIndexPath(locale)} class="font-mono text-xs font-medium uppercase tracking-widest text-accent">
+          {ui.engineeringNotes.viewAll} →
+        </a>
+      </div>
+      <div class="mt-8">
+        <NotesGrid notes={latestNotes} localeCode={localeConfig.codes[0]} labels={noteLabels} compact />
+      </div>
+    </div>
+  </section>
+
+  <section class="section-light border-b border-border">
+    <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
+      <p class="eyebrow">{ui.home.faqEyebrow}</p>
+      <h2 class="mt-3 text-3xl font-semibold tracking-tight text-text">{ui.home.faqTitle}</h2>
+      <dl data-faq-list class="mt-8 grid gap-4 md:grid-cols-2">
+        {
+          ui.faq.map((item) => (
+            <div class="card p-6">
+              <dt class="font-semibold text-text">{item.question}</dt>
+              <dd class="mt-3 text-sm leading-relaxed text-muted">{item.answer}</dd>
+            </div>
+          ))
+        }
+      </dl>
     </div>
   </section>
 

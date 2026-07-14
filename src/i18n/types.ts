@@ -9,6 +9,7 @@ export interface FaqItem {
 
 export interface UiStrings {
   meta: {
+    homeTitle: string;
     homeDescription: string;
   };
   header: {
@@ -63,6 +64,26 @@ export interface UiStrings {
     ctaEyebrow: string;
     ctaTitle: string;
     ctaBody: string;
+    faqEyebrow: string;
+    faqTitle: string;
+  };
+  engineeringNotes: {
+    eyebrow: string;
+    title: string;
+    intro: string;
+    article: string;
+    release: string;
+    released: string;
+    discussion: string;
+    latestTitle: string;
+    viewAll: string;
+    previous: string;
+    next: string;
+    original: string;
+    placeholder: string;
+    github: string;
+    empty: string;
+    pageTitle: string;
   };
   footer: {
     tagline: string;

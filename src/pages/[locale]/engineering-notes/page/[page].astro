@@ -1,0 +1,21 @@
+---
+import EngineeringNotesPage from '../../../../components/EngineeringNotesPage.astro';
+import { getNonDefaultLocales } from '../../../../i18n';
+import { getNotesForLocale, getNotesPageCount } from '../../../../lib/notes';
+
+export async function getStaticPaths() {
+  const paths = [];
+  for (const locale of getNonDefaultLocales()) {
+    const pageCount = getNotesPageCount(await getNotesForLocale(locale.id));
+    for (let page = 2; page <= pageCount; page += 1) {
+      paths.push({ params: { locale: locale.path, page: String(page) }, props: { localeId: locale.id } });
+    }
+  }
+  return paths;
+}
+
+const { localeId } = Astro.props;
+const page = Number(Astro.params.page);
+---
+
+<EngineeringNotesPage locale={localeId} page={page} />

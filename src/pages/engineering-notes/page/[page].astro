@@ -1,0 +1,15 @@
+---
+import EngineeringNotesPage from '../../../components/EngineeringNotesPage.astro';
+import { getNotesForLocale, getNotesPageCount } from '../../../lib/notes';
+
+export async function getStaticPaths() {
+  const pageCount = getNotesPageCount(await getNotesForLocale('en'));
+  return Array.from({ length: Math.max(0, pageCount - 1) }, (_, index) => ({
+    params: { page: String(index + 2) },
+  }));
+}
+
+const page = Number(Astro.params.page);
+---
+
+<EngineeringNotesPage locale="en" page={page} />

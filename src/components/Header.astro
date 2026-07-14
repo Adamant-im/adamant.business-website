@@ -41,7 +41,7 @@ const homeHref = localePath(locale, '/');
         keepEnglish={ui.language.keepEnglish}
         promptPrefix={ui.language.promptPrefix}
       />
-      <ContactModal client:load variant="header" label={ui.header.contact} strings={ui.contact} />
+      <ContactModal client:load variant="header" label={ui.header.contact} strings={ui.contact} openFromHash />
     </div>
   </div>
   <div class="heat-line"></div>

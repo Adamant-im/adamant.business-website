@@ -44,9 +44,10 @@ export function getUiStrings(locale: LocaleId): UiStrings {
 export function localePath(locale: LocaleId, pathname = '/'): string {
   const config = getLocaleConfig(locale);
   const normalized = pathname.startsWith('/') ? pathname : `/${pathname}`;
-  if (config.path === '') return normalized === '/' ? '/' : normalized;
+  const withTrailingSlash = normalized === '/' ? '/' : `${normalized.replace(/\/+$/, '')}/`;
+  if (config.path === '') return withTrailingSlash;
   if (normalized === '/') return `/${config.path}/`;
-  return `/${config.path}${normalized}`;
+  return `/${config.path}${withTrailingSlash}`;
 }
 
 export function stripLocalePrefix(pathname: string): { locale: LocaleId; path: string } {

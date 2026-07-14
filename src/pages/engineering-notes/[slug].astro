@@ -1,0 +1,15 @@
+---
+import EngineeringNoteDetail from '../../components/EngineeringNoteDetail.astro';
+import { getNotesForLocale } from '../../lib/notes';
+
+export async function getStaticPaths() {
+  return (await getNotesForLocale('en')).map((entry) => ({
+    params: { slug: entry.data.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+---
+
+<EngineeringNoteDetail locale="en" entry={entry} />

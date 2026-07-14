@@ -11,10 +11,14 @@ interface Props {
   locale: LocaleId;
   canonicalPath?: string;
   ogType?: string;
+  ogImage?: string;
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  pageType?: 'WebPage' | 'CollectionPage';
+  prevPath?: string;
+  nextPath?: string;
 }
 
-const { title, description, locale, canonicalPath, ogType, jsonLd } = Astro.props;
+const { title, description, locale, canonicalPath, ogType, ogImage, jsonLd, pageType, prevPath, nextPath } = Astro.props;
 const localeConfig = getLocaleConfig(locale);
 const htmlLang = localeConfig.codes[0];
 ---
@@ -28,7 +32,11 @@ const htmlLang = localeConfig.codes[0];
       locale={locale}
       canonicalPath={canonicalPath}
       ogType={ogType}
+      ogImage={ogImage}
       jsonLd={jsonLd}
+      pageType={pageType}
+      prevPath={prevPath}
+      nextPath={nextPath}
     />
   </head>
   <body class="min-h-screen">

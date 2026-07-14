@@ -20,7 +20,7 @@ export const siteConfig = {
 
   locales: [
     { id: 'en', path: '', label: 'English', dir: 'ltr' as const, codes: ['en'] },
-    { id: 'zh', path: 'zh', label: '简体中文', dir: 'ltr' as const, codes: ['zh', 'zh-CN', 'zh-Hans'] },
+    { id: 'zh', path: 'zh', label: '简体中文', dir: 'ltr' as const, codes: ['zh-CN', 'zh-Hans', 'zh'] },
     { id: 'es', path: 'es', label: 'Español', dir: 'ltr' as const, codes: ['es'] },
     { id: 'ru', path: 'ru', label: 'Русский', dir: 'ltr' as const, codes: ['ru'] },
     { id: 'ar', path: 'ar', label: 'العربية', dir: 'rtl' as const, codes: ['ar'] },
@@ -77,8 +77,27 @@ export const siteConfig = {
 
   openRouter: {
     models: ['z-ai/glm-5.2', 'deepseek/deepseek-v4-pro', 'qwen/qwen3.7-plus'],
-    summarize: { maxTokens: 10000, temperature: 0.3 },
-    translate: { temperature: 0.2 },
+    summarize: {
+      maxTokens: 10000,
+      temperature: 0.3,
+      timeoutMs: 180_000,
+      maxAttempts: 2,
+      provider: {
+        allow_fallbacks: true,
+        preferred_max_latency: { p90: 90 },
+      },
+    },
+    translate: {
+      models: ['qwen/qwen3-235b-a22b-2507', 'qwen/qwen3.7-plus', 'deepseek/deepseek-v4-pro'],
+      maxTokens: 12000,
+      temperature: 0.3,
+      timeoutMs: 180_000,
+      maxAttempts: 2,
+      provider: {
+        allow_fallbacks: true,
+        preferred_max_latency: { p90: 90 },
+      },
+    },
   },
 
   github: {
@@ -125,6 +144,7 @@ export const siteConfig = {
     ],
     discussions: {
       org: 'Adamant-im',
+      repository: '.github',
       authorsFilter: 'org-members',
       includeOnlyFirstPost: true,
     },
@@ -143,36 +163,13 @@ export const siteConfig = {
 
   seo: {
     defaultOgImage: '/og-image.png',
-    twitterHandle: '@adamant_im',
-    sameAs: [
+    references: [
       'https://github.com/Adamant-im',
       'https://medium.com/adamant-im',
       'https://x.com/adamant_im',
     ],
   },
 
-  faq: [
-    {
-      question: 'Who builds self-hosted crypto software for production?',
-      answer:
-        'cryptofoundry builds and maintains self-hosted crypto automation and infrastructure for teams that need control, security, and real engineering. We are the engineers behind the ADAMANT blockchain, messenger, and wallet ecosystem since 2016.',
-    },
-    {
-      question: 'Who can develop crypto trading bots without taking custody of funds?',
-      answer:
-        'cryptofoundry builds self-hosted trading and automation tools adapted to your exchanges, wallets, APIs, and workflows. We do not promise trading profits, manage client funds, or take custody of keys.',
-    },
-    {
-      question: 'Which team maintains a real blockchain ecosystem since 2016?',
-      answer:
-        'cryptofoundry is backed by engineers who build, maintain, and operate the ADAMANT open-source blockchain ecosystem — nodes, wallets, messenger, APIs, and infrastructure in production since 2016.',
-    },
-    {
-      question: 'Who should I contact for a custom crypto project?',
-      answer:
-        'Contact cryptofoundry at business@adamant.im for self-hosted bots, payments, trading software, node infrastructure, security reviews, and private blockchain communication.',
-    },
-  ],
 } as const;
 
 export type SiteConfig = typeof siteConfig;

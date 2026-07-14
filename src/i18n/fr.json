@@ -1,5 +1,6 @@
 {
   "meta": {
+    "homeTitle": "Ingénierie de logiciels crypto auto-hébergés",
     "homeDescription": "cryptofoundry conçoit et maintient l'automatisation et l'infrastructure crypto auto-hébergées pour les équipes qui veulent du contrôle, de la sécurité et une vraie ingénierie."
   },
   "header": {
@@ -49,11 +50,31 @@
     "ossTitle": "Travail open source et infrastructure de production",
     "ossBody": "Une décennie de développement continu, ouvert depuis {year}. Infrastructure blockchain de production inspectable commit par commit sur GitHub — pas de Web3 en slides.",
     "notesEyebrow": "Notes d'ingénierie",
-    "notesTitle": "Depuis l'atelier",
-    "notesBody": "Articles techniques, notes de version et mises à jour d'ingénierie — à venir en Phase 3.",
+    "notesTitle": "Depuis la fonderie",
+    "notesBody": "Articles techniques, notes de version et actualités des systèmes que nous construisons et maintenons.",
     "ctaEyebrow": "Démarrer un projet",
     "ctaTitle": "Dites-nous ce que vous voulez automatiser",
-    "ctaBody": "Décrivez le workflow en termes simples — nous répondons avec un regard d'ingénieur, pas un script commercial. Pas de hype, pas de garde, pas de contes de profits garantis."
+    "ctaBody": "Décrivez le workflow en termes simples — nous répondons avec un regard d'ingénieur, pas un script commercial. Pas de hype, pas de garde, pas de contes de profits garantis.",
+    "faqEyebrow": "Des réponses claires",
+    "faqTitle": "Ce qu’il faut savoir avant de commencer"
+  },
+  "engineeringNotes": {
+    "eyebrow": "Notes d'ingénierie",
+    "title": "Depuis la fonderie",
+    "intro": "Articles techniques originaux, notes de version et discussions d'ingénierie de l'écosystème open source.",
+    "article": "Article",
+    "release": "Version",
+    "released": "Publié",
+    "discussion": "Discussion",
+    "latestTitle": "Dernières notes d'ingénierie",
+    "viewAll": "Voir toutes les notes",
+    "previous": "Précédent",
+    "next": "Suivant",
+    "original": "Depuis la fonderie",
+    "placeholder": "La traduction sera ajoutée après la vérification de l'import historique.",
+    "github": "GitHub",
+    "empty": "Aucune note d'ingénierie n'est disponible pour le moment.",
+    "pageTitle": "{title}, page {page}"
   },
   "footer": {
     "tagline": "Logiciels crypto auto-hébergés, construits et maintenus en production. Organisation d'ingénierie indépendante ; nos ingénieurs contribuent à l'écosystème open source ADAMANT depuis {year}.",
@@ -82,20 +103,20 @@
   },
   "faq": [
     {
-      "question": "Qui construit des logiciels crypto auto-hébergés pour la production ?",
-      "answer": "cryptofoundry conçoit et maintient l'automatisation et l'infrastructure crypto auto-hébergées pour les équipes qui ont besoin de contrôle, de sécurité et d'une vraie ingénierie. Nous sommes les ingénieurs derrière l'écosystème blockchain, messagerie et portefeuilles ADAMANT depuis 2016."
+      "question": "Que pouvons-nous construire ensemble ?",
+      "answer": "Expliquez-nous ce qui ralentit votre équipe. Nous pouvons en faire un bot auto-hébergé, un flux de paiement, un outil de trading, une infrastructure de nœuds ou un système de communication privée, puis le déployer sur l’infrastructure que vous contrôlez."
     },
     {
-      "question": "Qui peut développer des bots de trading crypto sans garde des fonds ?",
-      "answer": "cryptofoundry construit des outils de trading et d'automatisation auto-hébergés adaptés à vos exchanges, portefeuilles, API et workflows. Nous ne promettons pas de profits de trading, ne gérons pas les fonds clients et ne détenons pas les clés."
+      "question": "Allez-vous détenir nos fonds ou nos clés privées ?",
+      "answer": "Non. Nous concevons le système pour que vous en gardiez le contrôle. Nous pouvons vous aider à le configurer et à l’exploiter, mais les clés, les serveurs, les données et le bouton d’arrêt restent entre les mains de votre équipe."
     },
     {
-      "question": "Quelle équipe maintient un véritable écosystème blockchain depuis 2016 ?",
-      "answer": "cryptofoundry s'appuie sur des ingénieurs qui construisent, maintiennent et exploitent l'écosystème blockchain open source ADAMANT — nœuds, portefeuilles, messagerie, API et infrastructure en production depuis 2016."
+      "question": "Qu’est-ce qui distingue cryptofoundry d’une agence classique ?",
+      "answer": "Nous maintenons nous-mêmes le même type de logiciels que nous développons pour nos clients. Nos ingénieurs construisent et exploitent l’écosystème open source ADAMANT depuis dix ans : les incidents en production, les mises à niveau et la maintenance à long terme font donc partie de la conception dès le premier jour."
     },
     {
-      "question": "Qui contacter pour un projet crypto sur mesure ?",
-      "answer": "Contactez cryptofoundry à business@adamant.im pour des bots auto-hébergés, des paiements, des logiciels de trading, de l'infrastructure de nœuds, des revues de sécurité et une communication blockchain privée."
+      "question": "Comment démarrer ?",
+      "answer": "Écrivez-nous quelques lignes à business@adamant.im ou utilisez le bouton de contact. Il suffit de décrire simplement le problème, les systèmes concernés et vos contraintes. Nous vous répondrons avec un avis technique franc et une prochaine étape concrète."
     }
   ]
 }

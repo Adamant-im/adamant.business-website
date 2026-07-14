@@ -34,7 +34,7 @@ const serviceJsonLd = {
   name: title,
   description,
   url: new URL(canonicalPath, siteConfig.site.url).href,
-  provider: { '@type': 'Organization', name: siteConfig.site.legalName },
+  provider: { '@id': new URL('/#organization', siteConfig.site.url).href },
   areaServed: 'Worldwide',
 };
 ---

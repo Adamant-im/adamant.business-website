@@ -1,6 +1,14 @@
 import { siteConfig } from '../config/site.ts';
 
-const requiredPaths = ['site.url', 'site.heroTagline', 'github.starsRepos', 'seo.twitterHandle'];
+const requiredPaths = [
+  'site.url',
+  'site.heroTagline',
+  'github.starsRepos',
+  'github.releaseRepos',
+  'github.discussions.repository',
+  'sync.dedupStateFile',
+  'seo.defaultOgImage',
+];
 
 function hasPath(path) {
   return path.split('.').reduce((value, key) => {
@@ -22,6 +30,11 @@ for (const path of requiredPaths) {
 
 if (!siteConfig.github.starsRepos.length) {
   console.error('github.starsRepos must not be empty');
+  failed = true;
+}
+
+if (!siteConfig.github.releaseRepos.length) {
+  console.error('github.releaseRepos must not be empty');
   failed = true;
 }
 

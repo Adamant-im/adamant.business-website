@@ -189,6 +189,158 @@
   border-style: solid;
 }
 
+.notes-grid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .notes-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .notes-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .notes-grid-compact {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1440px) {
+  .notes-grid:not(.notes-grid-compact) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.notes-full-cell,
+.notes-half-stack {
+  min-width: 0;
+}
+
+.notes-half-stack {
+  display: grid;
+  min-height: 21rem;
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.notes-half-stack-single {
+  grid-template-rows: minmax(0, 1fr);
+}
+
+.notes-card {
+  @apply relative flex h-full min-w-0 flex-col overflow-hidden rounded-xl border border-border bg-card text-text transition duration-150;
+  box-shadow: 0 1px 2px rgba(29, 23, 18, 0.05);
+}
+
+.notes-card:hover {
+  @apply border-ember/50;
+  box-shadow:
+    0 8px 24px rgba(29, 23, 18, 0.09),
+    0 0 0 1px rgba(240, 115, 22, 0.12);
+  transform: translateY(-2px);
+}
+
+.notes-card-full {
+  min-height: 21rem;
+}
+
+.notes-card-half {
+  min-height: 0;
+}
+
+.notes-card-cover {
+  @apply h-40 overflow-hidden border-b border-border bg-bg;
+}
+
+.notes-card-cover img {
+  @apply h-full w-full object-cover transition duration-300;
+}
+
+.notes-card:hover .notes-card-cover img {
+  transform: scale(1.025);
+}
+
+.note-prose {
+  @apply text-[1.05rem] leading-8 text-muted;
+}
+
+.note-prose h2 {
+  @apply mt-12 mb-4 text-2xl font-semibold tracking-tight text-text;
+}
+
+.note-prose h3 {
+  @apply mt-10 mb-3 text-xl font-semibold tracking-tight text-text;
+}
+
+.note-prose h4 {
+  @apply mt-8 mb-3 text-lg font-semibold text-text;
+}
+
+.note-prose p,
+.note-prose ul,
+.note-prose ol,
+.note-prose blockquote,
+.note-prose pre,
+.note-prose table,
+.note-prose figure {
+  @apply mb-6;
+}
+
+.note-prose ul {
+  @apply list-disc space-y-2 ps-6;
+}
+
+.note-prose ol {
+  @apply list-decimal space-y-2 ps-6;
+}
+
+.note-prose strong {
+  @apply font-semibold text-text;
+}
+
+.note-prose blockquote {
+  @apply border-s-2 border-ember ps-5 italic;
+}
+
+.note-prose code:not(pre code) {
+  @apply rounded bg-border/50 px-1.5 py-0.5 font-mono text-[0.9em] text-text;
+}
+
+.note-prose pre {
+  @apply overflow-x-auto rounded-xl border border-dark-border bg-dark-bg p-5 font-mono text-sm leading-6 text-white;
+}
+
+.note-prose a {
+  @apply break-words font-medium text-accent;
+}
+
+.note-prose img {
+  @apply h-auto max-w-full rounded-lg border border-border;
+}
+
+.note-prose table {
+  @apply block w-full overflow-x-auto border-collapse text-sm;
+}
+
+.note-prose th,
+.note-prose td {
+  @apply border border-border px-3 py-2 text-start align-top;
+}
+
+.note-prose th {
+  @apply bg-bg font-semibold text-text;
+}
+
+.note-prose hr {
+  @apply my-10 border-border;
+}
+
 .card-marked::before {
   top: 8px;
   left: 8px;
