@@ -5,6 +5,7 @@ import path from 'node:path';
 import { siteConfig } from '../../config/site.ts';
 import { markdownExcerpt, rootDir, serializeMarkdown } from './content-utils.mjs';
 import { optimizePublicImage } from './optimize-image.mjs';
+import { callOpenRouter as requestOpenRouter } from './openrouter.mjs';
 
 const CTA_SECTION_RE =
   /^#{1,3}\s+.*(get started|links?|follow us|share|related|see also|resources|contact us|questions\?|support|stay updated|join us|subscribe|thank you|thanks for reading)\s*$/im;
@@ -485,66 +486,28 @@ ORIGINAL BODY:
 ${body}`;
 }
 
-function parseLlmJson(content) {
-  const trimmed = String(content ?? '').trim();
-  const fenced = trimmed.match(/^```(?:json)?\s*([\s\S]*?)\s*```$/i);
-  const candidate = fenced ? fenced[1].trim() : trimmed;
-  const start = candidate.indexOf('{');
-  const end = candidate.lastIndexOf('}');
-  if (start === -1 || end === -1 || end <= start) {
-    throw new Error('No JSON object found in model response');
-  }
-  return JSON.parse(candidate.slice(start, end + 1));
-}
-
 export async function callOpenRouter(prompt) {
-  const apiKey = process.env.OPENROUTER_API_KEY;
-  if (!apiKey) return null;
+  if (!process.env.OPENROUTER_API_KEY) return null;
 
-  const models = siteConfig.openRouter.models;
-  const { maxTokens, temperature } = siteConfig.openRouter.summarize;
+  const summarize = siteConfig.openRouter.summarize;
 
-  for (const model of models) {
-    try {
-      const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${apiKey}`,
-          'Content-Type': 'application/json',
-          'HTTP-Referer': siteConfig.site.url,
-          'X-Title': 'cryptofoundry content preparation',
-        },
-        body: JSON.stringify({
-          model,
-          temperature,
-          max_tokens: maxTokens,
-          messages: [
-            {
-              role: 'system',
-              content:
-                'You edit technical publications for a business website. Output strict JSON with title, description, and body fields.',
-            },
-            { role: 'user', content: prompt },
-          ],
-          response_format: { type: 'json_object' },
-        }),
-      });
-
-      if (!response.ok) {
-        const err = await response.text();
-        console.warn(`OpenRouter ${model} failed (${response.status}): ${err.slice(0, 200)}`);
-        continue;
-      }
-
-      const data = await response.json();
-      const content = data.choices?.[0]?.message?.content;
-      if (!content) continue;
-      const parsed = parseLlmJson(content);
-      if (parsed.title && parsed.body) return parsed;
-    } catch (error) {
-      console.warn(`OpenRouter ${model} error: ${error.message}`);
-    }
+  try {
+    const { data } = await requestOpenRouter(prompt, {
+      models: siteConfig.openRouter.models,
+      temperature: summarize.temperature,
+      maxTokens: summarize.maxTokens,
+      timeoutMs: summarize.timeoutMs,
+      maxAttempts: summarize.maxAttempts,
+      provider: summarize.provider,
+      title: 'cryptofoundry content preparation',
+      system:
+        'You edit technical publications for a business website. Output strict JSON with title, description, and body fields.',
+    });
+    if (data?.title && data?.body) return data;
+  } catch (error) {
+    console.warn(`OpenRouter summarize error: ${error.message}`);
   }
+
   return null;
 }
 

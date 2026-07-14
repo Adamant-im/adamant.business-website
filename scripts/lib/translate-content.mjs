@@ -153,10 +153,15 @@ export async function translateNoteToLocale(englishFrontmatter, body, localeId) 
       strict,
     });
 
+    const translate = siteConfig.openRouter.translate;
+
     const { data: translated, model } = await callOpenRouter(prompt, {
-      models: siteConfig.openRouter.translate.models,
-      temperature: siteConfig.openRouter.translate.temperature,
-      maxTokens: siteConfig.openRouter.translate.maxTokens,
+      models: translate.models,
+      temperature: translate.temperature,
+      maxTokens: translate.maxTokens,
+      timeoutMs: translate.timeoutMs,
+      maxAttempts: translate.maxAttempts,
+      provider: translate.provider,
       title: 'cryptofoundry content translation',
       system:
         'You are a professional technical translator for a crypto engineering blog. Output strict JSON with title, description, and body fields. The body must be fully translated into the target language. Never translate glossary terms or code placeholders.',

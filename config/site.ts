@@ -77,11 +77,26 @@ export const siteConfig = {
 
   openRouter: {
     models: ['z-ai/glm-5.2', 'deepseek/deepseek-v4-pro', 'qwen/qwen3.7-plus'],
-    summarize: { maxTokens: 10000, temperature: 0.3 },
+    summarize: {
+      maxTokens: 10000,
+      temperature: 0.3,
+      timeoutMs: 180_000,
+      maxAttempts: 2,
+      provider: {
+        allow_fallbacks: true,
+        preferred_max_latency: { p90: 90 },
+      },
+    },
     translate: {
       models: ['qwen/qwen3-235b-a22b-2507', 'qwen/qwen3.7-plus', 'deepseek/deepseek-v4-pro'],
       maxTokens: 12000,
       temperature: 0.3,
+      timeoutMs: 180_000,
+      maxAttempts: 2,
+      provider: {
+        allow_fallbacks: true,
+        preferred_max_latency: { p90: 90 },
+      },
     },
   },
 
