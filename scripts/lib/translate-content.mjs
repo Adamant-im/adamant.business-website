@@ -39,16 +39,16 @@ const CATEGORY_HINTS = {
 };
 
 function proseLines(body) {
-  return body
+  const withoutCode = body.replace(/```[\s\S]*?```/g, '');
+  return withoutCode
     .split('\n')
     .map((line) => line.trim())
     .filter(
       (line) =>
         line &&
-        !line.startsWith('```') &&
         !line.startsWith('![') &&
         !line.includes('@@CODEBLOCK') &&
-        !/^#[\s#]/.test(line),
+        !/^#{1,6}\s/.test(line),
     );
 }
 
@@ -56,7 +56,7 @@ function needsRetranslation(englishBody, translatedBody) {
   const englishProse = proseLines(englishBody);
   if (englishProse.length === 0) return false;
   const unchanged = englishProse.filter((line) => translatedBody.includes(line));
-  return unchanged.length >= Math.min(3, Math.ceil(englishProse.length * 0.4));
+  return unchanged.length / englishProse.length > 0.5;
 }
 
 function buildTranslationPrompt({ localeId, localeLabel, category, frontmatter, body, strict = false }) {
