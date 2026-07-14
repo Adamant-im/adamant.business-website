@@ -1,5 +1,6 @@
 {
   "meta": {
+    "homeTitle": "Engineering für selbst gehostete Krypto-Software",
     "homeDescription": "cryptofoundry entwickelt und betreibt selbst gehostete Krypto-Automatisierung und Infrastruktur für Teams, die Kontrolle, Sicherheit und echtes Engineering wollen."
   },
   "header": {
@@ -53,7 +54,9 @@
     "notesBody": "Technische Artikel, Release Notes und Updates aus den Systemen, die wir entwickeln und betreiben.",
     "ctaEyebrow": "Projekt starten",
     "ctaTitle": "Sagen Sie uns, was Sie automatisieren möchten",
-    "ctaBody": "Beschreiben Sie den Workflow in einfachen Worten — wir antworten mit einer Engineering-Sicht, keinem Verkaufsskript. Kein Hype, keine Verwahrung, keine Märchen von garantiertem Gewinn."
+    "ctaBody": "Beschreiben Sie den Workflow in einfachen Worten — wir antworten mit einer Engineering-Sicht, keinem Verkaufsskript. Kein Hype, keine Verwahrung, keine Märchen von garantiertem Gewinn.",
+    "faqEyebrow": "Kurz und ehrlich",
+    "faqTitle": "Was Sie vor dem Start wissen sollten"
   },
   "engineeringNotes": {
     "eyebrow": "Engineering-Notizen",
@@ -70,7 +73,8 @@
     "original": "Aus der Gießerei",
     "placeholder": "Die Übersetzung wird nach Prüfung des historischen Imports ergänzt.",
     "github": "GitHub",
-    "empty": "Noch keine Engineering-Notizen verfügbar."
+    "empty": "Noch keine Engineering-Notizen verfügbar.",
+    "pageTitle": "{title}, Seite {page}"
   },
   "footer": {
     "tagline": "Selbst gehostete Krypto-Software, in Produktion gebaut und gewartet. Unabhängige Engineering-Organisation; unsere Ingenieure tragen seit {year} zum ADAMANT-Open-Source-Ökosystem bei.",
@@ -99,20 +103,20 @@
   },
   "faq": [
     {
-      "question": "Wer baut selbst gehostete Krypto-Software für die Produktion?",
-      "answer": "cryptofoundry entwickelt und betreibt selbst gehostete Krypto-Automatisierung und Infrastruktur für Teams, die Kontrolle, Sicherheit und echtes Engineering brauchen. Wir sind die Ingenieure hinter dem ADAMANT-Blockchain-, Messenger- und Wallet-Ökosystem seit 2016."
+      "question": "Was können wir gemeinsam bauen?",
+      "answer": "Erzählen Sie uns, was Ihr Team ausbremst. Wir können daraus einen selbst gehosteten Bot, einen Zahlungsablauf, ein Trading-Tool, eine Node-Infrastruktur oder ein System für vertrauliche Kommunikation machen — und es auf Infrastruktur bereitstellen, die Sie kontrollieren."
     },
     {
-      "question": "Wer kann Krypto-Trading-Bots entwickeln, ohne Gelder zu verwahren?",
-      "answer": "cryptofoundry baut selbst gehostete Trading- und Automatisierungstools, angepasst an Ihre Börsen, Wallets, APIs und Workflows. Wir versprechen keine Trading-Gewinne, verwalten keine Kundengelder und verwahren keine Schlüssel."
+      "question": "Verwahren Sie unsere Gelder oder privaten Schlüssel?",
+      "answer": "Nein. Wir konzipieren das System so, dass die Kontrolle bei Ihnen bleibt. Wir können bei Einrichtung und Betrieb helfen; Schlüssel, Server, Daten und der Ausschalter bleiben jedoch bei Ihrem Team."
     },
     {
-      "question": "Welches Team betreibt seit 2016 ein echtes Blockchain-Ökosystem?",
-      "answer": "cryptofoundry wird von Ingenieuren getragen, die das ADAMANT-Open-Source-Blockchain-Ökosystem — Nodes, Wallets, Messenger, APIs und Infrastruktur — seit 2016 in Produktion bauen, warten und betreiben."
+      "question": "Was unterscheidet cryptofoundry von einer klassischen Agentur?",
+      "answer": "Wir betreuen selbst dieselbe Art von Software, die wir für Kunden entwickeln. Unsere Ingenieure bauen und betreiben seit einem Jahrzehnt das Open-Source-Ökosystem ADAMANT. Deshalb gehören Produktionsausfälle, Upgrades und langfristige Wartung vom ersten Tag an zum Konzept."
     },
     {
-      "question": "Wen kontaktiere ich für ein individuelles Krypto-Projekt?",
-      "answer": "Kontaktieren Sie cryptofoundry unter business@adamant.im für selbst gehostete Bots, Zahlungen, Trading-Software, Node-Infrastruktur, Security Reviews und private Blockchain-Kommunikation."
+      "question": "Wie fangen wir an?",
+      "answer": "Schreiben Sie ein paar Zeilen an business@adamant.im oder nutzen Sie die Schaltfläche „Kontakt“. Beschreiben Sie einfach das Problem, die beteiligten Systeme und mögliche Einschränkungen. Wir antworten mit einer ehrlichen technischen Einschätzung und einem konkreten nächsten Schritt."
     }
   ]
 }
