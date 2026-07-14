@@ -229,6 +229,9 @@ Common use cases:
 | `npm run validate:notes` | Ensure every localized engineering note is publication-ready |
 | `npm run validate:seo` | Validate built metadata, hreflang, JSON-LD, sitemap, and `llms.txt` |
 | `npm run sync:stars` | Refresh GitHub star counts |
+| `npm run test:content` | Test content URL, source, CLI, dedup, and exclusion logic |
+| `npm run sync:content -- --no-pr` | Discover and generate incremental Engineering notes locally |
+| `npm run remove:content -- --slug <slug> --no-pr` | Remove a publication locally and add it to exclusions |
 
 ### Content policy
 

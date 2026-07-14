@@ -1,3 +1,4 @@
+import { execFileSync } from 'node:child_process';
 import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -141,26 +142,41 @@ export async function writeOriginalAndLocaleNotes(record, body) {
 }
 
 export async function updateSyncState(sourceKey, originalIds) {
-  let state = { version: 1, sources: {} };
+  let state = { version: 2, sources: {}, exclusions: [] };
   try {
     state = JSON.parse(await readFile(syncStatePath, 'utf8'));
   } catch (error) {
     if (error.code !== 'ENOENT') throw error;
   }
 
-  state.version = 1;
+  state.version = 2;
   state.sources ??= {};
+  state.exclusions ??= [];
   state.sources[sourceKey] = [...new Set(originalIds)].sort();
   const serialized = `${JSON.stringify(state, null, 2)}\n`;
   return writeIfChanged(syncStatePath, serialized);
 }
 
 export function getGithubToken() {
-  const token = process.env.PAT_GITHUB_TOKEN;
-  if (!token) {
-    throw new Error('PAT_GITHUB_TOKEN is required for authenticated GitHub imports');
+  const token =
+    process.env.PAT_GITHUB_TOKEN || process.env.GH_TOKEN || process.env.GITHUB_TOKEN;
+  if (token) return token;
+
+  try {
+    const ghToken = execFileSync('gh', ['auth', 'token'], {
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    }).trim();
+    if (ghToken) return ghToken;
+  } catch {
+    // The error below explains every supported authentication path.
   }
-  return token;
+
+  if (!token) {
+    throw new Error(
+      'GitHub authentication is required: set PAT_GITHUB_TOKEN, GH_TOKEN, or GITHUB_TOKEN, or run gh auth login',
+    );
+  }
 }
 
 export function githubHeaders(token) {

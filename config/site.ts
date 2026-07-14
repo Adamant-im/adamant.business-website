@@ -88,7 +88,7 @@ export const siteConfig = {
       },
     },
     translate: {
-      models: ['qwen/qwen3-235b-a22b-2507', 'qwen/qwen3.7-plus', 'deepseek/deepseek-v4-pro'],
+      models: ['qwen/qwen3.7-plus', 'deepseek/deepseek-v4-pro', 'qwen/qwen3-235b-a22b-2507'],
       maxTokens: 12000,
       temperature: 0.3,
       timeoutMs: 180_000,

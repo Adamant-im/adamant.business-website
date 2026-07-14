@@ -18,7 +18,10 @@ Public site: [adamant.business](https://adamant.business)
 npm ci --ignore-scripts
 npm run validate:config
 npm run validate:notes
+npm run test:content
 npm run sync:stars
+npm run sync:content -- --no-pr
+npm run remove:content -- --slug example-note --no-pr
 npm run dev
 npm run build
 npm run validate:seo
@@ -66,7 +69,44 @@ The Discussions importer refreshes current `Adamant-im` organization membership 
 
 Imported original source files under `content/original/` are local-only and git-ignored. Generated site content and optimized publication images remain versioned.
 
-Scheduled source synchronization, AI summaries, and translated summaries are intentionally not part of this branch.
+## Incremental Engineering notes publishing
+
+The incremental pipeline checks the configured Medium feed, every configured GitHub Release repository, and initial posts in the configured GitHub Discussions repository. Discussion comments are never imported, and an initial Discussion post is eligible only when its author is a current `Adamant-im` organization member.
+
+Normal discovery skips stable source IDs already recorded in `content/.sync-state.json` and entries in its committed `exclusions` list. Remote Medium and GitHub-hosted images are downloaded, converted to WebP, and referenced from `public/images/engineering-notes/`. A local run also preserves the localized original under the ignored `content/original/` tree; GitHub Actions does not save original source files.
+
+Local runs require `OPENROUTER_API_KEY`; `npm run sync:content` loads it from a local `.env` when present without overriding an exported environment variable. GitHub authentication is resolved from `PAT_GITHUB_TOKEN`, `GH_TOKEN`, `GITHUB_TOKEN`, or the active `gh` CLI session. The scheduled workflow requires repository secrets `OPENROUTER_API_KEY` and `PAT_GITHUB_TOKEN`; the PAT is used so content PR and merge events trigger the normal GitHub workflows.
+
+Run discovery across all three sources and generate content locally without creating a PR:
+
+```bash
+OPENROUTER_API_KEY=<key> npm run sync:content -- --no-pr
+```
+
+Process one publication, overwriting an existing generated note when present:
+
+```bash
+OPENROUTER_API_KEY=<key> npm run sync:content -- --url https://github.com/Adamant-im/adamant/releases/tag/v0.10.0 --no-pr
+```
+
+Supported URLs may use HTTP or HTTPS, include or omit `www`, and include query parameters. Use `--force` with `--url` to process an explicitly excluded publication. Omit `--no-pr` to create one content branch and PR per publication. Add `--no-merge` to leave each PR open for manual review.
+
+Content PRs target `master`, use squash merging, and include the original title, source URL, author, date, type, source ID, repository or Discussion category, and generated locales. The repository currently has no approval rule on `master`, so WRITE access can merge after local validation without an approval bypass. If protection rules are added later, use `--no-merge` or provide an ADMIN token that can satisfy the new policy.
+
+Automatic merge is restricted to the exact PR URL returned by the current `gh pr create` call. Immediately before merging, the script verifies that the PR author is the currently authenticated GitHub user, its head is the generated content branch, and its base is `master`. Pull request events run only the read-only validation job; publication and merge run only from the trusted schedule or an authorized manual workflow dispatch.
+
+Remove a publication from every locale, delete its owned images, remove its stable ID from the source dedup lists, and add it to exclusions:
+
+```bash
+npm run remove:content -- --url https://news.adamant.im/example-abcdef123456 --no-pr
+npm run remove:content -- --slug example-abcdef123456 --no-pr
+```
+
+Removal creates and squash-merges a PR by default. It still adds the URL or slug to exclusions when no current note matches. The single-hyphen compatibility form `-slug` is also accepted.
+
+When a run changes only the exclusion state, content validation tests still run, but note validation, lint, build, SEO validation, and Pages deployment are skipped. When no tracked files change at all, the scripts skip validation and do not create a PR.
+
+The scheduled workflow runs from `.github/workflows/sync-content.yml` at the cron in `config/site.ts`. A merge containing Engineering note changes triggers the existing Pages deployment workflow and rebuilds the site; an exclusion-only merge does not.
 
 ## Deploy
 

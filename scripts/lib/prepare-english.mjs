@@ -1,9 +1,10 @@
 import { createHash } from 'node:crypto';
-import { access, mkdir, readFile, writeFile } from 'node:fs/promises';
+import { access, mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 import { siteConfig } from '../../config/site.ts';
 import { markdownExcerpt, rootDir, serializeMarkdown } from './content-utils.mjs';
+import { normalizeMarkdownFences } from './markdown-safety.mjs';
 import { optimizePublicImage } from './optimize-image.mjs';
 import { callOpenRouter as requestOpenRouter } from './openrouter.mjs';
 
@@ -118,29 +119,6 @@ function listsToProse(text) {
     output.push(line);
   }
   flush();
-  return output.join('\n');
-}
-
-function removeSectionByHeading(body, headingPattern) {
-  const lines = body.split('\n');
-  const output = [];
-  let skipping = false;
-  let skipLevel = 0;
-
-  for (const line of lines) {
-    const heading = line.match(/^(#{1,6})\s+(.+)$/);
-    if (heading) {
-      const level = heading[1].length;
-      const title = heading[2].trim();
-      if (headingPattern.test(title)) {
-        skipping = true;
-        skipLevel = level;
-        continue;
-      }
-      if (skipping && level <= skipLevel) skipping = false;
-    }
-    if (!skipping) output.push(line);
-  }
   return output.join('\n');
 }
 
@@ -525,9 +503,9 @@ export async function prepareEnglishNote(frontmatter, body, { useLlm = false } =
     }
     title = llm.title;
     description = llm.description ?? markdownExcerpt(llm.body, title);
-    transformedBody = llm.body;
+    transformedBody = normalizeMarkdownFences(llm.body);
   } else {
-    transformedBody = transformBody(body, frontmatter);
+    transformedBody = normalizeMarkdownFences(transformBody(body, frontmatter));
     const fm = transformFrontmatter({ ...frontmatter, title }, transformedBody);
     title = fm.title;
     description = fm.description;

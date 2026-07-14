@@ -81,6 +81,12 @@ export async function callOpenRouter(
       if (!response.ok) {
         const err = await response.text();
         lastError = `${response.status}: ${err.slice(0, 200)}`;
+        if (
+          [401, 402, 403].includes(response.status) ||
+          /insufficient (?:credit|balance)|payment required/i.test(err)
+        ) {
+          throw new Error(`OpenRouter account error (${lastError})`);
+        }
         console.warn(
           `OpenRouter attempt ${attempt}/${resolvedMaxAttempts} failed (${lastError})`,
         );
@@ -108,6 +114,7 @@ export async function callOpenRouter(
         usage,
       };
     } catch (error) {
+      if (/OpenRouter account error/.test(error.message)) throw error;
       if (isTimeoutError(error)) {
         lastError = `timeout after ${resolvedTimeoutMs}ms`;
         console.warn(`OpenRouter attempt ${attempt}/${resolvedMaxAttempts}: ${lastError}`);

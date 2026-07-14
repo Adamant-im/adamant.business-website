@@ -1,0 +1,133 @@
+name: Synchronize Engineering notes
+
+on:
+  schedule:
+    - cron: '0 6 * * *' # Keep in sync with config/site.ts sync.contentCron
+  workflow_dispatch:
+    inputs:
+      url:
+        description: Specific Medium, GitHub Discussion, or GitHub Release URL
+        required: false
+        type: string
+      force:
+        description: Ignore an exclusion for the requested URL
+        required: false
+        default: false
+        type: boolean
+      no_merge:
+        description: Create the content PR without merging it
+        required: false
+        default: false
+        type: boolean
+  pull_request:
+    paths:
+      - '.github/workflows/sync-content.yml'
+      - 'config/site.ts'
+      - 'content/.sync-state.json'
+      - 'package-lock.json'
+      - 'package.json'
+      - 'public/images/engineering-notes/**'
+      - 'scripts/**'
+      - 'src/content/notes/**'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect validation scope
+        id: scope
+        env:
+          BASE_REF: ${{ github.base_ref }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          changed_files=$(git diff --name-only "origin/$BASE_REF...$HEAD_SHA")
+          if [[ "$changed_files" == "content/.sync-state.json" ]]; then
+            echo "full=false" >> "$GITHUB_OUTPUT"
+            echo "Only exclusion state changed; skipping site build"
+          else
+            echo "full=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Test content automation
+        run: npm run test:content
+
+      - name: Validate config
+        run: npm run validate:config
+
+      - name: Validate Engineering notes
+        if: steps.scope.outputs.full == 'true'
+        run: npm run validate:notes
+
+      - name: Lint
+        if: steps.scope.outputs.full == 'true'
+        run: npm run lint
+
+      - name: Build
+        if: steps.scope.outputs.full == 'true'
+        run: npm run build
+
+      - name: Validate SEO output
+        if: steps.scope.outputs.full == 'true'
+        run: npm run validate:seo
+
+  sync:
+    if: github.event_name != 'pull_request'
+    permissions:
+      contents: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+    concurrency:
+      group: engineering-notes-sync
+      cancel-in-progress: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.PAT_GITHUB_TOKEN }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Configure Git author
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+
+      - name: Discover and publish Engineering notes
+        env:
+          GH_TOKEN: ${{ secrets.PAT_GITHUB_TOKEN }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          SYNC_FORCE: ${{ inputs.force }}
+          SYNC_NO_MERGE: ${{ inputs.no_merge }}
+          SYNC_URL: ${{ inputs.url }}
+        run: |
+          args=()
+          if [[ -n "$SYNC_URL" ]]; then args+=(--url "$SYNC_URL"); fi
+          if [[ "$SYNC_FORCE" == "true" ]]; then args+=(--force); fi
+          if [[ "$SYNC_NO_MERGE" == "true" ]]; then args+=(--no-merge); fi
+          npm run sync:content -- "${args[@]}"

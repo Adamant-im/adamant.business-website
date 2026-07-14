@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "sources": {
     "medium": [
       "medium:008f91b6d9e6",
@@ -164,6 +164,7 @@
       "medium:c1d4ec134f8d",
       "medium:c21273044372",
       "medium:c6756a10f6bd",
+      "medium:c77f450abf44",
       "medium:c8032a1a7d38",
       "medium:c9c2344bbb",
       "medium:ca960a5d8f8c",
@@ -503,5 +504,6 @@
       "github-discussion:9160781",
       "github-discussion:9454413"
     ]
-  }
+  },
+  "exclusions": []
 }
