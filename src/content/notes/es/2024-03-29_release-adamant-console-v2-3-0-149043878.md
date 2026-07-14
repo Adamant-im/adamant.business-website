@@ -1,0 +1,29 @@
+---
+title: "ADAMANT Console v2.3.0"
+slug: "release-adamant-console-v2-3-0-149043878"
+description: "Esta versión introduce el comando adm init [ruta], que permite a los usuarios copiar el archivo de configuración predeterminado a /.adm/ o a una ruta de directorio especificada. No hay cambios que rompan compatibilidad..."
+category: "release"
+source: "github"
+sourceUrl: "https://github.com/Adamant-im/adamant-console/releases/tag/v2.3.0"
+publishedAt: "2024-03-29T17:13:09Z"
+author: "martiliones"
+authorUrl: "https://github.com/martiliones"
+repo: "adamant-console"
+tag: "v2.3.0"
+prerelease: false
+cardSpan: "half"
+originalId: "github-release:adamant-console:149043878"
+locale: "es"
+placeholder: false
+---
+
+Esta versión introduce el comando `adm init [path]`, que permite a los usuarios copiar el archivo de configuración predeterminado a `~/.adm/` o a una ruta de directorio especificada.
+
+```bash
+# to copy to ~/.adm/$ADM_CONFIG_FILENAME
+$ adm init
+# to copy to the specific directory
+$ adm init ./my-dir
+```
+
+No se introducen cambios que rompan la compatibilidad en esta versión.
