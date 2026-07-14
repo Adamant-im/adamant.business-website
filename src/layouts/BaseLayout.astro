@@ -13,12 +13,12 @@ interface Props {
   ogType?: string;
   ogImage?: string;
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
-  noindex?: boolean;
+  pageType?: 'WebPage' | 'CollectionPage';
   prevPath?: string;
   nextPath?: string;
 }
 
-const { title, description, locale, canonicalPath, ogType, ogImage, jsonLd, noindex, prevPath, nextPath } = Astro.props;
+const { title, description, locale, canonicalPath, ogType, ogImage, jsonLd, pageType, prevPath, nextPath } = Astro.props;
 const localeConfig = getLocaleConfig(locale);
 const htmlLang = localeConfig.codes[0];
 ---
@@ -34,7 +34,7 @@ const htmlLang = localeConfig.codes[0];
       ogType={ogType}
       ogImage={ogImage}
       jsonLd={jsonLd}
-      noindex={noindex}
+      pageType={pageType}
       prevPath={prevPath}
       nextPath={nextPath}
     />

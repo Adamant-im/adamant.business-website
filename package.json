@@ -39,6 +39,7 @@
     "lint": "astro check",
     "validate:config": "node --experimental-strip-types scripts/validate-config.mjs",
     "validate:notes": "node --experimental-strip-types scripts/validate-engineering-notes.mjs",
+    "validate:seo": "node --experimental-strip-types scripts/validate-seo.mjs",
     "sync:stars": "node --experimental-strip-types scripts/sync-github-repo-stars.mjs",
     "import:medium": "node --experimental-strip-types scripts/import-medium-export.mjs",
     "import:releases": "node --experimental-strip-types scripts/sync-github-releases.mjs --all",

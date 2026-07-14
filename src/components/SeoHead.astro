@@ -3,6 +3,7 @@ import {
   getHreflangAlternates,
   getLocaleConfig,
   getOgLocale,
+  getUiStrings,
   stripLocalePrefix,
   type LocaleId,
 } from '../i18n';
@@ -15,7 +16,7 @@ interface Props {
   ogType?: string;
   ogImage?: string;
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
-  noindex?: boolean;
+  pageType?: 'WebPage' | 'CollectionPage';
   prevPath?: string;
   nextPath?: string;
 }
@@ -28,13 +29,14 @@ const {
   ogType = 'website',
   ogImage,
   jsonLd,
-  noindex = false,
+  pageType = 'WebPage',
   prevPath,
   nextPath,
 } = Astro.props;
 
-const { site, seo } = await import('../../config/site.ts').then((m) => m.siteConfig);
+const { site, contact, locales, seo } = await import('../../config/site.ts').then((m) => m.siteConfig);
 const localeConfig = getLocaleConfig(locale);
+const ui = getUiStrings(locale);
 const canonicalUrl = new URL(canonicalPath, site.url).href;
 const ogImageUrl = new URL(ogImage || seo.defaultOgImage, site.url).href;
 const fullTitle = title === site.name ? title : `${title} — ${site.name}`;
@@ -46,13 +48,25 @@ const alternateOgLocales = hreflangAlternates
   .map((item) => getOgLocale(item.hreflang as LocaleId))
   .filter((code) => code !== ogLocale);
 
+const organizationId = new URL('/#organization', site.url).href;
+const websiteId = new URL('/#website', site.url).href;
+const webpageId = `${canonicalUrl}#webpage`;
+
 const baseOrganization = {
-  '@context': 'https://schema.org',
   '@type': 'Organization',
+  '@id': organizationId,
   name: site.legalName,
   url: site.url,
-  foundingDate: String(site.foundedYear),
-  description: site.positioning,
+  logo: new URL('/apple-touch-icon.png', site.url).href,
+  email: `mailto:${contact.email}`,
+  description: ui.meta.homeDescription,
+  contactPoint: {
+    '@type': 'ContactPoint',
+    contactType: 'sales',
+    email: contact.email,
+    url: new URL('/#contact', site.url).href,
+    availableLanguage: locales.map((item) => item.codes[0]),
+  },
   knowsAbout: [
     'self-hosted crypto software',
     'blockchain infrastructure',
@@ -61,24 +75,35 @@ const baseOrganization = {
     'security audits',
     'encrypted messaging',
   ],
-  sameAs: seo.sameAs,
 };
 
 const baseWebsite = {
-  '@context': 'https://schema.org',
   '@type': 'WebSite',
+  '@id': websiteId,
   name: site.name,
   url: site.url,
-  description: site.heroTagline,
+  description: ui.meta.homeDescription,
   inLanguage: localeConfig.codes[0],
-  publisher: { '@type': 'Organization', name: site.legalName },
+  publisher: { '@id': organizationId },
 };
 
-const jsonLdGraph = jsonLd
-  ? Array.isArray(jsonLd)
-    ? [baseOrganization, baseWebsite, ...jsonLd]
-    : [baseOrganization, baseWebsite, jsonLd]
-  : [baseOrganization, baseWebsite];
+const baseWebpage = {
+  '@type': pageType,
+  '@id': webpageId,
+  url: canonicalUrl,
+  name: fullTitle,
+  description,
+  inLanguage: localeConfig.codes[0],
+  isPartOf: { '@id': websiteId },
+  about: { '@id': organizationId },
+  ...(ogImage ? { primaryImageOfPage: { '@type': 'ImageObject', url: ogImageUrl } } : {}),
+};
+
+const pageJsonLd = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
+const jsonLdGraph = {
+  '@context': 'https://schema.org',
+  '@graph': [baseOrganization, baseWebsite, baseWebpage, ...pageJsonLd],
+};
 ---
 
 <meta charset="UTF-8" />
@@ -86,10 +111,10 @@ const jsonLdGraph = jsonLd
 <meta name="generator" content={Astro.generator} />
 <title>{fullTitle}</title>
 <meta name="description" content={description} />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 <link rel="canonical" href={canonicalUrl} />
 {prevPath && <link rel="prev" href={new URL(prevPath, site.url).href} />}
 {nextPath && <link rel="next" href={new URL(nextPath, site.url).href} />}
-{noindex && <meta name="robots" content="noindex, nofollow" />}
 {
   hreflangAlternates.map((alternate) => (
     <link rel="alternate" hreflang={alternate.hreflang} href={alternate.href} />
@@ -101,6 +126,7 @@ const jsonLdGraph = jsonLd
 <meta property="og:description" content={description} />
 <meta property="og:url" content={canonicalUrl} />
 <meta property="og:image" content={ogImageUrl} />
+<meta property="og:image:alt" content={fullTitle} />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta property="og:site_name" content={site.name} />
@@ -108,11 +134,10 @@ const jsonLdGraph = jsonLd
 {alternateOgLocales.map((code) => <meta property="og:locale:alternate" content={code} />)}
 
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:site" content={seo.twitterHandle} />
-<meta name="twitter:creator" content={seo.twitterHandle} />
 <meta name="twitter:title" content={fullTitle} />
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={ogImageUrl} />
+<meta name="twitter:image:alt" content={fullTitle} />
 
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="icon" type="image/x-icon" sizes="48x48" href="/favicon.ico" />

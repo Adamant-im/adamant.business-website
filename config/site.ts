@@ -20,7 +20,7 @@ export const siteConfig = {
 
   locales: [
     { id: 'en', path: '', label: 'English', dir: 'ltr' as const, codes: ['en'] },
-    { id: 'zh', path: 'zh', label: '简体中文', dir: 'ltr' as const, codes: ['zh', 'zh-CN', 'zh-Hans'] },
+    { id: 'zh', path: 'zh', label: '简体中文', dir: 'ltr' as const, codes: ['zh-CN', 'zh-Hans', 'zh'] },
     { id: 'es', path: 'es', label: 'Español', dir: 'ltr' as const, codes: ['es'] },
     { id: 'ru', path: 'ru', label: 'Русский', dir: 'ltr' as const, codes: ['ru'] },
     { id: 'ar', path: 'ar', label: 'العربية', dir: 'rtl' as const, codes: ['ar'] },
@@ -163,8 +163,7 @@ export const siteConfig = {
 
   seo: {
     defaultOgImage: '/og-image.png',
-    twitterHandle: '@adamant_im',
-    sameAs: [
+    references: [
       'https://github.com/Adamant-im',
       'https://medium.com/adamant-im',
       'https://x.com/adamant_im',

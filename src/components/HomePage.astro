@@ -74,7 +74,7 @@ const canonicalPath = localePath(locale, '/');
 ---
 
 <BaseLayout
-  title={site.name}
+  title={ui.meta.homeTitle}
   description={ui.meta.homeDescription}
   locale={locale}
   canonicalPath={canonicalPath}
@@ -228,6 +228,23 @@ const canonicalPath = localePath(locale, '/');
       <div class="mt-8">
         <NotesGrid notes={latestNotes} localeCode={localeConfig.codes[0]} labels={noteLabels} compact />
       </div>
+    </div>
+  </section>
+
+  <section class="section-light border-b border-border">
+    <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
+      <p class="eyebrow">{ui.home.faqEyebrow}</p>
+      <h2 class="mt-3 text-3xl font-semibold tracking-tight text-text">{ui.home.faqTitle}</h2>
+      <dl data-faq-list class="mt-8 grid gap-4 md:grid-cols-2">
+        {
+          ui.faq.map((item) => (
+            <div class="card p-6">
+              <dt class="font-semibold text-text">{item.question}</dt>
+              <dd class="mt-3 text-sm leading-relaxed text-muted">{item.answer}</dd>
+            </div>
+          ))
+        }
+      </dl>
     </div>
   </section>
 

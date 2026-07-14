@@ -41,11 +41,17 @@ jobs:
       - name: Validate config
         run: npm run validate:config
 
+      - name: Validate engineering notes
+        run: npm run validate:notes
+
       - name: Lint
         run: npm run lint
 
       - name: Build
         run: npm run build
+
+      - name: Validate SEO output
+        run: npm run validate:seo
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

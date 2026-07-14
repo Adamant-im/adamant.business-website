@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import NotesGrid from './react/NotesGrid';
-import { getLocaleConfig, getUiStrings, type LocaleId } from '../i18n';
+import { formatTemplate, getLocaleConfig, getUiStrings, type LocaleId } from '../i18n';
 import {
   getNotesForLocale,
   getNotesPage,
@@ -25,6 +25,13 @@ const notes = getNotesPage(entries, page).map((entry) => toNoteCard(entry, local
 const canonicalPath = noteIndexPath(locale, page);
 const previousPath = page > 1 ? noteIndexPath(locale, page - 1) : undefined;
 const nextPath = page < pageCount ? noteIndexPath(locale, page + 1) : undefined;
+const metaTitle =
+  page === 1
+    ? ui.engineeringNotes.title
+    : formatTemplate(ui.engineeringNotes.pageTitle, {
+        title: ui.engineeringNotes.title,
+        page: new Intl.NumberFormat(localeConfig.codes[0]).format(page),
+      });
 const labels = {
   article: ui.engineeringNotes.article,
   release: ui.engineeringNotes.release,
@@ -32,13 +39,26 @@ const labels = {
   discussion: ui.engineeringNotes.discussion,
   github: ui.engineeringNotes.github,
 };
+const itemListJsonLd = {
+  '@type': 'ItemList',
+  itemListOrder: 'https://schema.org/ItemListOrderDescending',
+  numberOfItems: notes.length,
+  itemListElement: notes.map((note, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: note.title,
+    url: new URL(note.href, Astro.site).href,
+  })),
+};
 ---
 
 <BaseLayout
-  title={ui.engineeringNotes.title}
+  title={metaTitle}
   description={ui.engineeringNotes.intro}
   locale={locale}
   canonicalPath={canonicalPath}
+  pageType="CollectionPage"
+  jsonLd={itemListJsonLd}
   prevPath={previousPath}
   nextPath={nextPath}
 >

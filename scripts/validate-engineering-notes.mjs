@@ -48,15 +48,11 @@ for (const locale of siteConfig.locales) {
   const entries = entriesByLocale.get(locale.id);
   for (const entry of entries) {
     if (entry.data.locale !== locale.id) throw new Error(`Incorrect locale in ${locale.id}/${entry.file}`);
-    if (locale.id === siteConfig.defaultLocale) {
-      if (entry.data.placeholder !== false) throw new Error(`English note is marked placeholder: ${entry.file}`);
-    } else {
-      if (entry.data.placeholder === true && !entry.body.includes('Lorem ipsum')) {
-        throw new Error(`Localized placeholder body is missing: ${locale.id}/${entry.file}`);
-      }
-      if (entry.data.placeholder === false && entry.body.includes('Lorem ipsum')) {
-        throw new Error(`Translated note still contains placeholder text: ${locale.id}/${entry.file}`);
-      }
+    if (entry.data.placeholder !== false) {
+      throw new Error(`Engineering note is still marked as a placeholder: ${locale.id}/${entry.file}`);
+    }
+    if (entry.body.includes('Lorem ipsum')) {
+      throw new Error(`Engineering note still contains placeholder text: ${locale.id}/${entry.file}`);
     }
     if (!englishIds.has(entry.data.originalId)) {
       throw new Error(`Unexpected originalId in ${locale.id}/${entry.file}`);

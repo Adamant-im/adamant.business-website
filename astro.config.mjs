@@ -11,6 +11,7 @@ import { siteConfig } from './config/site.ts';
 export default defineConfig({
   site: siteConfig.site.url,
   output: 'static',
+  trailingSlash: 'ignore',
   i18n: {
     locales: siteConfig.locales.map((locale) => locale.id),
     defaultLocale: siteConfig.defaultLocale,

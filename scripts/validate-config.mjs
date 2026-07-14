@@ -7,7 +7,7 @@ const requiredPaths = [
   'github.releaseRepos',
   'github.discussions.repository',
   'sync.dedupStateFile',
-  'seo.twitterHandle',
+  'seo.defaultOgImage',
 ];
 
 function hasPath(path) {

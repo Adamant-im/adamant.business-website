@@ -208,7 +208,7 @@ Common use cases:
 - Tailwind CSS 4 via `@tailwindcss/vite`
 - React islands: `@astrojs/react`
 - Content: Astro Content Collections (`src/content.config.ts`)
-- SEO: `@astrojs/sitemap`, JSON-LD, `public/llms.txt`
+- SEO: `@astrojs/sitemap`, JSON-LD, generated `/llms.txt`
 - Hosting: GitHub Pages (`master` branch), custom domain `adamant.business`
 
 ### Configuration
@@ -226,6 +226,8 @@ Common use cases:
 | `npm run build` | Production build to `dist/` |
 | `npm run lint` | `astro check` |
 | `npm run validate:config` | Validate `config/site.ts` |
+| `npm run validate:notes` | Ensure every localized engineering note is publication-ready |
+| `npm run validate:seo` | Validate built metadata, hreflang, JSON-LD, sitemap, and `llms.txt` |
 | `npm run sync:stars` | Refresh GitHub star counts |
 
 ### Content policy

@@ -38,7 +38,7 @@ const articleJsonLd = {
   mainEntityOfPage: canonicalUrl,
   inLanguage: localeConfig.codes[0],
   isBasedOn: entry.data.sourceUrl,
-  publisher: { '@type': 'Organization', name: 'cryptofoundry' },
+  publisher: { '@id': new URL('/#organization', Astro.site).href },
 };
 const publishedDate = new Intl.DateTimeFormat(localeConfig.codes[0], {
   day: 'numeric',
@@ -56,7 +56,6 @@ const publishedDate = new Intl.DateTimeFormat(localeConfig.codes[0], {
   ogType="article"
   ogImage={entry.data.coverImage}
   jsonLd={articleJsonLd}
-  noindex={entry.data.placeholder}
 >
   <article>
     <header class="section-light grid-texture border-b border-border">
@@ -82,7 +81,7 @@ const publishedDate = new Intl.DateTimeFormat(localeConfig.codes[0], {
       <figure class="mx-auto max-w-7xl px-4 pt-8 sm:px-6 sm:pt-12">
         <img
           src={entry.data.coverImage}
-          alt=""
+          alt={entry.data.title}
           class="max-h-[76vh] w-full rounded-xl border border-border bg-card object-contain"
           width="1600"
           height="900"

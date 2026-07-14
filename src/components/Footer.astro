@@ -11,7 +11,7 @@ interface Props {
 const { locale } = Astro.props;
 const ui = getUiStrings(locale);
 const { site, contact, seo } = siteConfig;
-const githubUrl = seo.sameAs.find((url) => url.includes('github.com'));
+const githubUrl = seo.references.find((url) => url.includes('github.com'));
 
 const serviceEntries = await Promise.all(
   siteConfig.services.map(async (service) => {

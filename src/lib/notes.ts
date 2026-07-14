@@ -65,7 +65,7 @@ export function getNotesPage(
 
 export function noteIndexPath(locale: LocaleId, page = 1): string {
   const base = localePath(locale, '/engineering-notes');
-  return page === 1 ? base : `${base}/page/${page}`;
+  return page === 1 ? base : `${base}page/${page}/`;
 }
 
 export function noteDetailPath(locale: LocaleId, slug: string): string {

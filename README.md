@@ -21,6 +21,7 @@ npm run validate:notes
 npm run sync:stars
 npm run dev
 npm run build
+npm run validate:seo
 npm run lint
 npm run preview
 ```
@@ -36,7 +37,8 @@ content/original/       Imported English source material
 src/components/         Astro and React UI
 src/data/repos.json     GitHub star counts (generated)
 scripts/                Sync and validation utilities
-public/                 Static assets, robots.txt, llms.txt, CNAME
+public/                 Static assets, robots.txt, CNAME
+src/pages/llms.txt.ts   Generated multilingual AI-readable site index
 ```
 
 ## Historical engineering notes import
