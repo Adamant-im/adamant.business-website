@@ -52,6 +52,18 @@ async function currentSha() {
   return (await run('git', ['rev-parse', 'HEAD'], { capture: true })).stdout;
 }
 
+/**
+ * Build the git arguments that recreate an automation-owned content branch.
+ * A stale local branch may remain after an interrupted run, so reruns reset it
+ * to the requested start point instead of failing on branch creation.
+ */
+export function contentBranchSwitchArgs(branchName, startPoint = 'origin/master') {
+  if (!branchName.startsWith('content/')) {
+    throw new Error(`Refusing to overwrite a non-content branch: ${branchName}`);
+  }
+  return ['switch', '--force-create', branchName, startPoint];
+}
+
 export async function assertPublishingReady() {
   const status = await run('git', ['status', '--porcelain'], { capture: true });
   if (status.stdout) {
@@ -148,7 +160,7 @@ export async function publishChange({
     allowExitCodes: [0, 2],
   });
   if (remoteBranch.code === 0) throw new Error(`Remote branch already exists: ${branchName}`);
-  await run('git', ['switch', '--create', branchName, 'origin/master']);
+  await run('git', contentBranchSwitchArgs(branchName));
 
   try {
     const result = await generate();
