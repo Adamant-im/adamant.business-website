@@ -224,7 +224,9 @@ function discussionRecord(discussion) {
     description: markdownExcerpt(body, title),
     category: 'discussion',
     source: 'github',
-    sourceUrl: normalizePublicationUrl(discussion.html_url),
+    sourceUrl: normalizePublicationUrl(discussion.html_url, {
+      discussionRepository: siteConfig.github.discussions.repository,
+    }),
     publishedAt: discussion.created_at,
     author: discussion.user.login,
     authorUrl: discussion.user.html_url,
@@ -265,36 +267,59 @@ export async function fetchGithubDiscussionPublications(token = getGithubToken()
     .map(discussionRecord);
 }
 
-async function fetchGithubPublicationByUrl(classified, token) {
+async function fetchGithubPublicationByUrl(classified, token, { enforceEligibility = true } = {}) {
   if (classified.type === 'release') {
     const release = await fetchGithubJson(
       `/repos/${siteConfig.github.org}/${encodeURIComponent(classified.repo)}/releases/tags/${encodeURIComponent(classified.tag)}`,
       token,
     );
-    if (release.draft || !release.published_at) throw new Error('GitHub Release is not published');
+    if (enforceEligibility && (release.draft || !release.published_at)) {
+      throw new Error('GitHub Release is not published');
+    }
     return releaseRecord(classified.repo, release);
   }
 
-  const [members, discussion] = await Promise.all([
-    organizationMembers(token),
-    fetchGithubJson(
-      `/repos/${siteConfig.github.discussions.org}/${encodeURIComponent(siteConfig.github.discussions.repository)}/discussions/${classified.number}`,
-      token,
-    ),
-  ]);
-  if (!members.has(String(discussion.user?.login || '').toLowerCase())) {
+  const discussionPromise = fetchGithubJson(
+    `/repos/${siteConfig.github.discussions.org}/${encodeURIComponent(siteConfig.github.discussions.repository)}/discussions/${classified.number}`,
+    token,
+  );
+  const [members, discussion] = enforceEligibility
+    ? await Promise.all([organizationMembers(token), discussionPromise])
+    : [null, await discussionPromise];
+  if (
+    enforceEligibility &&
+    !members.has(String(discussion.user?.login || '').toLowerCase())
+  ) {
     throw new Error(`GitHub Discussion author is not a current ${siteConfig.github.org} member`);
   }
   return discussionRecord(discussion);
 }
 
-export async function fetchPublicationByUrl(value) {
-  const classified = classifyPublicationUrl(value, {
+function classifyConfiguredPublicationUrl(value) {
+  return classifyPublicationUrl(value, {
+    discussionRepository: siteConfig.github.discussions.repository,
     githubOrg: siteConfig.github.org,
     releaseRepos: siteConfig.github.releaseRepos,
   });
+}
+
+export async function fetchPublicationByUrl(value) {
+  const classified = classifyConfiguredPublicationUrl(value);
   if (classified.type === 'article') return fetchMediumPublicationByUrl(classified);
   return fetchGithubPublicationByUrl(classified, getGithubToken());
+}
+
+export async function fetchPublicationIdentityByUrl(value) {
+  const classified = classifyConfiguredPublicationUrl(value);
+  if (classified.type === 'article') {
+    return {
+      originalId: classified.mediumId ? `medium:${classified.mediumId}` : undefined,
+      sourceUrl: classified.normalizedUrl,
+    };
+  }
+  return fetchGithubPublicationByUrl(classified, getGithubToken(), {
+    enforceEligibility: false,
+  });
 }
 
 export async function discoverPublications() {

@@ -108,7 +108,10 @@ export async function generatePublication(publication, { saveOriginalSource = tr
 
   let contentChanged = changedAssets;
   contentChanged += Number(
-    await writeIfChanged(path.join(notesDir, 'en', targetFile), preparedEnglish),
+    await writeIfChanged(
+      path.join(notesDir, siteConfig.defaultLocale, targetFile),
+      preparedEnglish,
+    ),
   );
   for (const translation of translations) {
     contentChanged += Number(

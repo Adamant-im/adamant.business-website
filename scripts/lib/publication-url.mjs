@@ -20,7 +20,7 @@ export function extractMediumId(value) {
   return pathMatch?.[1]?.toLowerCase() ?? null;
 }
 
-export function normalizePublicationUrl(value) {
+export function normalizePublicationUrl(value, { discussionRepository = '.github' } = {}) {
   const url = new URL(withProtocol(value));
   if (!['http:', 'https:'].includes(url.protocol)) {
     throw new Error(`Unsupported publication URL protocol: ${url.protocol}`);
@@ -35,16 +35,24 @@ export function normalizePublicationUrl(value) {
   url.hash = '';
   url.pathname = normalizePathname(url.pathname);
 
-  const discussion = url.pathname.match(/^\/([^/]+)\/\.github\/discussions\/(\d+)$/i);
-  if (url.hostname === 'github.com' && discussion) {
-    url.pathname = `/orgs/${discussion[1]}/discussions/${discussion[2]}`;
+  const discussion = url.pathname.match(/^\/([^/]+)\/([^/]+)\/discussions\/(\d+)$/i);
+  const configuredDiscussionRepository = String(discussionRepository ?? '.github').toLowerCase();
+  if (
+    url.hostname === 'github.com' &&
+    discussion &&
+    discussion[2].toLowerCase() === configuredDiscussionRepository
+  ) {
+    url.pathname = `/orgs/${discussion[1]}/discussions/${discussion[3]}`;
   }
 
   return url.toString().replace(/\/$/, '');
 }
 
-export function classifyPublicationUrl(value, { githubOrg, releaseRepos } = {}) {
-  const normalizedUrl = normalizePublicationUrl(value);
+export function classifyPublicationUrl(
+  value,
+  { discussionRepository, githubOrg, releaseRepos } = {},
+) {
+  const normalizedUrl = normalizePublicationUrl(value, { discussionRepository });
   const url = new URL(normalizedUrl);
 
   if (MEDIUM_HOSTS.has(url.hostname) || url.hostname.endsWith('.medium.com')) {

@@ -131,3 +131,84 @@ test('reports a missing publication separately from an existing exclusion', asyn
     await rm(directory, { recursive: true, force: true });
   }
 });
+
+test('resolves a missing GitHub publication and removes its stable source ID', async () => {
+  const directory = await mkdtemp(path.join(os.tmpdir(), 'cryptofoundry-github-exclude-'));
+  const notesRoot = path.join(directory, 'notes');
+  const originalsRoot = path.join(directory, 'originals');
+  const stateFile = path.join(directory, 'state.json');
+  const sourceUrl = 'https://github.com/Adamant-im/adamant/releases/tag/v1.0.0';
+  const originalId = 'github-release:adamant:123456';
+
+  try {
+    await mkdir(path.join(notesRoot, siteConfig.defaultLocale), { recursive: true });
+    await writeFile(
+      stateFile,
+      `${JSON.stringify({ version: 2, sources: { githubReleases: [originalId] }, exclusions: [] }, null, 2)}\n`,
+    );
+
+    const result = await removePublication(
+      { url: sourceUrl },
+      {
+        notesRoot,
+        originalsRoot,
+        stateFile,
+        logger: { log() {} },
+        resolvePublicationByUrl: async () => ({
+          originalId,
+          slug: 'release-adamant-v1-0-0-123456',
+          sourceUrl,
+        }),
+      },
+    );
+
+    assert.equal(result.matches.length, 0);
+    assert.equal(result.removedSourceIds, 1);
+    assert.equal(result.stateChanged, 1);
+    const state = JSON.parse(await readFile(stateFile, 'utf8'));
+    assert.deepEqual(state.sources.githubReleases, []);
+    assert.deepEqual(state.exclusions, [
+      {
+        originalId,
+        slug: 'release-adamant-v1-0-0-123456',
+        sourceUrl,
+      },
+    ]);
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
+});
+
+test('still records a GitHub URL exclusion when identity lookup fails', async () => {
+  const directory = await mkdtemp(path.join(os.tmpdir(), 'cryptofoundry-github-fallback-'));
+  const notesRoot = path.join(directory, 'notes');
+  const originalsRoot = path.join(directory, 'originals');
+  const stateFile = path.join(directory, 'state.json');
+  const sourceUrl = 'https://github.com/Adamant-im/adamant/releases/tag/deleted';
+  const warnings = [];
+
+  try {
+    await mkdir(path.join(notesRoot, siteConfig.defaultLocale), { recursive: true });
+    const result = await removePublication(
+      { url: sourceUrl },
+      {
+        notesRoot,
+        originalsRoot,
+        stateFile,
+        logger: { log() {}, warn(message) { warnings.push(message); } },
+        resolvePublicationByUrl: async () => {
+          throw new Error('GitHub API returned HTTP 404');
+        },
+      },
+    );
+
+    assert.equal(result.matches.length, 0);
+    assert.equal(result.removedSourceIds, 0);
+    assert.equal(result.stateChanged, 1);
+    assert.match(warnings[0], /excluding the URL only/);
+    const state = JSON.parse(await readFile(stateFile, 'utf8'));
+    assert.deepEqual(state.exclusions, [{ sourceUrl }]);
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
+});

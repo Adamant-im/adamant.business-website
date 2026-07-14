@@ -3,6 +3,7 @@ import path from 'node:path';
 
 import { siteConfig } from '../../config/site.ts';
 import { notesDir, originalsDir } from './content-utils.mjs';
+import { fetchPublicationIdentityByUrl } from './content-sources.mjs';
 import { assetDirectoryForPublication } from './publication-images.mjs';
 import {
   extractMediumId,
@@ -52,6 +53,7 @@ export async function removePublication(
     stateFile,
     assetDirectory = assetDirectoryForPublication,
     logger = console,
+    resolvePublicationByUrl = fetchPublicationIdentityByUrl,
   } = {},
 ) {
   const normalizedUrl = url ? normalizePublicationUrl(url) : null;
@@ -61,13 +63,32 @@ export async function removePublication(
     hostname?.endsWith('.medium.com') ||
     hostname === 'news.adamant.im';
   const mediumId = isMediumUrl ? extractMediumId(normalizedUrl) : null;
-  const selector = {
+  let selector = {
     ...(slug ? { slug } : {}),
     ...(normalizedUrl ? { sourceUrl: normalizedUrl } : {}),
     ...(mediumId ? { originalId: `medium:${mediumId}` } : {}),
   };
   const entries = await listEnglishPublications(path.join(notesRoot, siteConfig.defaultLocale));
-  const matches = entries.filter((entry) => publicationMatches(entry.frontmatter, selector));
+  let matches = entries.filter((entry) => publicationMatches(entry.frontmatter, selector));
+  let resolvedPublication = null;
+  if (normalizedUrl && hostname === 'github.com' && matches.length === 0) {
+    try {
+      resolvedPublication = await resolvePublicationByUrl(normalizedUrl);
+      selector = {
+        ...selector,
+        ...(resolvedPublication.originalId
+          ? { originalId: resolvedPublication.originalId }
+          : {}),
+        ...(resolvedPublication.slug ? { slug: resolvedPublication.slug } : {}),
+        sourceUrl: normalizePublicationUrl(resolvedPublication.sourceUrl ?? normalizedUrl),
+      };
+      matches = entries.filter((entry) => publicationMatches(entry.frontmatter, selector));
+    } catch (error) {
+      const message = `Unable to resolve GitHub publication metadata; excluding the URL only: ${error.message}`;
+      if (typeof logger.warn === 'function') logger.warn(message);
+      else logger.log(`Warning: ${message}`);
+    }
+  }
   let contentChanged = 0;
   let localOriginalsChanged = 0;
 
@@ -88,7 +109,7 @@ export async function removePublication(
     localOriginalsChanged += await removeOriginals(publication, originalsRoot);
   }
 
-  const exclusion = matches[0]?.frontmatter ?? selector;
+  const exclusion = matches[0]?.frontmatter ?? resolvedPublication ?? selector;
   const stateResult = await excludePublication(exclusion, stateFile);
   const stateChanged = Number(stateResult.changed);
   const changed = contentChanged + stateChanged;

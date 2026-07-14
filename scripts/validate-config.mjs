@@ -8,6 +8,8 @@ const requiredPaths = [
   'github.starsRepos',
   'github.releaseRepos',
   'github.discussions.repository',
+  'openRouter.models',
+  'openRouter.translate.models',
   'sync.dedupStateFile',
   'seo.defaultOgImage',
 ];
@@ -40,7 +42,10 @@ if (!siteConfig.github.releaseRepos.length) {
   failed = true;
 }
 
-if (!siteConfig.openRouter.models.length || !siteConfig.openRouter.translate.models.length) {
+if (
+  !siteConfig.openRouter?.models?.length ||
+  !siteConfig.openRouter?.translate?.models?.length
+) {
   console.error('OpenRouter summary and translation model lists must not be empty');
   failed = true;
 }

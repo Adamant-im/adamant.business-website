@@ -8,6 +8,7 @@ import {
 } from '../lib/publication-url.mjs';
 
 const options = {
+  discussionRepository: '.github',
   githubOrg: 'Adamant-im',
   releaseRepos: ['adamant', 'adamant-im'],
 };
@@ -32,6 +33,31 @@ test('canonicalizes repository Discussion URLs to organization URLs', () => {
   assert.equal(
     normalizePublicationUrl('https://github.com/Adamant-im/.github/discussions/64?sort=top'),
     'https://github.com/orgs/Adamant-im/discussions/64',
+  );
+});
+
+test('canonicalizes only the configured Discussion repository', () => {
+  const customOptions = { ...options, discussionRepository: 'community' };
+  assert.equal(
+    normalizePublicationUrl('https://github.com/Adamant-im/community/discussions/64', {
+      discussionRepository: customOptions.discussionRepository,
+    }),
+    'https://github.com/orgs/Adamant-im/discussions/64',
+  );
+  assert.equal(
+    classifyPublicationUrl(
+      'https://github.com/Adamant-im/community/discussions/64',
+      customOptions,
+    ).number,
+    64,
+  );
+  assert.throws(
+    () =>
+      classifyPublicationUrl(
+        'https://github.com/Adamant-im/unrelated/discussions/64',
+        customOptions,
+      ),
+    /must point to/,
   );
 });
 
