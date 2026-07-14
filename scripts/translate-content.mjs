@@ -19,10 +19,13 @@ const TEST_SLUGS = [
   'discussion-56-marketmaking-app-update-6-new-languages-content-refresh-and-pricing-changes-10333867',
 ];
 
+const DEFAULT_CONCURRENCY = 3;
+
 export async function translateContent({
   slugs = TEST_SLUGS,
   locales = TARGET_LOCALES,
   force = false,
+  concurrency = DEFAULT_CONCURRENCY,
 } = {}) {
   if (!process.env.OPENROUTER_API_KEY) {
     throw new Error('OPENROUTER_API_KEY is required');
@@ -36,13 +39,18 @@ export async function translateContent({
     }
   }
 
-  console.log(`Translating ${slugs.length} notes to ${locales.length} locales (${jobs.length} tasks)`);
+  console.log(
+    `Translating ${slugs.length} notes to ${locales.length} locales (${jobs.length} tasks, concurrency=${concurrency})`,
+  );
 
   let changed = 0;
   let processed = 0;
   let errors = 0;
 
-  const results = await mapLimit(jobs, 2, async ({ slug, localeId, english }) => {
+  // Default concurrency is conservative: guard against rate limits / HTTP 429 on the
+  // OpenRouter account and upstream model providers. OpenRouter does not forbid 7 parallel
+  // calls — we simply do not run all locale jobs at once. Override with --concurrency=N.
+  const results = await mapLimit(jobs, concurrency, async ({ slug, localeId, english }) => {
     try {
       const translated = await translateNoteToLocale(english.frontmatter, english.body, localeId);
       const didChange = await writeTranslatedNote(english.fileName, localeId, translated);
@@ -70,6 +78,7 @@ if (isMainModule(import.meta.url)) {
   const args = new Set(process.argv.slice(2));
   const slugArg = process.argv.find((arg) => arg.startsWith('--slug='));
   const localeArg = process.argv.find((arg) => arg.startsWith('--locale='));
+  const concurrencyArg = process.argv.find((arg) => arg.startsWith('--concurrency='));
 
   const slugs = slugArg
     ? [slugArg.split('=')[1]]
@@ -81,9 +90,18 @@ if (isMainModule(import.meta.url)) {
     ? [localeArg.split('=')[1]]
     : TARGET_LOCALES;
 
+  const concurrency = concurrencyArg
+    ? Number.parseInt(concurrencyArg.split('=')[1], 10)
+    : DEFAULT_CONCURRENCY;
+
+  if (!Number.isFinite(concurrency) || concurrency < 1) {
+    throw new Error('--concurrency must be a positive integer');
+  }
+
   await translateContent({
     slugs,
     locales,
     force: args.has('--force'),
+    concurrency,
   });
 }
