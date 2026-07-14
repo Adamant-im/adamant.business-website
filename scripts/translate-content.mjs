@@ -4,6 +4,8 @@ import {
 } from './lib/content-utils.mjs';
 import {
   findEnglishNoteBySlug,
+  isTranslatedNote,
+  listAllEnglishNoteSlugs,
   translateNoteToLocale,
   writeTranslatedNote,
 } from './lib/translate-content.mjs';
@@ -19,10 +21,10 @@ const TEST_SLUGS = [
   'discussion-56-marketmaking-app-update-6-new-languages-content-refresh-and-pricing-changes-10333867',
 ];
 
-const DEFAULT_CONCURRENCY = 3;
+const DEFAULT_CONCURRENCY = 5;
 
 export async function translateContent({
-  slugs = TEST_SLUGS,
+  slugs,
   locales = TARGET_LOCALES,
   force = false,
   concurrency = DEFAULT_CONCURRENCY,
@@ -31,16 +33,23 @@ export async function translateContent({
     throw new Error('OPENROUTER_API_KEY is required');
   }
 
+  const resolvedSlugs = slugs ?? (await listAllEnglishNoteSlugs());
+
   const jobs = [];
-  for (const slug of slugs) {
+  let skipped = 0;
+  for (const slug of resolvedSlugs) {
     const english = await findEnglishNoteBySlug(slug);
     for (const localeId of locales) {
+      if (!force && (await isTranslatedNote(english.fileName, localeId))) {
+        skipped += 1;
+        continue;
+      }
       jobs.push({ slug, localeId, english });
     }
   }
 
   console.log(
-    `Translating ${slugs.length} notes to ${locales.length} locales (${jobs.length} tasks, concurrency=${concurrency})`,
+    `Translating ${resolvedSlugs.length} notes to ${locales.length} locales (${jobs.length} tasks, ${skipped} skipped, concurrency=${concurrency})`,
   );
 
   let changed = 0;
@@ -70,8 +79,8 @@ export async function translateContent({
     if (result.changed) changed += 1;
   }
 
-  console.log(`Done: processed=${processed}, changed=${changed}, errors=${errors}`);
-  return { processed, changed, errors };
+  console.log(`Done: processed=${processed}, changed=${changed}, skipped=${skipped}, errors=${errors}`);
+  return { processed, changed, skipped, errors };
 }
 
 if (isMainModule(import.meta.url)) {
@@ -83,7 +92,7 @@ if (isMainModule(import.meta.url)) {
   const slugs = slugArg
     ? [slugArg.split('=')[1]]
     : args.has('--all')
-      ? undefined
+      ? null
       : TEST_SLUGS;
 
   const locales = localeArg
@@ -99,7 +108,7 @@ if (isMainModule(import.meta.url)) {
   }
 
   await translateContent({
-    slugs,
+    slugs: slugs === null ? undefined : slugs,
     locales,
     force: args.has('--force'),
     concurrency,

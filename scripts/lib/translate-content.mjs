@@ -38,8 +38,26 @@ const CATEGORY_HINTS = {
     'Article: translate all sections; keep code blocks and paths unchanged.',
 };
 
+function looksLikeCodeLine(line) {
+  if (/^(`{1,2}n|js|ts|shell|bash|jsonc?|python)$/i.test(line)) return true;
+  const trimmed = line.trim();
+  if (!trimmed) return false;
+  if (/^(import|export|const|let|var|await|return|if|else|for|while|switch|case|default|throw|new|class)\b/.test(trimmed)) {
+    return true;
+  }
+  if (/^\/\//.test(trimmed) || /^\/\*/.test(trimmed) || /^\*\//.test(trimmed)) return true;
+  if (/^(api\.|socket\.|npm |node )/.test(trimmed)) return true;
+  if (/^[{}];]*$/.test(trimmed)) return true;
+  if (/[;{}()]/.test(trimmed) && /^(const|let|var|import|await|api\.|socket\.|\/\/)/.test(trimmed)) {
+    return true;
+  }
+  return false;
+}
+
 function proseLines(body) {
-  const withoutCode = body.replace(/```[\s\S]*?```/g, '');
+  const withoutCode = body
+    .replace(/```[\s\S]*?```/g, '')
+    .replace(/^(?:js|ts|shell|bash)\n[\s\S]*?\n``n$/gm, '');
   return withoutCode
     .split('\n')
     .map((line) => line.trim())
@@ -48,7 +66,8 @@ function proseLines(body) {
         line &&
         !line.startsWith('![') &&
         !line.includes('@@CODEBLOCK') &&
-        !/^#{1,6}\s/.test(line),
+        !/^#{1,6}\s/.test(line) &&
+        !looksLikeCodeLine(line),
     );
 }
 
@@ -110,6 +129,31 @@ function restoreCodeBlocks(body, blocks) {
     (text, block, index) => text.replaceAll(`@@CODEBLOCK${index}@@`, block),
     body,
   );
+}
+
+export async function listAllEnglishNoteSlugs() {
+  const enDir = path.join(notesDir, siteConfig.defaultLocale);
+  const { readdir } = await import('node:fs/promises');
+  const files = await readdir(enDir);
+  return files
+    .filter((file) => file.endsWith('.md'))
+    .map((file) => {
+      const separator = file.indexOf('_');
+      if (separator === -1) return null;
+      return file.slice(separator + 1, -3);
+    })
+    .filter(Boolean)
+    .sort();
+}
+
+export async function isTranslatedNote(fileName, localeId) {
+  const targetPath = path.join(notesDir, localeId, fileName);
+  try {
+    const content = await readFile(targetPath, 'utf8');
+    return /placeholder:\s*false/.test(content);
+  } catch {
+    return false;
+  }
 }
 
 export async function findEnglishNoteBySlug(slug) {
