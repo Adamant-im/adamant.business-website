@@ -55,6 +55,10 @@ test('removes every locale, owned assets, originals, and records an exclusion', 
     );
     await mkdir(assetDir, { recursive: true });
     await writeFile(path.join(assetDir, 'cover.webp'), 'fixture');
+    await writeFile(
+      stateFile,
+      `${JSON.stringify({ version: 2, sources: { medium: [frontmatter.originalId] }, exclusions: [] }, null, 2)}\n`,
+    );
 
     const result = await removePublication(
       { slug: frontmatter.slug },
@@ -68,12 +72,14 @@ test('removes every locale, owned assets, originals, and records an exclusion', 
     );
     assert.equal(result.matches.length, 1);
     assert.equal(result.contentChanged, siteConfig.locales.length + 1);
+    assert.equal(result.removedSourceIds, 1);
     for (const locale of siteConfig.locales) {
       assert.equal(await isMissing(path.join(notesRoot, locale.id, fileName)), true);
     }
     assert.equal(await isMissing(assetDir), true);
     assert.equal(await isMissing(path.join(originalsRoot, 'articles', fileName)), true);
     const state = JSON.parse(await readFile(stateFile, 'utf8'));
+    assert.deepEqual(state.sources.medium, []);
     assert.deepEqual(state.exclusions, [
       {
         originalId: 'medium:abcdef123456',
@@ -102,17 +108,23 @@ test('reports a missing publication separately from an existing exclusion', asyn
 
   try {
     await mkdir(path.join(notesRoot, siteConfig.defaultLocale), { recursive: true });
+    await writeFile(
+      stateFile,
+      `${JSON.stringify({ version: 2, sources: { medium: ['medium:abcdef123456'] }, exclusions: [] }, null, 2)}\n`,
+    );
 
     const first = await removePublication({ url }, options);
     assert.equal(first.matches.length, 0);
     assert.equal(first.contentChanged, 0);
     assert.equal(first.stateChanged, 1);
+    assert.equal(first.removedSourceIds, 1);
     assert.equal(first.changed, 1);
     assert.equal(messages.at(-1), 'Publication not found; adding it to exclusions');
 
     const second = await removePublication({ url }, options);
     assert.equal(second.matches.length, 0);
     assert.equal(second.stateChanged, 0);
+    assert.equal(second.removedSourceIds, 0);
     assert.equal(second.changed, 0);
     assert.equal(messages.at(-1), 'Publication not found; it is already excluded');
   } finally {

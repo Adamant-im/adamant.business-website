@@ -95,7 +95,7 @@ Content PRs target `master`, use squash merging, and include the original title,
 
 Automatic merge is restricted to the exact PR URL returned by the current `gh pr create` call. Immediately before merging, the script verifies that the PR author is the currently authenticated GitHub user, its head is the generated content branch, and its base is `master`. Pull request events run only the read-only validation job; publication and merge run only from the trusted schedule or an authorized manual workflow dispatch.
 
-Remove a publication from every locale, delete its owned images, and add it to exclusions:
+Remove a publication from every locale, delete its owned images, remove its stable ID from the source dedup lists, and add it to exclusions:
 
 ```bash
 npm run remove:content -- --url https://news.adamant.im/example-abcdef123456 --no-pr

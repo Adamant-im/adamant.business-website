@@ -28,9 +28,9 @@ test('persists dedup IDs and normalized exclusions idempotently', async () => {
     await addPublicationExclusion(publication, filePath);
     await addPublicationExclusion(publication, filePath);
     const state = await readSyncState(filePath);
-    assert.equal(isKnownPublication(state, publication), true);
+    assert.equal(isKnownPublication(state, publication), false);
     assert.equal(isExcludedPublication(state, publication), true);
-    assert.deepEqual(state.sources.medium, ['medium:abcdef123456']);
+    assert.deepEqual(state.sources.medium, []);
     assert.equal(state.exclusions.length, 1);
     assert.equal(
       state.exclusions[0].sourceUrl,

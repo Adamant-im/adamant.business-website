@@ -56,8 +56,7 @@ export async function appendKnownPublication(publication, filePath = syncStatePa
   return writeSyncState(state, filePath);
 }
 
-export async function addPublicationExclusion(publication, filePath = syncStatePath) {
-  const state = await readSyncState(filePath);
+function exclusionEntry(publication) {
   const entry = {
     ...(publication.originalId ? { originalId: publication.originalId } : {}),
     ...(publication.slug ? { slug: publication.slug } : {}),
@@ -68,8 +67,33 @@ export async function addPublicationExclusion(publication, filePath = syncStateP
   if (!entry.originalId && !entry.slug && !entry.sourceUrl) {
     throw new Error('An exclusion requires a source URL, original ID, or slug');
   }
-  if (!state.exclusions.some((exclusion) => publicationMatches(exclusion, entry))) {
+  return entry;
+}
+
+export async function excludePublication(publication, filePath = syncStatePath) {
+  const state = await readSyncState(filePath);
+  const entry = exclusionEntry(publication);
+  let removedSourceIds = 0;
+
+  if (entry.originalId) {
+    for (const [key, ids] of Object.entries(state.sources)) {
+      const filtered = ids.filter((id) => id !== entry.originalId);
+      removedSourceIds += ids.length - filtered.length;
+      state.sources[key] = filtered;
+    }
+  }
+
+  const exclusionAdded = !state.exclusions.some((exclusion) =>
+    publicationMatches(exclusion, entry),
+  );
+  if (exclusionAdded) {
     state.exclusions.push(entry);
   }
-  return writeSyncState(state, filePath);
+
+  const changed = await writeSyncState(state, filePath);
+  return { changed, exclusionAdded, removedSourceIds };
+}
+
+export async function addPublicationExclusion(publication, filePath = syncStatePath) {
+  return (await excludePublication(publication, filePath)).changed;
 }

@@ -4,10 +4,14 @@ import path from 'node:path';
 import { siteConfig } from '../../config/site.ts';
 import { notesDir, originalsDir } from './content-utils.mjs';
 import { assetDirectoryForPublication } from './publication-images.mjs';
-import { normalizePublicationUrl, publicationMatches } from './publication-url.mjs';
+import {
+  extractMediumId,
+  normalizePublicationUrl,
+  publicationMatches,
+} from './publication-url.mjs';
 import { listEnglishPublications } from './publication-pipeline.mjs';
 import { parseMarkdownFile } from './prepare-english.mjs';
-import { addPublicationExclusion } from './sync-state.mjs';
+import { excludePublication } from './sync-state.mjs';
 
 async function exists(filePath) {
   try {
@@ -50,9 +54,17 @@ export async function removePublication(
     logger = console,
   } = {},
 ) {
+  const normalizedUrl = url ? normalizePublicationUrl(url) : null;
+  const hostname = normalizedUrl ? new URL(normalizedUrl).hostname : null;
+  const isMediumUrl =
+    hostname === 'medium.com' ||
+    hostname?.endsWith('.medium.com') ||
+    hostname === 'news.adamant.im';
+  const mediumId = isMediumUrl ? extractMediumId(normalizedUrl) : null;
   const selector = {
     ...(slug ? { slug } : {}),
-    ...(url ? { sourceUrl: normalizePublicationUrl(url) } : {}),
+    ...(normalizedUrl ? { sourceUrl: normalizedUrl } : {}),
+    ...(mediumId ? { originalId: `medium:${mediumId}` } : {}),
   };
   const entries = await listEnglishPublications(path.join(notesRoot, siteConfig.defaultLocale));
   const matches = entries.filter((entry) => publicationMatches(entry.frontmatter, selector));
@@ -77,12 +89,13 @@ export async function removePublication(
   }
 
   const exclusion = matches[0]?.frontmatter ?? selector;
-  const stateChanged = Number(await addPublicationExclusion(exclusion, stateFile));
+  const stateResult = await excludePublication(exclusion, stateFile);
+  const stateChanged = Number(stateResult.changed);
   const changed = contentChanged + stateChanged;
 
   if (matches.length > 0) {
     logger.log(
-      `Removed ${matches.length} publication record(s) from every locale; ${stateChanged ? 'added it to exclusions' : 'it was already excluded'}`,
+      `Removed ${matches.length} publication record(s) from every locale; ${stateResult.exclusionAdded ? 'added it to exclusions' : 'it was already excluded'}${stateResult.removedSourceIds ? `; removed ${stateResult.removedSourceIds} source ID(s)` : ''}`,
     );
   } else if (stateChanged) {
     logger.log('Publication not found; adding it to exclusions');
@@ -96,6 +109,7 @@ export async function removePublication(
     exclusion,
     localOriginalsChanged,
     matches,
+    removedSourceIds: stateResult.removedSourceIds,
     selector,
     stateChanged,
   };
