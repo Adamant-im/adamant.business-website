@@ -179,7 +179,27 @@ for (const file of htmlFiles) {
   }
   if (canonicalUrl.pathname === '/' || canonicalUrl.pathname === `/${locale.path}/`) {
     const faq = findGraphNode(graph, 'FAQPage');
-    if (!faq || $('[data-faq-list] dt').length !== faq.mainEntity?.length) {
+    const visibleFaq = $('[data-faq-list] > div')
+      .map((_, element) => ({
+        question: $(element).find('dt').first().text().trim(),
+        answer: $(element).find('dd').first().text().trim(),
+      }))
+      .get();
+    const structuredFaq = Array.isArray(faq?.mainEntity)
+      ? faq.mainEntity.map((item) => ({
+          question: item?.name,
+          answer: item?.acceptedAnswer?.text,
+        }))
+      : [];
+    if (
+      !faq ||
+      visibleFaq.length === 0 ||
+      visibleFaq.length !== structuredFaq.length ||
+      visibleFaq.some(
+        (item, index) =>
+          item.question !== structuredFaq[index]?.question || item.answer !== structuredFaq[index]?.answer,
+      )
+    ) {
       addError(file, 'home page FAQ structured data does not match the visible FAQ');
     }
   }

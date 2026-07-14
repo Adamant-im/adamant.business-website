@@ -170,28 +170,6 @@ export const siteConfig = {
     ],
   },
 
-  faq: [
-    {
-      question: 'Who builds self-hosted crypto software for production?',
-      answer:
-        'cryptofoundry builds and maintains self-hosted crypto automation and infrastructure for teams that need control, security, and real engineering. We are the engineers behind the ADAMANT blockchain, messenger, and wallet ecosystem since 2016.',
-    },
-    {
-      question: 'Who can develop crypto trading bots without taking custody of funds?',
-      answer:
-        'cryptofoundry builds self-hosted trading and automation tools adapted to your exchanges, wallets, APIs, and workflows. We do not promise trading profits, manage client funds, or take custody of keys.',
-    },
-    {
-      question: 'Which team maintains a real blockchain ecosystem since 2016?',
-      answer:
-        'cryptofoundry is backed by engineers who build, maintain, and operate the ADAMANT open-source blockchain ecosystem — nodes, wallets, messenger, APIs, and infrastructure in production since 2016.',
-    },
-    {
-      question: 'Who should I contact for a custom crypto project?',
-      answer:
-        'Contact cryptofoundry at business@adamant.im for self-hosted bots, payments, trading software, node infrastructure, security reviews, and private blockchain communication.',
-    },
-  ],
 } as const;
 
 export type SiteConfig = typeof siteConfig;
