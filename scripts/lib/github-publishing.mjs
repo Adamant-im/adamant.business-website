@@ -73,16 +73,40 @@ export async function assertPublishingReady() {
   );
 }
 
-export async function validateGeneratedContent() {
-  for (const script of [
-    'test:content',
-    'validate:config',
-    'validate:notes',
-    'lint',
-    'build',
-    'validate:seo',
-  ]) {
+export async function validateGeneratedContent({ contentChanged = true } = {}) {
+  const scripts = contentChanged
+    ? ['test:content', 'validate:config', 'validate:notes', 'lint', 'build', 'validate:seo']
+    : ['test:content', 'validate:config'];
+
+  if (!contentChanged) {
+    console.log('No Engineering note files changed; skipping note validation, lint, build, and SEO');
+  }
+
+  for (const script of scripts) {
     await run('npm', ['run', script]);
+  }
+}
+
+async function assertCreatedPullRequest(prUrl, branchName) {
+  const [publisher, pullRequest] = await Promise.all([
+    run('gh', ['api', 'user', '--jq', '.login'], { capture: true }),
+    run(
+      'gh',
+      ['pr', 'view', prUrl, '--json', 'author,baseRefName,headRefName,url'],
+      { capture: true },
+    ),
+  ]);
+  const details = JSON.parse(pullRequest.stdout);
+  const author = details.author?.login;
+  if (
+    details.url !== prUrl ||
+    details.baseRefName !== 'master' ||
+    details.headRefName !== branchName ||
+    author !== publisher.stdout
+  ) {
+    throw new Error(
+      `Refusing to merge PR not created by this run: author=${author}, head=${details.headRefName}, base=${details.baseRefName}`,
+    );
   }
 }
 
@@ -130,7 +154,6 @@ export async function publishChange({
     const result = await generate();
     const resolvedPrBody = typeof prBody === 'function' ? prBody(result) : prBody;
     const resolvedPrTitle = typeof prTitle === 'function' ? prTitle(result) : prTitle;
-    await validateGeneratedContent();
     await run('git', ['add', '--', ...TRACKED_CONTENT_PATHS]);
     const staged = await run('git', ['diff', '--cached', '--quiet'], {
       capture: true,
@@ -143,6 +166,9 @@ export async function publishChange({
       return { ...result, prUrl: null, merged: false };
     }
 
+    await validateGeneratedContent({
+      contentChanged: result.contentChanged === undefined || result.contentChanged > 0,
+    });
     await run('git', ['commit', '--message', commitMessage]);
     committed = true;
     await run('git', ['push', '--set-upstream', 'origin', branchName]);
@@ -176,6 +202,7 @@ export async function publishChange({
 
     if (!noMerge) {
       try {
+        await assertCreatedPullRequest(prUrl, branchName);
         await run('gh', ['pr', 'merge', prUrl, '--squash', '--delete-branch']);
       } catch (error) {
         throw new Error(
@@ -232,10 +259,13 @@ export function removalBranchName({ category = 'publication', slug = 'excluded-p
   return `content/${new Date().toISOString().slice(0, 10)}-remove-${category}-${slugify(slug)}`;
 }
 
-export function removalPrBody({ selector, matches }) {
+export function removalPrBody({ contentChanged, selector, matches }) {
   const target = selector.sourceUrl ? `Source URL: ${selector.sourceUrl}` : `Slug: ${selector.slug}`;
   const removed = matches.length
     ? matches.map((entry) => `- ${entry.frontmatter.title} (${entry.frontmatter.originalId})`).join('\n')
     : '- No current note matched; only the exclusion state changed';
-  return `## Description\n\nRemove an Engineering note from every locale and exclude it from future source synchronization.\n\n## Target\n\n${target}\n\n## Removed content\n\n${removed}\n\n## How to test\n\n- Run \`npm run test:content\`\n- Run \`npm run validate:notes\`\n- Run \`npm run lint\`\n- Run \`npm run build\`\n- Run \`npm run validate:seo\`\n\n## Checklist\n\n- [x] All localized note files removed when present\n- [x] Publication-owned images removed when present\n- [x] Publication added to the committed exclusions list\n`;
+  const tests = contentChanged
+    ? '- Run `npm run test:content`\n- Run `npm run validate:notes`\n- Run `npm run lint`\n- Run `npm run build`\n- Run `npm run validate:seo`'
+    : '- Run `npm run test:content`\n- Run `npm run validate:config`\n- Confirm no site build is required for an exclusion-only change';
+  return `## Description\n\nRemove an Engineering note from every locale and exclude it from future source synchronization.\n\n## Target\n\n${target}\n\n## Removed content\n\n${removed}\n\n## How to test\n\n${tests}\n\n## Checklist\n\n- [x] All localized note files removed when present\n- [x] Publication-owned images removed when present\n- [x] Publication added to the committed exclusions list\n`;
 }

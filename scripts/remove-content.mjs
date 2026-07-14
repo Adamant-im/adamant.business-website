@@ -28,7 +28,11 @@ export async function removeContent(options = parseRemoveOptions(process.argv.sl
 
   if (options.noPr) {
     const result = await removePublication({ slug: options.slug, url: options.url });
-    await validateGeneratedContent();
+    if (result.changed > 0) {
+      await validateGeneratedContent({ contentChanged: result.contentChanged > 0 });
+    } else {
+      console.log('No tracked changes; skipping validation and build');
+    }
     return result;
   }
 

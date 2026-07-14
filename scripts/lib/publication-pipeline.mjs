@@ -106,25 +106,30 @@ export async function generatePublication(publication, { saveOriginalSource = tr
     }),
   );
 
-  let changed = changedAssets;
-  changed += Number(await writeIfChanged(path.join(notesDir, 'en', targetFile), preparedEnglish));
+  let contentChanged = changedAssets;
+  contentChanged += Number(
+    await writeIfChanged(path.join(notesDir, 'en', targetFile), preparedEnglish),
+  );
   for (const translation of translations) {
-    changed += Number(
+    contentChanged += Number(
       await writeIfChanged(
         path.join(notesDir, translation.locale, targetFile),
         translation.content,
       ),
     );
   }
-  changed += Number(await appendKnownPublication(localized));
+  const stateChanged = Number(await appendKnownPublication(localized));
+  const changed = contentChanged + stateChanged;
 
   console.log(
     `Generated ${targetFile} in ${siteConfig.locales.length} locales (${changed} tracked files changed)`,
   );
   return {
     changed,
+    contentChanged,
     fileName: targetFile,
     publication: localized,
+    stateChanged,
     title: english.frontmatter.title,
   };
 }

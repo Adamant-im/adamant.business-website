@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { access, mkdir, readFile, writeFile } from 'node:fs/promises';
+import { access, mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 import { siteConfig } from '../../config/site.ts';
@@ -119,29 +119,6 @@ function listsToProse(text) {
     output.push(line);
   }
   flush();
-  return output.join('\n');
-}
-
-function removeSectionByHeading(body, headingPattern) {
-  const lines = body.split('\n');
-  const output = [];
-  let skipping = false;
-  let skipLevel = 0;
-
-  for (const line of lines) {
-    const heading = line.match(/^(#{1,6})\s+(.+)$/);
-    if (heading) {
-      const level = heading[1].length;
-      const title = heading[2].trim();
-      if (headingPattern.test(title)) {
-        skipping = true;
-        skipLevel = level;
-        continue;
-      }
-      if (skipping && level <= skipLevel) skipping = false;
-    }
-    if (!skipping) output.push(line);
-  }
   return output.join('\n');
 }
 

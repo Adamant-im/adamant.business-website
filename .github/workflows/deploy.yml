@@ -3,6 +3,8 @@ name: Deploy website to GitHub Pages
 on:
   push:
     branches: [master]
+    paths-ignore:
+      - 'content/.sync-state.json'
   workflow_dispatch:
 
 permissions:

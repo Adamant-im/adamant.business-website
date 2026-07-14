@@ -6,7 +6,6 @@ import {
   mapLimit,
   notesDir,
   originalsDir,
-  rootDir,
   writeIfChanged,
 } from './lib/content-utils.mjs';
 import { parseMarkdownFile, prepareEnglishNote } from './lib/prepare-english.mjs';

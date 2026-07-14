@@ -61,7 +61,14 @@ export async function syncContent(options = parseSyncOptions(process.argv.slice(
     for (const publication of candidates) {
       results.push(await generatePublication(publication, { saveOriginalSource }));
     }
-    await validateGeneratedContent();
+    const changed = results.reduce((total, result) => total + result.changed, 0);
+    if (changed > 0) {
+      await validateGeneratedContent({
+        contentChanged: results.some((result) => result.contentChanged > 0),
+      });
+    } else {
+      console.log('Generated content is unchanged; skipping validation and build');
+    }
   } else {
     await assertPublishingReady();
     for (const publication of candidates) {

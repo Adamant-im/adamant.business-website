@@ -40,6 +40,22 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect validation scope
+        id: scope
+        env:
+          BASE_REF: ${{ github.base_ref }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          changed_files=$(git diff --name-only "origin/$BASE_REF...$HEAD_SHA")
+          if [[ "$changed_files" == "content/.sync-state.json" ]]; then
+            echo "full=false" >> "$GITHUB_OUTPUT"
+            echo "Only exclusion state changed; skipping site build"
+          else
+            echo "full=true" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -57,15 +73,19 @@ jobs:
         run: npm run validate:config
 
       - name: Validate Engineering notes
+        if: steps.scope.outputs.full == 'true'
         run: npm run validate:notes
 
       - name: Lint
+        if: steps.scope.outputs.full == 'true'
         run: npm run lint
 
       - name: Build
+        if: steps.scope.outputs.full == 'true'
         run: npm run build
 
       - name: Validate SEO output
+        if: steps.scope.outputs.full == 'true'
         run: npm run validate:seo
 
   sync:

@@ -47,6 +47,7 @@ export async function removePublication(
     originalsRoot = originalsDir,
     stateFile,
     assetDirectory = assetDirectoryForPublication,
+    logger = console,
   } = {},
 ) {
   const selector = {
@@ -55,7 +56,8 @@ export async function removePublication(
   };
   const entries = await listEnglishPublications(path.join(notesRoot, siteConfig.defaultLocale));
   const matches = entries.filter((entry) => publicationMatches(entry.frontmatter, selector));
-  let changed = 0;
+  let contentChanged = 0;
+  let localOriginalsChanged = 0;
 
   for (const entry of matches) {
     const publication = entry.frontmatter;
@@ -63,23 +65,38 @@ export async function removePublication(
       const filePath = path.join(notesRoot, locale.id, entry.file);
       if (await exists(filePath)) {
         await rm(filePath, { force: true });
-        changed += 1;
+        contentChanged += 1;
       }
     }
     const assetDir = assetDirectory(publication);
     if (await exists(assetDir)) {
       await rm(assetDir, { recursive: true, force: true });
-      changed += 1;
+      contentChanged += 1;
     }
-    changed += await removeOriginals(publication, originalsRoot);
+    localOriginalsChanged += await removeOriginals(publication, originalsRoot);
   }
 
   const exclusion = matches[0]?.frontmatter ?? selector;
-  changed += Number(await addPublicationExclusion(exclusion, stateFile));
-  console.log(
-    matches.length > 0
-      ? `Removed ${matches.length} publication record(s) from every locale and added an exclusion`
-      : 'No matching publication was found; added an exclusion only',
-  );
-  return { changed, matches, selector, exclusion };
+  const stateChanged = Number(await addPublicationExclusion(exclusion, stateFile));
+  const changed = contentChanged + stateChanged;
+
+  if (matches.length > 0) {
+    logger.log(
+      `Removed ${matches.length} publication record(s) from every locale; ${stateChanged ? 'added it to exclusions' : 'it was already excluded'}`,
+    );
+  } else if (stateChanged) {
+    logger.log('Publication not found; adding it to exclusions');
+  } else {
+    logger.log('Publication not found; it is already excluded');
+  }
+
+  return {
+    changed,
+    contentChanged,
+    exclusion,
+    localOriginalsChanged,
+    matches,
+    selector,
+    stateChanged,
+  };
 }

@@ -93,6 +93,8 @@ Supported URLs may use HTTP or HTTPS, include or omit `www`, and include query p
 
 Content PRs target `master`, use squash merging, and include the original title, source URL, author, date, type, source ID, repository or Discussion category, and generated locales. The repository currently has no approval rule on `master`, so WRITE access can merge after local validation without an approval bypass. If protection rules are added later, use `--no-merge` or provide an ADMIN token that can satisfy the new policy.
 
+Automatic merge is restricted to the exact PR URL returned by the current `gh pr create` call. Immediately before merging, the script verifies that the PR author is the currently authenticated GitHub user, its head is the generated content branch, and its base is `master`. Pull request events run only the read-only validation job; publication and merge run only from the trusted schedule or an authorized manual workflow dispatch.
+
 Remove a publication from every locale, delete its owned images, and add it to exclusions:
 
 ```bash
@@ -102,7 +104,9 @@ npm run remove:content -- --slug example-abcdef123456 --no-pr
 
 Removal creates and squash-merges a PR by default. It still adds the URL or slug to exclusions when no current note matches. The single-hyphen compatibility form `-slug` is also accepted.
 
-The scheduled workflow runs from `.github/workflows/sync-content.yml` at the cron in `config/site.ts`. A merge to `master` triggers the existing Pages deployment workflow and rebuilds the site.
+When a run changes only the exclusion state, content validation tests still run, but note validation, lint, build, SEO validation, and Pages deployment are skipped. When no tracked files change at all, the scripts skip validation and do not create a PR.
+
+The scheduled workflow runs from `.github/workflows/sync-content.yml` at the cron in `config/site.ts`. A merge containing Engineering note changes triggers the existing Pages deployment workflow and rebuilds the site; an exclusion-only merge does not.
 
 ## Deploy
 

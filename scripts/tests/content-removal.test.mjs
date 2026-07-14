@@ -58,9 +58,16 @@ test('removes every locale, owned assets, originals, and records an exclusion', 
 
     const result = await removePublication(
       { slug: frontmatter.slug },
-      { notesRoot, originalsRoot, stateFile, assetDirectory: () => assetDir },
+      {
+        notesRoot,
+        originalsRoot,
+        stateFile,
+        assetDirectory: () => assetDir,
+        logger: { log() {} },
+      },
     );
     assert.equal(result.matches.length, 1);
+    assert.equal(result.contentChanged, siteConfig.locales.length + 1);
     for (const locale of siteConfig.locales) {
       assert.equal(await isMissing(path.join(notesRoot, locale.id, fileName)), true);
     }
@@ -74,6 +81,40 @@ test('removes every locale, owned assets, originals, and records an exclusion', 
         sourceUrl: 'https://news.adamant.im/engineering-update-abcdef123456',
       },
     ]);
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
+});
+
+test('reports a missing publication separately from an existing exclusion', async () => {
+  const directory = await mkdtemp(path.join(os.tmpdir(), 'cryptofoundry-exclude-'));
+  const notesRoot = path.join(directory, 'notes');
+  const originalsRoot = path.join(directory, 'originals');
+  const stateFile = path.join(directory, 'state.json');
+  const messages = [];
+  const options = {
+    notesRoot,
+    originalsRoot,
+    stateFile,
+    logger: { log(message) { messages.push(message); } },
+  };
+  const url = 'https://news.adamant.im/example-abcdef123456';
+
+  try {
+    await mkdir(path.join(notesRoot, siteConfig.defaultLocale), { recursive: true });
+
+    const first = await removePublication({ url }, options);
+    assert.equal(first.matches.length, 0);
+    assert.equal(first.contentChanged, 0);
+    assert.equal(first.stateChanged, 1);
+    assert.equal(first.changed, 1);
+    assert.equal(messages.at(-1), 'Publication not found; adding it to exclusions');
+
+    const second = await removePublication({ url }, options);
+    assert.equal(second.matches.length, 0);
+    assert.equal(second.stateChanged, 0);
+    assert.equal(second.changed, 0);
+    assert.equal(messages.at(-1), 'Publication not found; it is already excluded');
   } finally {
     await rm(directory, { recursive: true, force: true });
   }
