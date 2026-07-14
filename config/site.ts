@@ -78,7 +78,11 @@ export const siteConfig = {
   openRouter: {
     models: ['z-ai/glm-5.2', 'deepseek/deepseek-v4-pro', 'qwen/qwen3.7-plus'],
     summarize: { maxTokens: 10000, temperature: 0.3 },
-    translate: { temperature: 0.2 },
+    translate: {
+      models: ['qwen/qwen3-235b-a22b-2507', 'qwen/qwen3.7-plus', 'deepseek/deepseek-v4-pro'],
+      maxTokens: 12000,
+      temperature: 0.3,
+    },
   },
 
   github: {
