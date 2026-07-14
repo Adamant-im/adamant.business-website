@@ -2,7 +2,6 @@ import { readdir, readFile, rm } from 'node:fs/promises';
 import path from 'node:path';
 
 import * as cheerio from 'cheerio';
-import sharp from 'sharp';
 import TurndownService from 'turndown';
 
 import {
@@ -19,6 +18,7 @@ import {
   writeIfChanged,
   writeOriginalAndLocaleNotes,
 } from './lib/content-utils.mjs';
+import { optimizePublicImage } from './lib/optimize-image.mjs';
 import { siteConfig } from '../config/site.ts';
 
 const archivesDir = path.join(rootDir, '.ai-ignored/medium-posts');
@@ -58,14 +58,6 @@ function contentTypeExtension(contentType) {
     'image/svg+xml': '.svg',
     'image/webp': '.webp',
   }[normalized];
-}
-
-async function optimizePublicImage(buffer) {
-  return sharp(buffer, { animated: true })
-    .rotate()
-    .resize({ width: 1600, height: 1200, fit: 'inside', withoutEnlargement: true })
-    .webp({ quality: 82, effort: 4 })
-    .toBuffer();
 }
 
 function urlExtension(url) {
