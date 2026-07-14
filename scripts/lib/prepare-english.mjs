@@ -4,6 +4,7 @@ import path from 'node:path';
 
 import { siteConfig } from '../../config/site.ts';
 import { markdownExcerpt, rootDir, serializeMarkdown } from './content-utils.mjs';
+import { normalizeMarkdownFences } from './markdown-safety.mjs';
 import { optimizePublicImage } from './optimize-image.mjs';
 import { callOpenRouter as requestOpenRouter } from './openrouter.mjs';
 
@@ -525,9 +526,9 @@ export async function prepareEnglishNote(frontmatter, body, { useLlm = false } =
     }
     title = llm.title;
     description = llm.description ?? markdownExcerpt(llm.body, title);
-    transformedBody = llm.body;
+    transformedBody = normalizeMarkdownFences(llm.body);
   } else {
-    transformedBody = transformBody(body, frontmatter);
+    transformedBody = normalizeMarkdownFences(transformBody(body, frontmatter));
     const fm = transformFrontmatter({ ...frontmatter, title }, transformedBody);
     title = fm.title;
     description = fm.description;

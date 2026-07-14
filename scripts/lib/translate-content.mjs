@@ -3,6 +3,11 @@ import { readFile } from 'node:fs/promises';
 
 import { siteConfig } from '../../config/site.ts';
 import { markdownExcerpt, notesDir, serializeMarkdown, writeIfChanged } from './content-utils.mjs';
+import {
+  codePlaceholderIssue,
+  hasUnresolvedCodePlaceholder,
+  normalizeMarkdownFences,
+} from './markdown-safety.mjs';
 import { parseMarkdownFile } from './prepare-english.mjs';
 import { callOpenRouter } from './openrouter.mjs';
 
@@ -184,7 +189,8 @@ export async function translateNoteToLocale(englishFrontmatter, body, localeId) 
     throw new Error('Cannot translate to the default English locale');
   }
 
-  const { protectedBody, blocks } = protectCodeBlocks(body);
+  const normalizedEnglishBody = normalizeMarkdownFences(body);
+  const { protectedBody, blocks } = protectCodeBlocks(normalizedEnglishBody);
   const localeLabel = LOCALE_NAMES[localeId] ?? locale.label;
 
   async function requestTranslation(strict = false) {
@@ -218,16 +224,36 @@ export async function translateNoteToLocale(englishFrontmatter, body, localeId) 
     return { translated, model };
   }
 
-  let { translated, model } = await requestTranslation(false);
-  let restoredBody = restoreCodeBlocks(translated.body, blocks);
+  function restoreValidatedBody(translatedBody) {
+    const issue = codePlaceholderIssue(translatedBody, blocks.length);
+    if (issue) throw new Error(issue);
+    const restored = normalizeMarkdownFences(restoreCodeBlocks(translatedBody, blocks));
+    if (hasUnresolvedCodePlaceholder(restored)) {
+      throw new Error('Translation contains an unresolved code placeholder');
+    }
+    return restored;
+  }
 
-  if (needsRetranslation(body, restoredBody)) {
+  let { translated, model } = await requestTranslation(false);
+  let restoredBody;
+  let retryReason = '';
+
+  try {
+    restoredBody = restoreValidatedBody(translated.body);
+    if (needsRetranslation(normalizedEnglishBody, restoredBody)) {
+      retryReason = 'body still contains English prose';
+    }
+  } catch (error) {
+    retryReason = error.message;
+  }
+
+  if (retryReason) {
     console.warn(
-      `Retranslating ${englishFrontmatter.slug} → ${localeId}: body still contains English prose`,
+      `Retranslating ${englishFrontmatter.slug} → ${localeId}: ${retryReason}`,
     );
     ({ translated, model } = await requestTranslation(true));
-    restoredBody = restoreCodeBlocks(translated.body, blocks);
-    if (needsRetranslation(body, restoredBody)) {
+    restoredBody = restoreValidatedBody(translated.body);
+    if (needsRetranslation(normalizedEnglishBody, restoredBody)) {
       throw new Error(`Translation still contains English prose for ${englishFrontmatter.slug} → ${localeId}`);
     }
   }

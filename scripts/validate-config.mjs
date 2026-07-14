@@ -1,3 +1,5 @@
+import { readFile } from 'node:fs/promises';
+
 import { siteConfig } from '../config/site.ts';
 
 const requiredPaths = [
@@ -35,6 +37,23 @@ if (!siteConfig.github.starsRepos.length) {
 
 if (!siteConfig.github.releaseRepos.length) {
   console.error('github.releaseRepos must not be empty');
+  failed = true;
+}
+
+if (!siteConfig.openRouter.models.length || !siteConfig.openRouter.translate.models.length) {
+  console.error('OpenRouter summary and translation model lists must not be empty');
+  failed = true;
+}
+
+try {
+  const workflow = await readFile('.github/workflows/sync-content.yml', 'utf8');
+  const cronLine = `cron: '${siteConfig.sync.contentCron}'`;
+  if (!workflow.includes(cronLine)) {
+    console.error(`sync-content.yml must contain ${cronLine}`);
+    failed = true;
+  }
+} catch (error) {
+  console.error(`Unable to validate sync-content.yml: ${error.message}`);
   failed = true;
 }
 
