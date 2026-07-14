@@ -51,8 +51,12 @@ for (const locale of siteConfig.locales) {
     if (locale.id === siteConfig.defaultLocale) {
       if (entry.data.placeholder !== false) throw new Error(`English note is marked placeholder: ${entry.file}`);
     } else {
-      if (entry.data.placeholder !== true) throw new Error(`Localized note is not marked placeholder: ${locale.id}/${entry.file}`);
-      if (!entry.body.includes('Lorem ipsum')) throw new Error(`Localized placeholder body is missing: ${locale.id}/${entry.file}`);
+      if (entry.data.placeholder === true && !entry.body.includes('Lorem ipsum')) {
+        throw new Error(`Localized placeholder body is missing: ${locale.id}/${entry.file}`);
+      }
+      if (entry.data.placeholder === false && entry.body.includes('Lorem ipsum')) {
+        throw new Error(`Translated note still contains placeholder text: ${locale.id}/${entry.file}`);
+      }
     }
     if (!englishIds.has(entry.data.originalId)) {
       throw new Error(`Unexpected originalId in ${locale.id}/${entry.file}`);

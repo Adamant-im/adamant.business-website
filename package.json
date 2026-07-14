@@ -46,7 +46,9 @@
     "import:historical": "node --experimental-strip-types scripts/import-historical-content.mjs",
     "prepare:english": "node --experimental-strip-types scripts/prepare-english-content.mjs --all",
     "prepare:english:llm": "node --experimental-strip-types scripts/prepare-english-content.mjs --all --llm --force",
-    "convert:discussion-images": "node --experimental-strip-types scripts/convert-discussion-images-webp.mjs"
+    "convert:discussion-images": "node --experimental-strip-types scripts/convert-discussion-images-webp.mjs",
+    "translate:content": "node --experimental-strip-types scripts/translate-content.mjs",
+    "translate:content:test": "node --experimental-strip-types scripts/translate-content.mjs"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "^7.2.1",
