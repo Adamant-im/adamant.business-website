@@ -155,7 +155,7 @@ export const siteConfig = {
   },
 
   sync: {
-    contentCron: '0 6 * * *',
+    contentCron: '19 6 * * *',
     starsOnDeploy: true,
     batchSize: 10,
     dedupStateFile: 'content/.sync-state.json',

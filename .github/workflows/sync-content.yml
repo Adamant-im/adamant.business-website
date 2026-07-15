@@ -2,7 +2,7 @@ name: Synchronize Engineering notes
 
 on:
   schedule:
-    - cron: '0 6 * * *' # Keep in sync with config/site.ts sync.contentCron
+    - cron: '19 6 * * *' # Keep in sync with config/site.ts sync.contentCron
   workflow_dispatch:
     inputs:
       url:
