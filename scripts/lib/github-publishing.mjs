@@ -64,7 +64,41 @@ export function contentBranchSwitchArgs(branchName, startPoint = 'origin/master'
   return ['switch', '--force-create', branchName, startPoint];
 }
 
-export async function assertPublishingReady() {
+export function pullRequestMergeArgs(prUrl, publisherPermission) {
+  return [
+    'pr',
+    'merge',
+    prUrl,
+    '--squash',
+    '--delete-branch',
+    ...(publisherPermission === 'ADMIN' ? ['--admin'] : []),
+  ];
+}
+
+export function selectOwnedOpenPullRequest(pullRequests, branchName, publisher) {
+  if (!branchName.startsWith('content/')) {
+    throw new Error(`Refusing to inspect a non-content branch: ${branchName}`);
+  }
+
+  const matching = pullRequests.filter(
+    (pullRequest) =>
+      pullRequest.baseRefName === 'master' && pullRequest.headRefName === branchName,
+  );
+  if (matching.length > 1) {
+    throw new Error(`Multiple open PRs found for automation branch ${branchName}`);
+  }
+  if (matching.length === 0) return null;
+
+  const pullRequest = matching[0];
+  if (pullRequest.author?.login !== publisher) {
+    throw new Error(
+      `Refusing to reuse PR not created by the current publisher: author=${pullRequest.author?.login}, head=${pullRequest.headRefName}, base=${pullRequest.baseRefName}`,
+    );
+  }
+  return pullRequest;
+}
+
+export async function assertPublishingReady({ requireAdminMerge = false } = {}) {
   const status = await run('git', ['status', '--porcelain'], { capture: true });
   if (status.stdout) {
     throw new Error('PR mode requires a clean working tree; use --no-pr for local generation');
@@ -79,10 +113,16 @@ export async function assertPublishingReady() {
   if (!['ADMIN', 'MAINTAIN', 'WRITE'].includes(repository.viewerPermission)) {
     throw new Error(`GitHub ${repository.viewerPermission} permission cannot publish content PRs`);
   }
+  if (requireAdminMerge && repository.viewerPermission !== 'ADMIN') {
+    throw new Error(
+      `Automatic content merge requires GitHub ADMIN permission; current permission is ${repository.viewerPermission}. Use --no-merge or an ADMIN token`,
+    );
+  }
   if (!repository.squashMergeAllowed) throw new Error('Repository does not allow squash merges');
   console.log(
-    `GitHub publication access: ${repository.nameWithOwner} (${repository.viewerPermission}, squash merge enabled)`,
+    `GitHub publication access: ${repository.nameWithOwner} (${repository.viewerPermission}, squash merge enabled${requireAdminMerge ? ', admin bypass enabled' : ''})`,
   );
+  return repository;
 }
 
 export async function validateGeneratedContent({ contentChanged = true } = {}) {
@@ -117,7 +157,41 @@ async function assertCreatedPullRequest(prUrl, branchName) {
     author !== publisher.stdout
   ) {
     throw new Error(
-      `Refusing to merge PR not created by this run: author=${author}, head=${details.headRefName}, base=${details.baseRefName}`,
+      `Refusing to merge PR not owned by the current content publisher: author=${author}, head=${details.headRefName}, base=${details.baseRefName}`,
+    );
+  }
+}
+
+async function findOwnedOpenPullRequest(branchName) {
+  const [publisher, pullRequests] = await Promise.all([
+    run('gh', ['api', 'user', '--jq', '.login'], { capture: true }),
+    run(
+      'gh',
+      [
+        'pr',
+        'list',
+        '--state',
+        'open',
+        '--base',
+        'master',
+        '--head',
+        branchName,
+        '--json',
+        'author,baseRefName,headRefName,url',
+      ],
+      { capture: true },
+    ),
+  ]);
+  return selectOwnedOpenPullRequest(JSON.parse(pullRequests.stdout), branchName, publisher.stdout);
+}
+
+async function mergeOwnedPullRequest(prUrl, branchName, publisherPermission) {
+  try {
+    await assertCreatedPullRequest(prUrl, branchName);
+    await run('gh', pullRequestMergeArgs(prUrl, publisherPermission));
+  } catch (error) {
+    throw new Error(
+      `${error.message}. Automatic content merge requires an ADMIN token and uses an explicit administrative bypass`,
     );
   }
 }
@@ -144,6 +218,7 @@ export async function publishChange({
   branchName,
   commitMessage,
   noMerge,
+  publisherPermission,
   prBody,
   prTitle,
   generate,
@@ -154,12 +229,33 @@ export async function publishChange({
   let merged = false;
   let prUrl = null;
 
+  if (!noMerge && publisherPermission !== 'ADMIN') {
+    throw new Error(
+      `Automatic content merge requires GitHub ADMIN permission; received ${publisherPermission || 'no permission'}`,
+    );
+  }
+
   await run('git', ['fetch', 'origin', 'master']);
   const remoteBranch = await run('git', ['ls-remote', '--exit-code', '--heads', 'origin', branchName], {
     capture: true,
     allowExitCodes: [0, 2],
   });
-  if (remoteBranch.code === 0) throw new Error(`Remote branch already exists: ${branchName}`);
+  if (remoteBranch.code === 0) {
+    const existingPullRequest = await findOwnedOpenPullRequest(branchName);
+    if (existingPullRequest) {
+      prUrl = existingPullRequest.url;
+      console.log(`Resuming existing automation PR ${prUrl}`);
+      if (noMerge) return { prUrl, merged: false, resumed: true };
+      await mergeOwnedPullRequest(prUrl, branchName, publisherPermission);
+      merged = true;
+      console.log(`Merged ${prUrl}`);
+      await restoreStartingPoint(startingBranch, startingSha, branchName, merged);
+      return { prUrl, merged, resumed: true };
+    }
+
+    console.log(`Deleting stale remote automation branch ${branchName}`);
+    await run('git', ['push', 'origin', '--delete', branchName]);
+  }
   await run('git', contentBranchSwitchArgs(branchName));
 
   try {
@@ -213,14 +309,7 @@ export async function publishChange({
     console.log(`Created ${prUrl}`);
 
     if (!noMerge) {
-      try {
-        await assertCreatedPullRequest(prUrl, branchName);
-        await run('gh', ['pr', 'merge', prUrl, '--squash', '--delete-branch']);
-      } catch (error) {
-        throw new Error(
-          `${error.message}. Direct squash merge is available with WRITE access because master currently has no approval rule; if repository rules changed, use --no-merge or an ADMIN token.`,
-        );
-      }
+      await mergeOwnedPullRequest(prUrl, branchName, publisherPermission);
       merged = true;
       console.log(`Merged ${prUrl}`);
     }

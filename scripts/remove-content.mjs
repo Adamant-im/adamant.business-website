@@ -37,11 +37,12 @@ export async function removeContent(options = parseRemoveOptions(process.argv.sl
     return result;
   }
 
-  await assertPublishingReady();
+  const publishing = await assertPublishingReady({ requireAdminMerge: !options.noMerge });
   return publishChange({
     branchName: removalBranchName({ category: classified?.type, slug: branchSlug }),
     commitMessage: `Remove engineering note: ${branchSlug}`.slice(0, 200),
     noMerge: options.noMerge,
+    publisherPermission: publishing.viewerPermission,
     prTitle: `Remove content: ${branchSlug}`.slice(0, 250),
     prBody: (result) => removalPrBody(result),
     generate: () => removePublication({ slug: options.slug, url: selector.sourceUrl }),
