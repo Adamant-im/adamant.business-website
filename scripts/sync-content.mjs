@@ -70,13 +70,14 @@ export async function syncContent(options = parseSyncOptions(process.argv.slice(
       console.log('Generated content is unchanged; skipping validation and build');
     }
   } else {
-    await assertPublishingReady();
+    const publishing = await assertPublishingReady({ requireAdminMerge: !options.noMerge });
     for (const publication of candidates) {
       results.push(
         await publishChange({
           branchName: additionBranchName(publication),
           commitMessage: `Add ${publication.category}: ${publication.title}`.slice(0, 200),
           noMerge: options.noMerge,
+          publisherPermission: publishing.viewerPermission,
           prBody: additionPrBody(publication),
           prTitle: additionPrTitle(publication),
           generate: () => generatePublication(publication, { saveOriginalSource }),

@@ -6,7 +6,11 @@ import path from 'node:path';
 import { promisify } from 'node:util';
 import test from 'node:test';
 
-import { contentBranchSwitchArgs } from '../lib/github-publishing.mjs';
+import {
+  contentBranchSwitchArgs,
+  pullRequestMergeArgs,
+  selectOwnedOpenPullRequest,
+} from '../lib/github-publishing.mjs';
 
 const exec = promisify(execFile);
 
@@ -48,5 +52,49 @@ test('refuses to force-recreate a branch outside the content namespace', () => {
   assert.throws(
     () => contentBranchSwitchArgs('master'),
     /Refusing to overwrite a non-content branch/,
+  );
+});
+
+test('uses an explicit administrative bypass for ADMIN content publishers', () => {
+  const prUrl = 'https://github.com/Adamant-im/adamant.business-website/pull/20';
+
+  assert.deepEqual(pullRequestMergeArgs(prUrl, 'ADMIN'), [
+    'pr',
+    'merge',
+    prUrl,
+    '--squash',
+    '--delete-branch',
+    '--admin',
+  ]);
+  assert.deepEqual(pullRequestMergeArgs(prUrl, 'WRITE'), [
+    'pr',
+    'merge',
+    prUrl,
+    '--squash',
+    '--delete-branch',
+  ]);
+});
+
+test('resumes only an open content PR owned by the current publisher', () => {
+  const branchName = 'content/retry-publication';
+  const pullRequest = {
+    author: { login: 'dev-adamant-im' },
+    baseRefName: 'master',
+    headRefName: branchName,
+    url: 'https://github.com/Adamant-im/adamant.business-website/pull/20',
+  };
+
+  assert.equal(
+    selectOwnedOpenPullRequest([pullRequest], branchName, 'dev-adamant-im'),
+    pullRequest,
+  );
+  assert.equal(selectOwnedOpenPullRequest([], branchName, 'dev-adamant-im'), null);
+  assert.throws(
+    () => selectOwnedOpenPullRequest([pullRequest], branchName, 'another-publisher'),
+    /Refusing to reuse PR not created by the current publisher/,
+  );
+  assert.throws(
+    () => selectOwnedOpenPullRequest([pullRequest, pullRequest], branchName, 'dev-adamant-im'),
+    /Multiple open PRs found/,
   );
 });
