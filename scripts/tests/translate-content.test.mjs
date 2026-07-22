@@ -39,9 +39,16 @@ test('does not mention code placeholder tokens when the source has no code block
   });
 
   assert.equal(calls.length, 1);
-  assert.deepEqual(calls[0].options.models, ['qwen/qwen3.7-plus']);
+  assert.deepEqual(calls[0].options.models, ['google/gemini-3.1-flash-lite']);
+  assert.equal(calls[0].options.temperature, 0.4);
   assert.doesNotMatch(calls[0].prompt, /@@CODEBLOCK/);
   assert.doesNotMatch(calls[0].options.system, /@@CODEBLOCK/);
+  assert.match(calls[0].prompt, /Translation and editorial workflow:/);
+  assert.match(calls[0].prompt, /sounds translated, unnatural, ambiguous, or grammatically awkward/);
+  assert.match(calls[0].prompt, /Preserve every fact, number, link, limitation, recommendation, and degree of certainty/);
+  assert.doesNotMatch(calls[0].prompt, /Title translation example:/);
+  assert.match(calls[0].options.system, /native technical writer, professional translator, and senior editor/);
+  assert.match(calls[0].options.system, /does not read like a translation/);
   assert.match(translated, /Русский заголовок/);
   assert.match(translated, /Первый абзац/);
 });
@@ -61,8 +68,8 @@ test('uses the next configured model after a semantic placeholder failure', asyn
   });
 
   assert.equal(calls.length, 2);
-  assert.deepEqual(calls[0].options.models, ['qwen/qwen3.7-plus']);
-  assert.deepEqual(calls[1].options.models, ['deepseek/deepseek-v4-pro']);
+  assert.deepEqual(calls[0].options.models, ['google/gemini-3.1-flash-lite']);
+  assert.deepEqual(calls[1].options.models, ['qwen/qwen3.7-plus']);
   assert.match(calls[1].prompt, /Previous output failed validation: Code placeholder mismatch: unknown 0/);
   assert.doesNotMatch(translated, /@@CODEBLOCK/);
 });
@@ -88,7 +95,7 @@ test('preserves the semantic retry reason across an intermediate transport failu
   });
 
   assert.equal(calls.length, 3);
-  assert.deepEqual(calls[2].options.models, ['qwen/qwen3-235b-a22b-2507']);
+  assert.deepEqual(calls[2].options.models, ['deepseek/deepseek-v4-pro']);
   assert.match(calls[2].prompt, /Previous output failed validation: Code placeholder mismatch: unknown 0/);
   assert.match(translated, /Первый абзац/);
 });
@@ -107,7 +114,7 @@ test('rejects internal placeholders in translated frontmatter fields', async () 
     requestOpenRouter,
   });
 
-  assert.deepEqual(calls, ['qwen/qwen3.7-plus', 'deepseek/deepseek-v4-pro']);
+  assert.deepEqual(calls, ['google/gemini-3.1-flash-lite', 'qwen/qwen3.7-plus']);
   assert.doesNotMatch(translated, /@@codeblock/i);
 });
 
@@ -143,12 +150,12 @@ test('reports every attempted model when all translations fail validation', asyn
 
   await assert.rejects(
     translateNoteToLocale(frontmatter, englishBody, 'ru', { requestOpenRouter }),
-    /Translation failed for translation-fallback-test → ru after qwen\/qwen3\.7-plus, deepseek\/deepseek-v4-pro, qwen\/qwen3-235b-a22b-2507: response title must be a non-empty string/,
+    /Translation failed for translation-fallback-test → ru after google\/gemini-3\.1-flash-lite, qwen\/qwen3\.7-plus, deepseek\/deepseek-v4-pro: response title must be a non-empty string/,
   );
   assert.deepEqual(models, [
+    'google/gemini-3.1-flash-lite',
     'qwen/qwen3.7-plus',
     'deepseek/deepseek-v4-pro',
-    'qwen/qwen3-235b-a22b-2507',
   ]);
 });
 

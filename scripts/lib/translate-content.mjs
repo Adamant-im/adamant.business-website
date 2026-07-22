@@ -30,9 +30,22 @@ const GLOSSARY = `Glossary — keep exact spelling, do not translate:
 - Packages and paths: adamant-tradebot, config.default.jsonc, modules/commands/
 - Telegram handle: @adamant_business`;
 
-const TITLE_EXAMPLE = `Title translation example:
-English: "ADAMANT Tradebot v9.0.0"
-Good German: "ADAMANT Tradebot v9.0.0" (keep product name; translate only if grammar requires surrounding words)`;
+const EDITORIAL_REQUIREMENTS = `Translation and editorial workflow:
+1. First understand the complete source, its technical meaning, factual relationships, scope, and level of certainty.
+2. Translate the meaning into the target language without following English syntax or word order mechanically.
+3. Edit the translation into publication-ready prose that reads as if it were originally written by a native technical writer in the target language.
+4. Silently compare the edited translation with the source and correct any changed, added, weakened, or omitted meaning before responding.
+
+Universal editorial requirements:
+- Use natural target-language syntax, idiomatic collocations, established technical terminology, and a consistent professional register.
+- Prefer clear verbs and direct sentences over awkward noun chains, excessive passive voice, and source-language constructions.
+- Avoid calques, unnecessary transliteration, redundant wording, mixed-language prose, and explanations in parentheses unless the source contains them or the English term is genuinely conventional in the target language.
+- Translate technical prose naturally, but preserve product names, API identifiers, code, paths, URLs, Markdown syntax, and glossary terms exactly as required.
+- Keep terminology consistent across the title, description, headings, and body.
+- Make headings concise and idiomatic in the target language rather than literal copies of English heading structure.
+- Preserve every fact, number, link, limitation, recommendation, and degree of certainty. Do not add commentary, interpretation, praise, or new claims.
+- Before returning JSON, silently reread the target text once more and rewrite every phrase that sounds translated, unnatural, ambiguous, or grammatically awkward to a native reader.
+- Return only the required JSON object and never describe the translation or editing process.`;
 
 const CATEGORY_HINTS = {
   release: (localeLabel) =>
@@ -127,9 +140,9 @@ ${buildCodePlaceholderRequirements(blockCount)}
 
 ${categoryHint}
 
-${GLOSSARY}
+${EDITORIAL_REQUIREMENTS}
 
-${TITLE_EXAMPLE}
+${GLOSSARY}
 
 Category: ${category}
 
@@ -244,7 +257,7 @@ export async function translateNoteToLocale(
       provider: translate.provider,
       title: 'cryptofoundry content translation',
       system:
-        `You are a professional technical translator for a crypto engineering blog. Output strict JSON with title, description, and body fields. The body must be fully translated into the target language. Never translate glossary terms${blocks.length > 0 ? ' or the listed protected code blocks' : ''}.`,
+        'You are a native technical writer, professional translator, and senior editor in the requested target language. Produce accurate, publication-ready prose that does not read like a translation. Preserve all facts and protected technical content. Output strict JSON with title, description, and body fields only.',
     });
 
     return { translated, model: model ?? configuredModel };
