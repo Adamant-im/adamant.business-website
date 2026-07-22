@@ -35,5 +35,5 @@ export function codePlaceholderIssue(body, blockCount) {
 }
 
 export function hasUnresolvedCodePlaceholder(body) {
-  return /@@CODEBLOCK(?:\d+|n)@@/.test(String(body));
+  return /@@\s*CODEBLOCK[^@\n]*@@/i.test(String(body));
 }
