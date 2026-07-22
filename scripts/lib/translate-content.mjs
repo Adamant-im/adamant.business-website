@@ -83,20 +83,44 @@ function needsRetranslation(englishBody, translatedBody) {
   return unchanged.length / englishProse.length > 0.5;
 }
 
-function buildTranslationPrompt({ localeId, localeLabel, category, frontmatter, body, strict = false }) {
+export function buildCodePlaceholderRequirements(blockCount) {
+  if (blockCount === 0) {
+    return '- The input contains no protected code block placeholders; do not invent or add any placeholder tokens';
+  }
+
+  const placeholders = Array.from(
+    { length: blockCount },
+    (_, index) => `@@CODEBLOCK${index}@@`,
+  );
+
+  return [
+    `- Preserve each of these protected code block placeholders exactly once: ${placeholders.join(', ')}`,
+    '- Do not add, remove, duplicate, rename, or translate the listed placeholders',
+  ].join('\n');
+}
+
+function buildTranslationPrompt({
+  localeId,
+  localeLabel,
+  category,
+  frontmatter,
+  body,
+  blockCount,
+  retryReason = '',
+}) {
   const categoryHint = CATEGORY_HINTS[category]?.(localeLabel) ?? '';
-  const strictNote = strict
-    ? `\nIMPORTANT: Your previous attempt left English text in the body. Translate EVERY sentence and heading into ${localeLabel}. Only glossary terms, code placeholders, URLs, and inline code stay in English.\n`
+  const retryNote = retryReason
+    ? `\nIMPORTANT: Previous output failed validation: ${retryReason}. Correct this failure. Translate EVERY sentence and heading into ${localeLabel}. Only glossary terms, protected code blocks, URLs, and inline code stay in English.\n`
     : '';
 
   return `Translate this engineering note from English to ${localeLabel} (${localeId}).
-${strictNote}
+${retryNote}
 Quality requirements:
 - Natural, fluent, grammatically correct ${localeLabel} for a technical audience
 - Preserve meaning; do not add or remove facts
 - The "body" field must be fully translated into ${localeLabel} — not a mix of English and ${localeLabel}
 - Keep Markdown structure: headings, paragraphs, bold, links, tables
-- Keep @@CODEBLOCKn@@ placeholders EXACTLY as they appear — do not translate or remove them
+${buildCodePlaceholderRequirements(blockCount)}
 - Keep inline code, URLs, file paths, image paths, and HTML tags unchanged
 - Translate image alt text and visible prose; translate ALL headings including ## and ###
 - description: max 180 characters, one line, plain text, no markdown
@@ -182,7 +206,12 @@ function normalizeBrands(text) {
   return BRAND_FIXES.reduce((value, [pattern, replacement]) => value.replace(pattern, replacement), text);
 }
 
-export async function translateNoteToLocale(englishFrontmatter, body, localeId) {
+export async function translateNoteToLocale(
+  englishFrontmatter,
+  body,
+  localeId,
+  { requestOpenRouter = callOpenRouter } = {},
+) {
   const locale = siteConfig.locales.find((item) => item.id === localeId);
   if (!locale) throw new Error(`Unknown locale: ${localeId}`);
   if (localeId === siteConfig.defaultLocale) {
@@ -193,20 +222,21 @@ export async function translateNoteToLocale(englishFrontmatter, body, localeId) 
   const { protectedBody, blocks } = protectCodeBlocks(normalizedEnglishBody);
   const localeLabel = LOCALE_NAMES[localeId] ?? locale.label;
 
-  async function requestTranslation(strict = false) {
+  async function requestTranslation(configuredModel, retryReason = '') {
     const prompt = buildTranslationPrompt({
       localeId,
       localeLabel,
       category: englishFrontmatter.category,
       frontmatter: englishFrontmatter,
       body: protectedBody,
-      strict,
+      blockCount: blocks.length,
+      retryReason,
     });
 
     const translate = siteConfig.openRouter.translate;
 
-    const { data: translated, model } = await callOpenRouter(prompt, {
-      models: translate.models,
+    const { data: translated, model } = await requestOpenRouter(prompt, {
+      models: [configuredModel],
       temperature: translate.temperature,
       maxTokens: translate.maxTokens,
       timeoutMs: translate.timeoutMs,
@@ -214,14 +244,10 @@ export async function translateNoteToLocale(englishFrontmatter, body, localeId) 
       provider: translate.provider,
       title: 'cryptofoundry content translation',
       system:
-        'You are a professional technical translator for a crypto engineering blog. Output strict JSON with title, description, and body fields. The body must be fully translated into the target language. Never translate glossary terms or code placeholders.',
+        `You are a professional technical translator for a crypto engineering blog. Output strict JSON with title, description, and body fields. The body must be fully translated into the target language. Never translate glossary terms${blocks.length > 0 ? ' or the listed protected code blocks' : ''}.`,
     });
 
-    if (!translated?.title || !translated?.body) {
-      throw new Error(`Invalid translation response for ${englishFrontmatter.slug} → ${localeId}`);
-    }
-
-    return { translated, model };
+    return { translated, model: model ?? configuredModel };
   }
 
   function restoreValidatedBody(translatedBody) {
@@ -234,28 +260,77 @@ export async function translateNoteToLocale(englishFrontmatter, body, localeId) 
     return restored;
   }
 
-  let { translated, model } = await requestTranslation(false);
+  const translate = siteConfig.openRouter.translate;
+  const configuredModels = [...translate.models];
+  const attemptedModels = [];
+  let translated;
+  let model;
   let restoredBody;
   let retryReason = '';
+  let lastFailureReason = '';
 
-  try {
-    restoredBody = restoreValidatedBody(translated.body);
-    if (needsRetranslation(normalizedEnglishBody, restoredBody)) {
-      retryReason = 'body still contains English prose';
+  for (const [index, configuredModel] of configuredModels.entries()) {
+    const fallbackModel = configuredModels[index + 1];
+
+    try {
+      ({ translated, model } = await requestTranslation(configuredModel, retryReason));
+    } catch (error) {
+      if (/OpenRouter account error/.test(error.message)) throw error;
+      lastFailureReason = `request failed: ${error.message}`;
+      attemptedModels.push(configuredModel);
+      console.warn(
+        `Translation request ${englishFrontmatter.slug} → ${localeId} failed via ${configuredModel}: ${error.message}${fallbackModel ? `; retrying with ${fallbackModel}` : ''}`,
+      );
+      continue;
     }
-  } catch (error) {
-    retryReason = error.message;
+
+    attemptedModels.push(configuredModel);
+
+    try {
+      if (typeof translated?.title !== 'string' || translated.title.trim() === '') {
+        throw new Error('response title must be a non-empty string');
+      }
+      if (typeof translated?.body !== 'string' || translated.body.trim() === '') {
+        throw new Error('response body must be a non-empty string');
+      }
+      if (
+        translated.description !== undefined &&
+        translated.description !== null &&
+        typeof translated.description !== 'string'
+      ) {
+        throw new Error('response description must be a string when provided');
+      }
+      for (const [field, value] of [
+        ['title', translated.title],
+        ['description', translated.description ?? ''],
+      ]) {
+        const issue = codePlaceholderIssue(value, 0);
+        if (issue) throw new Error(`response ${field} contains a code placeholder: ${issue}`);
+        if (hasUnresolvedCodePlaceholder(value)) {
+          throw new Error(`response ${field} contains an unresolved code placeholder`);
+        }
+      }
+
+      restoredBody = restoreValidatedBody(translated.body);
+      if (needsRetranslation(normalizedEnglishBody, restoredBody)) {
+        throw new Error('body still contains English prose');
+      }
+      break;
+    } catch (error) {
+      retryReason = error.message;
+      lastFailureReason = retryReason;
+      console.warn(
+        `Rejected translation ${englishFrontmatter.slug} → ${localeId} via ${model}: ${retryReason}${fallbackModel ? `; retrying with ${fallbackModel}` : ''}`,
+      );
+      translated = undefined;
+      restoredBody = undefined;
+    }
   }
 
-  if (retryReason) {
-    console.warn(
-      `Retranslating ${englishFrontmatter.slug} → ${localeId}: ${retryReason}`,
+  if (!translated || restoredBody === undefined) {
+    throw new Error(
+      `Translation failed for ${englishFrontmatter.slug} → ${localeId} after ${attemptedModels.join(', ')}: ${lastFailureReason}`,
     );
-    ({ translated, model } = await requestTranslation(true));
-    restoredBody = restoreValidatedBody(translated.body);
-    if (needsRetranslation(normalizedEnglishBody, restoredBody)) {
-      throw new Error(`Translation still contains English prose for ${englishFrontmatter.slug} → ${localeId}`);
-    }
   }
 
   console.log(`Translated ${englishFrontmatter.slug} → ${localeId} via ${model}`);
@@ -264,7 +339,9 @@ export async function translateNoteToLocale(englishFrontmatter, body, localeId) 
     ...englishFrontmatter,
     title: normalizeBrands(translated.title),
     description: normalizeBrands(
-      translated.description ?? markdownExcerpt(restoredBody, translated.title),
+      translated.description?.trim()
+        ? translated.description
+        : markdownExcerpt(restoredBody, translated.title),
     ),
     locale: localeId,
     placeholder: false,
