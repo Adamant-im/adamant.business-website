@@ -1,6 +1,6 @@
 {
   "name": "adamant.business-website",
-  "description": "cryptofoundry business website — We build crypto software and maintain it in production.",
+  "description": "cryptofoundry business website \u2014 We build crypto software and maintain it in production.",
   "type": "module",
   "version": "0.1.0",
   "author": "cryptofoundry <business@adamant.im>",
@@ -73,5 +73,8 @@
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "typescript": "^5.9.3"
+  },
+  "overrides": {
+    "js-yaml": "4.3.1"
   }
 }
